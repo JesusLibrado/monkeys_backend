@@ -2,13 +2,21 @@
 
 ## 1. GitHub
 
-### 1.1 Install GitHub
+### 1.1 Install Git
+
+https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+
+"Installing on Linux"
+
+### 2.1 Install GitHub
 
 https://github.com/cli/cli/blob/trunk/docs/install_linux.md
 
 ```sh
 gh auth login
 gh repo clone JesusLibrado/monkeys_backend
+git checkout main
+git pull
 ```
 
 ## 2. Docker
