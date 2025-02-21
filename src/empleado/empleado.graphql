@@ -1,0 +1,53 @@
+type Empleado implements Usuario {
+  id: ID!
+  email: String!
+  numeroTelefono: String!
+  password: String!
+  estatusUsuario: UsuarioEstatus!
+  nombre: String!
+  apellido: String!
+  estatusEmpleado: EmpleadoEstatus!
+  fechaHoraInicioTurno: String
+  fechaHoraTerminoTurno: String
+}
+
+type Query {
+  empleados: [Empleado]!
+  empleado(id: Int!): Empleado
+}
+
+type Mutation {
+  createEmpleado(createEmpleadoInput: CreateEmpleadoInput!): Empleado!
+  updateEmpleado(updateEmpleadoInput: UpdateEmpleadoInput!): Empleado!
+  removeEmpleado(id: Int!): Empleado
+}
+
+input CreateEmpleadoInput {
+  email: String!
+  numeroTelefono: String!
+  password: String!
+  estatusUsuario: UsuarioEstatus = ACTIVO
+  nombre: String!
+  apellido: String!
+  estatusEmpleado: EmpleadoEstatus = INACTIVO
+  fechaHoraInicioTurno: String
+  fechaHoraTerminoTurno: String
+}
+
+input UpdateEmpleadoInput {
+  id: Int!
+  email: String
+  numeroTelefono: String
+  password: String
+  estatusUsuario: UsuarioEstatus
+  nombre: String
+  apellido: String
+  estatusEmpleado: EmpleadoEstatus
+  fechaHoraInicioTurno: String
+  fechaHoraTerminoTurno: String
+}
+
+enum EmpleadoEstatus {
+  ACTIVO
+  INACTIVO
+}

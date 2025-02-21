@@ -1,0 +1,13 @@
+interface Usuario {
+    id: ID!
+    email: String!
+    numeroTelefono: String!
+    password: String!
+    estatusUsuario: UsuarioEstatus!
+}
+
+enum UsuarioEstatus {
+    ACTIVO
+    INACTIVO
+    CANCELADO
+}
