@@ -1,14 +1,23 @@
 type Empleado implements Usuario {
   id: ID!
+  nombre: String!
+  apellido: String!
   email: String!
   numeroTelefono: String!
   password: String!
-  estatusUsuario: UsuarioEstatus!
-  nombre: String!
-  apellido: String!
-  estatusEmpleado: EmpleadoEstatus!
-  fechaHoraInicioTurno: String
-  fechaHoraTerminoTurno: String
+  activo: Boolean
+  createdAt: String!
+  updatedAt: String!
+
+  estacion: Estacion!
+  horaEntrada: String
+  horaSalida: String
+  rol: RolEmpleado
+}
+
+enum RolEmpleado {
+  BARBERO
+  RECEPCIONISTA
 }
 
 type Query {
@@ -23,31 +32,27 @@ type Mutation {
 }
 
 input CreateEmpleadoInput {
-  email: String!
-  numeroTelefono: String!
-  password: String!
-  estatusUsuario: UsuarioEstatus = ACTIVO
   nombre: String!
   apellido: String!
-  estatusEmpleado: EmpleadoEstatus = INACTIVO
-  fechaHoraInicioTurno: String
-  fechaHoraTerminoTurno: String
+  email: String
+  numeroTelefono: String
+  password: String!
+  estacion: UpdateEstacionInput
+  horaEntrada: String
+  horaSalida: String
+  rol: RolEmpleado!
 }
 
 input UpdateEmpleadoInput {
-  id: Int!
+  id: ID!
+  nombre: String
+  apellido: String
   email: String
   numeroTelefono: String
   password: String
-  estatusUsuario: UsuarioEstatus
-  nombre: String
-  apellido: String
-  estatusEmpleado: EmpleadoEstatus
-  fechaHoraInicioTurno: String
-  fechaHoraTerminoTurno: String
-}
-
-enum EmpleadoEstatus {
-  ACTIVO
-  INACTIVO
+  estacion: UpdateEstacionInput
+  horaEntrada: String
+  horaSalida: String
+  rol: RolEmpleado
+  activo: Boolean
 }

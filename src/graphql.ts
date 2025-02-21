@@ -8,87 +8,76 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export enum EmpleadoEstatus {
-    ACTIVO = "ACTIVO",
-    INACTIVO = "INACTIVO"
-}
-
-export enum EventoEstatus {
-    INICIADO = "INICIADO",
-    TERMINADO = "TERMINADO",
-    PAGADO = "PAGADO",
-    CANCELADO = "CANCELADO"
-}
-
-export enum FacturaEstatus {
-    CREADA = "CREADA",
-    PAGADA = "PAGADA",
-    CANCELADA = "CANCELADA"
-}
-
-export enum MetodoDePago {
-    TARJETA = "TARJETA",
-    TRANSFERENCIA = "TRANSFERENCIA",
-    EFECTIVO = "EFECTIVO"
-}
-
-export enum UsuarioEstatus {
-    ACTIVO = "ACTIVO",
-    INACTIVO = "INACTIVO",
-    CANCELADO = "CANCELADO"
+export enum RolEmpleado {
+    BARBERO = "BARBERO",
+    RECEPCIONISTA = "RECEPCIONISTA"
 }
 
 export class CreateEmpleadoInput {
-    email: string;
-    numeroTelefono: string;
-    password: string;
-    estatusUsuario?: Nullable<UsuarioEstatus>;
     nombre: string;
     apellido: string;
-    estatusEmpleado?: Nullable<EmpleadoEstatus>;
-    fechaHoraInicioTurno?: Nullable<string>;
-    fechaHoraTerminoTurno?: Nullable<string>;
+    email?: Nullable<string>;
+    numeroTelefono?: Nullable<string>;
+    password: string;
+    estacion?: Nullable<UpdateEstacionInput>;
+    horaEntrada?: Nullable<string>;
+    horaSalida?: Nullable<string>;
+    rol: RolEmpleado;
 }
 
 export class UpdateEmpleadoInput {
-    id: number;
+    id: string;
+    nombre?: Nullable<string>;
+    apellido?: Nullable<string>;
     email?: Nullable<string>;
     numeroTelefono?: Nullable<string>;
     password?: Nullable<string>;
-    estatusUsuario?: Nullable<UsuarioEstatus>;
-    nombre?: Nullable<string>;
-    apellido?: Nullable<string>;
-    estatusEmpleado?: Nullable<EmpleadoEstatus>;
-    fechaHoraInicioTurno?: Nullable<string>;
-    fechaHoraTerminoTurno?: Nullable<string>;
+    estacion?: Nullable<UpdateEstacionInput>;
+    horaEntrada?: Nullable<string>;
+    horaSalida?: Nullable<string>;
+    rol?: Nullable<RolEmpleado>;
+    activo?: Nullable<boolean>;
 }
 
-export class CrearEventoInput {
-    empleadoID: string;
-    nombreCliente: string;
-    numeroEstacion: number;
-    estatus?: Nullable<EventoEstatus>;
+export class CreateEstacionInput {
+    numero: number;
+    empleado?: Nullable<UpdateEmpleadoInput>;
+    disponible?: Nullable<boolean>;
+}
+
+export class UpdateEstacionInput {
+    id: string;
+    numero?: Nullable<number>;
+    empleado?: Nullable<UpdateEmpleadoInput>;
+    disponible?: Nullable<boolean>;
 }
 
 export interface Usuario {
     id: string;
+    nombre: string;
+    apellido: string;
     email: string;
     numeroTelefono: string;
     password: string;
-    estatusUsuario: UsuarioEstatus;
+    activo?: Nullable<boolean>;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export class Empleado implements Usuario {
     id: string;
+    nombre: string;
+    apellido: string;
     email: string;
     numeroTelefono: string;
     password: string;
-    estatusUsuario: UsuarioEstatus;
-    nombre: string;
-    apellido: string;
-    estatusEmpleado: EmpleadoEstatus;
-    fechaHoraInicioTurno?: Nullable<string>;
-    fechaHoraTerminoTurno?: Nullable<string>;
+    activo?: Nullable<boolean>;
+    createdAt: string;
+    updatedAt: string;
+    estacion: Estacion;
+    horaEntrada?: Nullable<string>;
+    horaSalida?: Nullable<string>;
+    rol?: Nullable<RolEmpleado>;
 }
 
 export abstract class IQuery {
@@ -96,13 +85,9 @@ export abstract class IQuery {
 
     abstract empleado(id: number): Nullable<Empleado> | Promise<Nullable<Empleado>>;
 
-    abstract evento(id: string): Nullable<Evento> | Promise<Nullable<Evento>>;
+    abstract estaciones(): Nullable<Estacion>[] | Promise<Nullable<Estacion>[]>;
 
-    abstract eventos(): Evento[] | Promise<Evento[]>;
-
-    abstract factura(id: string): Nullable<Factura> | Promise<Nullable<Factura>>;
-
-    abstract facturas(): Factura[] | Promise<Factura[]>;
+    abstract estacion(id: number): Nullable<Estacion> | Promise<Nullable<Estacion>>;
 }
 
 export abstract class IMutation {
@@ -111,26 +96,21 @@ export abstract class IMutation {
     abstract updateEmpleado(updateEmpleadoInput: UpdateEmpleadoInput): Empleado | Promise<Empleado>;
 
     abstract removeEmpleado(id: number): Nullable<Empleado> | Promise<Nullable<Empleado>>;
+
+    abstract createEstacion(createEstacionInput: CreateEstacionInput): Estacion | Promise<Estacion>;
+
+    abstract updateEstacion(updateEstacionInput: UpdateEstacionInput): Estacion | Promise<Estacion>;
+
+    abstract removeEstacion(id: number): Nullable<Estacion> | Promise<Nullable<Estacion>>;
 }
 
-export class Evento {
+export class Estacion {
     id: string;
+    numero?: Nullable<number>;
     empleado: Empleado;
-    estatus: EventoEstatus;
-    nombreCliente: string;
-    numeroEstacion: number;
-    factura: Factura;
-    fechaHoraCreacion: string;
-    fechaHoraActualizacion: string;
-}
-
-export class Factura {
-    id: string;
-    folio: number;
-    estatus: FacturaEstatus;
-    metodoDePago: MetodoDePago;
-    fechaHoraCreacion: string;
-    fechaHoraActualizacion: string;
+    disponible?: Nullable<boolean>;
+    createdAt: string;
+    updatedAt: string;
 }
 
 type Nullable<T> = T | null;

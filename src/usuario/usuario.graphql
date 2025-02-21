@@ -1,13 +1,11 @@
 interface Usuario {
     id: ID!
+    nombre: String!
+    apellido: String!
     email: String!
     numeroTelefono: String!
     password: String!
-    estatusUsuario: UsuarioEstatus!
-}
-
-enum UsuarioEstatus {
-    ACTIVO
-    INACTIVO
-    CANCELADO
+    activo: Boolean
+    createdAt: String!
+    updatedAt: String!
 }
