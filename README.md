@@ -25,14 +25,17 @@ git pull
 
 https://docs.docker.com/engine/install/ubuntu/
 
-### 2.1 Install MySQL
+### 2.2 Install MySQL
 
 https://hub.docker.com/r/ubuntu/mysql
 
 ```sh
 docker pull ubuntu/mysql
-docker run -d --name mysql-container -e TZ=UTC -p 30306:3306 -e MYSQL_ROOT_PASSWORD=password ubuntu/mysql:8.0-22.04_beta
+docker run -d --name mysql-container -e TZ=UTC -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password ubuntu/mysql:8.0-22.04_beta
 sudo docker ps -a | grep mysql
+sudo docker inspect mysql-container | grep IPAddress
+sudo mysql -h {IPAddress} -u root -p
+create database monkeys
 ```
 
 ## 3. DBeaver 
@@ -42,6 +45,8 @@ https://dbeaver.io/download/
 ```sh
 sudo dpkg -i dbeaver-nombre-del-archivo.deb
 ```
+
+Look for `connect to database` option
 
 ## 4. Node.js
 
@@ -63,6 +68,10 @@ yarn --version
 
 ## 5. Nest.js
 
+- **Read about GraphQL and Nest**: https://docs.nestjs.com/graphql/quick-start
+- **GraphQL Documentation**: https://graphql.org/learn/schema/
+- **Example of project tutoria**l: https://medium.com/@dharmaraj.jadeja911/leveraging-the-power-of-graphql-and-typeorm-in-a-nest-js-project-3178d7a72e63
+
 ### 5.1 Install project
 
 ```sh
@@ -76,12 +85,6 @@ yarn start
 ```
 or
 ```sh
-yarn start:dev
+yarn start:local
 ```
-http://localhost:3000/
-
-## 6. Postman
-
-### 6.1 Install
-
-https://www.postman.com/downloads/
+Go to http://localhost:3000/graphql
