@@ -1,11 +1,14 @@
+scalar Date
+
 interface Usuario {
-    id: ID!
+    id: ID
+    empleado: Empleado
     nombre: String!
     apellido: String!
-    email: String!
-    numeroTelefono: String!
+    email: String
+    numeroTelefono: String
     password: String!
     activo: Boolean
-    createdAt: String!
-    updatedAt: String!
+    createdAt: Date
+    updatedAt: Date   
 }

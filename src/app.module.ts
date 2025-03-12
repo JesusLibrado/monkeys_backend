@@ -9,6 +9,7 @@ import { EmpleadoModule } from './empleado/empleado.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { EstacionModule } from './estacion/estacion.module';
 
+
 const configModule: Promise<DynamicModule> = ConfigModule.forRoot({
   envFilePath: `.env.${process.env.NODE_ENV}`
 });

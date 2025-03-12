@@ -2,10 +2,42 @@ import { Injectable } from '@nestjs/common';
 import { CreateEmpleadoInput } from './dto/create-empleado.input';
 import { UpdateEmpleadoInput } from './dto/update-empleado.input';
 
+import { prisma } from 'prisma/client';
+import * as dayjs from 'dayjs';
+import { UsuarioService } from 'src/usuario/usuario.service';
+
 @Injectable()
 export class EmpleadoService {
-  create(createEmpleadoInput: CreateEmpleadoInput) {
-    return 'This action adds a new empleado';
+
+  constructor(private usuarioService: UsuarioService) {}
+
+  async create(createEmpleadoInput: CreateEmpleadoInput) {
+    let newUsuario;
+    try{
+      newUsuario = await this.usuarioService.create({...createEmpleadoInput});
+    }
+    catch(e) {
+      console.error(`Error creating Usuario in Empleado ${e}`);
+    }
+    
+    let newEmpleado;
+    
+    try{
+      let estacion = createEmpleadoInput.estacion??{};
+      newEmpleado = prisma.empleado.create({
+        data: {
+          ...createEmpleadoInput,
+          usuarioId: newUsuario.id,
+          estacion: estacion,
+          updatedAt: dayjs().toDate()
+        }
+      });
+      console.log(`Empleado created: ${newEmpleado}`);
+      return newEmpleado;
+    }
+    catch(e) {
+      console.error(`Error creating Empleado ${e}`);
+    }
   }
 
   findAll() {

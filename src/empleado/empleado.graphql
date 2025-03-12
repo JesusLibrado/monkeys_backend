@@ -1,13 +1,16 @@
+scalar Date
+
 type Empleado implements Usuario {
-  id: ID!
+  id: ID
+  empleado: Empleado
   nombre: String!
   apellido: String!
-  email: String!
-  numeroTelefono: String!
+  email: String
+  numeroTelefono: String
   password: String!
   activo: Boolean
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date
+  updatedAt: Date   
 
   estacion: Estacion!
   horaEntrada: String
@@ -34,9 +37,10 @@ type Mutation {
 input CreateEmpleadoInput {
   nombre: String!
   apellido: String!
-  email: String
+  email: String!
   numeroTelefono: String
   password: String!
+  
   estacion: UpdateEstacionInput
   horaEntrada: String
   horaSalida: String

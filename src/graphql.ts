@@ -16,7 +16,7 @@ export enum RolEmpleado {
 export class CreateEmpleadoInput {
     nombre: string;
     apellido: string;
-    email?: Nullable<string>;
+    email: string;
     numeroTelefono?: Nullable<string>;
     password: string;
     estacion?: Nullable<UpdateEstacionInput>;
@@ -53,27 +53,29 @@ export class UpdateEstacionInput {
 }
 
 export interface Usuario {
-    id: string;
+    id?: Nullable<string>;
+    empleado?: Nullable<Empleado>;
     nombre: string;
     apellido: string;
-    email: string;
-    numeroTelefono: string;
+    email?: Nullable<string>;
+    numeroTelefono?: Nullable<string>;
     password: string;
     activo?: Nullable<boolean>;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: Nullable<Date>;
+    updatedAt?: Nullable<Date>;
 }
 
 export class Empleado implements Usuario {
-    id: string;
+    id?: Nullable<string>;
+    empleado?: Nullable<Empleado>;
     nombre: string;
     apellido: string;
-    email: string;
-    numeroTelefono: string;
+    email?: Nullable<string>;
+    numeroTelefono?: Nullable<string>;
     password: string;
     activo?: Nullable<boolean>;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: Nullable<Date>;
+    updatedAt?: Nullable<Date>;
     estacion: Estacion;
     horaEntrada?: Nullable<string>;
     horaSalida?: Nullable<string>;
@@ -109,8 +111,8 @@ export class Estacion {
     numero?: Nullable<number>;
     empleado: Empleado;
     disponible?: Nullable<boolean>;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 type Nullable<T> = T | null;

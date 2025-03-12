@@ -13,9 +13,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Evento {
+  id             Int        @id @default(autoincrement())
+  estatus        EstatusEvento 
+  nombreCliente  String
+  estacion       Estacion   @relation(fields:[estacionId], references: [id])
+  estacionId     Int        @unique
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime
+}
+
+enum EstatusEvento {
+  EN_PROGRESO
+  TERMINADO
+  PAGADO
+  CANCELADO
+}
+
 model Estacion {
   id             Int        @id @default(autoincrement())
   numero         Int        @unique
+  evento         Evento[]
   disponible     Boolean    @default(true)
   empleado       Empleado   @relation(fields: [empleadoId], references: [id])
   empleadoId     Int        @unique
@@ -50,5 +68,5 @@ model Usuario {
   password       String
   activo         Boolean    @default(true)
   createdAt      DateTime   @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime   
 }

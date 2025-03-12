@@ -1,10 +1,12 @@
+scalar Date
+
 type Estacion {
   id: ID!
   numero: Int
   empleado: Empleado!
   disponible: Boolean
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 input CreateEstacionInput {
