@@ -17,7 +17,7 @@ export class UsuarioService {
     }
     let newUsuario;
     try{
-      newUsuario =  await prisma.usuario.create({
+      newUsuario = await prisma.usuario.create({
         data: {
           ...usuarioInput,
           updatedAt: dayjs().toDate()
