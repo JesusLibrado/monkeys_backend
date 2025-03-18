@@ -43,7 +43,13 @@ export class UsuarioService {
     return `This action updates a #${id} usuario`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(usuarioDeleteArgs: Prisma.UsuarioDeleteArgs) {
+    try{
+      let usuarioDeleted = await prisma.usuario.delete(usuarioDeleteArgs);
+      console.log(`Usuario deleted: ${usuarioDeleted}`);
+      return usuarioDeleted;
+    } catch (e) {
+      console.error(`Error deleting Usuario ${e}`);
+    }
   }
 }

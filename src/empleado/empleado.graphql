@@ -1,21 +1,14 @@
 scalar Date
 
-type Empleado implements Usuario {
+type Empleado {
   id: ID
-  empleado: Empleado
-  nombre: String!
-  apellido: String!
-  email: String
-  numeroTelefono: String
-  password: String!
-  activo: Boolean
-  createdAt: Date
-  updatedAt: Date   
-
-  estacion: Estacion!
+  usuario: Usuario
+  estacion: Estacion
   horaEntrada: String
   horaSalida: String
   rol: RolEmpleado
+  createdAt: Date
+  updatedAt: Date  
 }
 
 enum RolEmpleado {
@@ -35,12 +28,7 @@ type Mutation {
 }
 
 input CreateEmpleadoInput {
-  nombre: String!
-  apellido: String!
-  email: String!
-  numeroTelefono: String
-  password: String!
-  
+  usuario: CreateUsuarioInput
   estacion: UpdateEstacionInput
   horaEntrada: String
   horaSalida: String
@@ -49,14 +37,9 @@ input CreateEmpleadoInput {
 
 input UpdateEmpleadoInput {
   id: ID!
-  nombre: String
-  apellido: String
-  email: String
-  numeroTelefono: String
-  password: String
+  usuario: UpdateUsuarioInput
   estacion: UpdateEstacionInput
   horaEntrada: String
   horaSalida: String
   rol: RolEmpleado
-  activo: Boolean
 }

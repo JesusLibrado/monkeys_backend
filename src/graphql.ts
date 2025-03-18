@@ -14,11 +14,7 @@ export enum RolEmpleado {
 }
 
 export class CreateEmpleadoInput {
-    nombre: string;
-    apellido: string;
-    email: string;
-    numeroTelefono?: Nullable<string>;
-    password: string;
+    usuario?: Nullable<CreateUsuarioInput>;
     estacion?: Nullable<UpdateEstacionInput>;
     horaEntrada?: Nullable<string>;
     horaSalida?: Nullable<string>;
@@ -27,16 +23,11 @@ export class CreateEmpleadoInput {
 
 export class UpdateEmpleadoInput {
     id: string;
-    nombre?: Nullable<string>;
-    apellido?: Nullable<string>;
-    email?: Nullable<string>;
-    numeroTelefono?: Nullable<string>;
-    password?: Nullable<string>;
+    usuario?: Nullable<UpdateUsuarioInput>;
     estacion?: Nullable<UpdateEstacionInput>;
     horaEntrada?: Nullable<string>;
     horaSalida?: Nullable<string>;
     rol?: Nullable<RolEmpleado>;
-    activo?: Nullable<boolean>;
 }
 
 export class CreateEstacionInput {
@@ -52,34 +43,33 @@ export class UpdateEstacionInput {
     disponible?: Nullable<boolean>;
 }
 
-export interface Usuario {
-    id?: Nullable<string>;
-    empleado?: Nullable<Empleado>;
+export class CreateUsuarioInput {
     nombre: string;
     apellido: string;
-    email?: Nullable<string>;
+    email: string;
     numeroTelefono?: Nullable<string>;
     password: string;
-    activo?: Nullable<boolean>;
-    createdAt?: Nullable<Date>;
-    updatedAt?: Nullable<Date>;
 }
 
-export class Empleado implements Usuario {
-    id?: Nullable<string>;
-    empleado?: Nullable<Empleado>;
-    nombre: string;
-    apellido: string;
+export class UpdateUsuarioInput {
+    id: string;
+    nombre?: Nullable<string>;
+    apellido?: Nullable<string>;
     email?: Nullable<string>;
     numeroTelefono?: Nullable<string>;
-    password: string;
-    activo?: Nullable<boolean>;
-    createdAt?: Nullable<Date>;
-    updatedAt?: Nullable<Date>;
-    estacion: Estacion;
+    password?: Nullable<string>;
+    acvtivo?: Nullable<boolean>;
+}
+
+export class Empleado {
+    id?: Nullable<string>;
+    usuario?: Nullable<Usuario>;
+    estacion?: Nullable<Estacion>;
     horaEntrada?: Nullable<string>;
     horaSalida?: Nullable<string>;
     rol?: Nullable<RolEmpleado>;
+    createdAt?: Nullable<Date>;
+    updatedAt?: Nullable<Date>;
 }
 
 export abstract class IQuery {
@@ -90,6 +80,10 @@ export abstract class IQuery {
     abstract estaciones(): Nullable<Estacion>[] | Promise<Nullable<Estacion>[]>;
 
     abstract estacion(id: number): Nullable<Estacion> | Promise<Nullable<Estacion>>;
+
+    abstract usuarios(): Nullable<Usuario>[] | Promise<Nullable<Usuario>[]>;
+
+    abstract usuario(id: number): Nullable<Usuario> | Promise<Nullable<Usuario>>;
 }
 
 export abstract class IMutation {
@@ -113,6 +107,19 @@ export class Estacion {
     disponible?: Nullable<boolean>;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export class Usuario {
+    id?: Nullable<string>;
+    empleado?: Nullable<Empleado>;
+    nombre: string;
+    apellido: string;
+    email?: Nullable<string>;
+    numeroTelefono?: Nullable<string>;
+    password: string;
+    activo?: Nullable<boolean>;
+    createdAt?: Nullable<Date>;
+    updatedAt?: Nullable<Date>;
 }
 
 type Nullable<T> = T | null;

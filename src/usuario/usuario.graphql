@@ -1,6 +1,6 @@
 scalar Date
 
-interface Usuario {
+type Usuario {
     id: ID
     empleado: Empleado
     nombre: String!
@@ -11,4 +11,27 @@ interface Usuario {
     activo: Boolean
     createdAt: Date
     updatedAt: Date   
+}
+
+input CreateUsuarioInput {
+    nombre: String!
+    apellido: String!
+    email: String!
+    numeroTelefono: String
+    password: String!
+}
+
+input UpdateUsuarioInput {
+    id: ID!
+    nombre: String
+    apellido: String
+    email: String
+    numeroTelefono: String
+    password: String
+    acvtivo: Boolean
+}
+
+type Query {
+  usuarios: [Usuario]!
+  usuario(id: Int!): Usuario
 }
