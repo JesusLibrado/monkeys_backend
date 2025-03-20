@@ -1,27 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEmpleadoInput } from './dto/create-empleado.input';
 import { UpdateEmpleadoInput } from './dto/update-empleado.input';
+import { Empleado } from './entities/empleado.entity';
+import { CreateUsuarioInput } from 'src/usuario/dto/create-usuario.input';
 
 import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
-import { UsuarioService } from 'src/usuario/usuario.service';
-import { Empleado } from './entities/empleado.entity';
-import { CreateUsuarioInput } from 'src/usuario/dto/create-usuario.input';
-import { Usuario } from 'src/usuario/entities/usuario.entity';
+import { plainToClass } from 'class-transformer';
+
 
 @Injectable()
 export class EmpleadoService {
 
-  constructor(private usuarioService: UsuarioService) {}
+  constructor() {}
 
   async create(createEmpleadoInput: CreateEmpleadoInput): Promise<Empleado>{
-  
-    let newEmpleado;
-    let usuarioInput: CreateUsuarioInput = createEmpleadoInput.usuario;
-
     try{
+      let usuarioInput: CreateUsuarioInput = createEmpleadoInput.usuario;
       let estacion = createEmpleadoInput.estacion??{};
-      newEmpleado = await prisma.empleado.create({
+      let createEmpleadoPayload = await prisma.empleado.create({
         data: {
           horaEntrada: createEmpleadoInput.horaEntrada,
           horaSalida: createEmpleadoInput.horaSalida,
@@ -42,10 +39,7 @@ export class EmpleadoService {
         },
         include: { usuario: true, estacion: true }
       });
-      console.log(`Empleado created: ${JSON.stringify(newEmpleado)}`);
-      let newUsuario = new Usuario(newEmpleado.usuario);
-      newEmpleado.usuario = newUsuario;
-      return new Empleado(newEmpleado);
+      return plainToClass(Empleado, createEmpleadoPayload);
     }
     catch(e) {
       console.error(`Error creating Empleado ${e}`);
@@ -65,29 +59,28 @@ export class EmpleadoService {
     return `This action updates a #${id} empleado`;
   }
 
-  async remove(usuarioId: number): Promise<Empleado> {
-    let deletedUsuario;
-    try{
-      let deleteUsuario = await this.usuarioService.remove({
-        where: {
-          id: usuarioId
-        }
+  async remove(empleadoId: number): Promise<Empleado> {
+    try {
+      return await prisma.$transaction(async (tx)=> {
+        const deletedEmpleado = await tx.empleado.delete({
+          where: {
+            id: empleadoId
+          },
+          include: {
+            usuario: true,
+            estacion: true
+          }
+        });
+        await tx.usuario.delete({
+          where: {
+            id: deletedEmpleado?.usuarioId
+          }
+        });
+        return plainToClass(Empleado, deletedEmpleado);
       });
-    } catch (e) {
-      console.error(`Error deleting Usuario ${e}`);
-    }
-    
-    try{
-      let deletedEmpleado = await prisma.empleado.delete({
-        where: {
-          usuarioId: usuarioId
-        }
-      });
-      console.log(`Empleado deleted: ${deletedEmpleado}`);
-      return new Empleado(deletedEmpleado);
-    } catch (e) {
+    }catch(e) {
       console.error(`Error deleting Empleado ${e}`);
-      throw new Error("Error creating entity");
+      throw new Error("Error deleting entity");
     }
   }
 }

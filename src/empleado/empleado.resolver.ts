@@ -9,7 +9,7 @@ export class EmpleadoResolver {
   constructor(private readonly empleadoService: EmpleadoService) {}
 
   @Mutation('createEmpleado')
-  create(@Args('createEmpleadoInput') createEmpleadoInput: CreateEmpleadoInput): Promise<Empleado> {
+  create(@Args('createEmpleadoInput') createEmpleadoInput: CreateEmpleadoInput) {
     return this.empleadoService.create(createEmpleadoInput);
   }
 

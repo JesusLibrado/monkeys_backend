@@ -29,6 +29,7 @@
     "@nestjs/graphql": "^13.0.3",
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.4.1",
+    "class-transformer": "^0.5.1",
     "dayjs": "^1.11.13",
     "graphql": "^16.10.0",
     "mysql2": "^3.12.0",
