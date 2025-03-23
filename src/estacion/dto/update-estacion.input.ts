@@ -1,6 +1,7 @@
-import { CreateEstacionInput } from './create-estacion.input';
-import { PartialType } from '@nestjs/mapped-types';
+import { UpdateEmpleadoInput } from 'src/empleado/dto/update-empleado.input';
 
-export class UpdateEstacionInput extends PartialType(CreateEstacionInput) {
+export class UpdateEstacionInput {
   id: number;
+  empleado?: UpdateEmpleadoInput;
+  disponible: boolean;
 }

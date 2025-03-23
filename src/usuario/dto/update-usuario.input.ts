@@ -3,4 +3,5 @@ import { PartialType } from '@nestjs/mapped-types';
 
 export class UpdateUsuarioInput extends PartialType(CreateUsuarioInput) {
   id: number;
+  activo: Boolean;
 }

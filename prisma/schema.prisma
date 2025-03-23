@@ -35,8 +35,8 @@ model Estacion {
   numero         Int        @unique
   evento         Evento[]
   disponible     Boolean    @default(true)
-  empleado       Empleado   @relation(fields: [empleadoId], references: [id])
-  empleadoId     Int        @unique
+  empleado       Empleado?  @relation(fields: [empleadoId], references: [id])
+  empleadoId     Int?       @unique
   createdAt      DateTime   @default(now())
   updatedAt      DateTime
 }
@@ -65,7 +65,7 @@ model Usuario {
   apellido       String
   email          String     @unique
   numeroTelefono String?    @unique
-  password       String
+  password       String?
   activo         Boolean    @default(true)
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   

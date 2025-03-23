@@ -22,7 +22,7 @@ export class CreateEmpleadoInput {
 }
 
 export class UpdateEmpleadoInput {
-    id: string;
+    id: number;
     usuario?: Nullable<UpdateUsuarioInput>;
     estacion?: Nullable<UpdateEstacionInput>;
     horaEntrada?: Nullable<string>;
@@ -33,12 +33,10 @@ export class UpdateEmpleadoInput {
 export class CreateEstacionInput {
     numero: number;
     empleado?: Nullable<UpdateEmpleadoInput>;
-    disponible?: Nullable<boolean>;
 }
 
 export class UpdateEstacionInput {
-    id: string;
-    numero?: Nullable<number>;
+    id: number;
     empleado?: Nullable<UpdateEmpleadoInput>;
     disponible?: Nullable<boolean>;
 }
@@ -48,11 +46,11 @@ export class CreateUsuarioInput {
     apellido: string;
     email: string;
     numeroTelefono?: Nullable<string>;
-    password: string;
+    password?: Nullable<string>;
 }
 
 export class UpdateUsuarioInput {
-    id: string;
+    id: number;
     nombre?: Nullable<string>;
     apellido?: Nullable<string>;
     email?: Nullable<string>;
@@ -98,12 +96,14 @@ export abstract class IMutation {
     abstract updateEstacion(updateEstacionInput: UpdateEstacionInput): Estacion | Promise<Estacion>;
 
     abstract removeEstacion(id: number): Nullable<Estacion> | Promise<Nullable<Estacion>>;
+
+    abstract updateUsuario(usuario?: Nullable<UpdateUsuarioInput>): Usuario | Promise<Usuario>;
 }
 
 export class Estacion {
     id: string;
     numero?: Nullable<number>;
-    empleado: Empleado;
+    empleado?: Nullable<Empleado>;
     disponible?: Nullable<boolean>;
     createdAt: Date;
     updatedAt: Date;
@@ -116,7 +116,7 @@ export class Usuario {
     apellido: string;
     email?: Nullable<string>;
     numeroTelefono?: Nullable<string>;
-    password: string;
+    password?: Nullable<string>;
     activo?: Nullable<boolean>;
     createdAt?: Nullable<Date>;
     updatedAt?: Nullable<Date>;

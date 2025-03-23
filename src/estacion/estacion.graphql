@@ -3,7 +3,7 @@ scalar Date
 type Estacion {
   id: ID!
   numero: Int
-  empleado: Empleado!
+  empleado: Empleado
   disponible: Boolean
   createdAt: Date!
   updatedAt: Date!
@@ -12,12 +12,10 @@ type Estacion {
 input CreateEstacionInput {
   numero: Int!
   empleado: UpdateEmpleadoInput
-  disponible: Boolean = true
 }
 
 input UpdateEstacionInput {
-  id: ID!
-  numero: Int
+  id: Int!
   empleado: UpdateEmpleadoInput
   disponible: Boolean
 }

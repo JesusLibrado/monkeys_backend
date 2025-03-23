@@ -7,7 +7,7 @@ type Usuario {
     apellido: String!
     email: String
     numeroTelefono: String
-    password: String!
+    password: String
     activo: Boolean
     createdAt: Date
     updatedAt: Date   
@@ -18,11 +18,11 @@ input CreateUsuarioInput {
     apellido: String!
     email: String!
     numeroTelefono: String
-    password: String!
+    password: String
 }
 
 input UpdateUsuarioInput {
-    id: ID!
+    id: Int!
     nombre: String
     apellido: String
     email: String
@@ -34,4 +34,8 @@ input UpdateUsuarioInput {
 type Query {
   usuarios: [Usuario]!
   usuario(id: Int!): Usuario
+}
+
+type Mutation {
+    updateUsuario(usuario: UpdateUsuarioInput): Usuario!
 }

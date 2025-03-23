@@ -36,7 +36,7 @@ input CreateEmpleadoInput {
 }
 
 input UpdateEmpleadoInput {
-  id: ID!
+  id: Int!
   usuario: UpdateUsuarioInput
   estacion: UpdateEstacionInput
   horaEntrada: String

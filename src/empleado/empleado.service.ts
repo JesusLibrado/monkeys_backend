@@ -16,7 +16,8 @@ export class EmpleadoService {
 
   async create(createEmpleadoInput: CreateEmpleadoInput): Promise<Empleado>{
     try{
-      let usuarioInput: CreateUsuarioInput = createEmpleadoInput.usuario;
+      const usuarioInput: CreateUsuarioInput = createEmpleadoInput.usuario;
+      // add estacion connect
       let estacion = createEmpleadoInput.estacion??{};
       let createEmpleadoPayload = await prisma.empleado.create({
         data: {
