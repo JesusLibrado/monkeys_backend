@@ -13,7 +13,7 @@ export class EmpleadoResolver {
     return this.empleadoService.create(createEmpleadoInput);
   }
 
-  @Query('empleado')
+  @Query('empleados')
   findAll() {
     return this.empleadoService.findAll();
   }

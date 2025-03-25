@@ -48,12 +48,19 @@ export class EmpleadoService {
     }
   }
 
-  findAll() {
-    return `This action returns all empleado`;
+  async findAll() {
+    const empleados = await prisma.empleado.findMany({include: { usuario: true, estacion: true }});
+    return empleados;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} empleado`;
+  async findOne(id: number) {
+    const empleado = await prisma.empleado.findUnique({
+      where: {
+        id: id
+      },
+      include: { usuario: true, estacion: true }
+    });
+    return plainToClass(Empleado, empleado);
   }
 
   update(id: number, updateEmpleadoInput: UpdateEmpleadoInput) {
