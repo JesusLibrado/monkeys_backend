@@ -13,13 +13,106 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Pago {
+  id                   Int          @id @default(autoincrement())
+  factura              Factura      @relation(fields:[facturaId], references: [id])
+  facturaId            Int          @unique
+  comision             Decimal?
+  montoRecibido        Decimal?
+  montoDevuelto        Decimal?
+  metodoPago           MetodoDePago
+  estatus              EstatusPago
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime  
+}
+
+enum MetodoDePago {
+  EFECTIVO
+  TARJETA_CREDITO
+  TARJETA_DEBITO
+}
+
+enum EstatusPago {
+  REALIZADO
+  PENDIENTE
+}
+
+model Factura {
+  id                   Int                @id @default(autoincrement())
+  evento               Evento?
+  folio                Int                @unique
+  conceptos            ConceptoFactura[]
+  total                Decimal
+  descuento            Decimal?
+  estatus              EstatusFactura
+  pago                 Pago?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime
+}
+
+enum EstatusFactura {
+  CREADA
+  PAGADA
+  CANCELADA
+}
+
+model ConceptoFactura {
+  id                    Int        @id @default(autoincrement())
+  factura               Factura    @relation(fields:[facturaId], references: [id])
+  facturaId             Int        @unique
+  cantidad              Int
+  producto              Producto?  @relation(fields:[productoId], references: [id])
+  productoId            Int        @unique
+  servicio              Servicio?  @relation(fields:[servicioId], references: [id])
+  servicioId            Int        @unique
+  total                 Decimal
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime
+}
+
+model Servicio {
+  id                    Int                   @id @default(autoincrement())
+  nombre                String
+  categoria             CategoriaServicio
+  precio                Decimal
+  comisionBarbero       Decimal
+  ganancia              Decimal
+  facturas              ConceptoFactura[]
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime
+}
+
+enum CategoriaServicio {
+  BARBA
+  CORTE
+  FACIAL
+  GRECA
+  OTRO
+}
+
+model Producto {
+  id                    Int                 @id @default(autoincrement())
+  nombre                String
+  marca                 String
+  cantidadDisponible    Int
+  comisionEmpleado      Decimal
+  precioProveedor       Decimal
+  precioPublico         Decimal
+  ganancia              Decimal
+  facturas              ConceptoFactura[]
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime
+}
+
 model Evento {
-  id             Int        @id @default(autoincrement())
+  id             Int              @id @default(autoincrement())
+  factura        Factura          @relation(fields:[facturaId], references: [id])
+  facturaId      Int              @unique
   estatus        EstatusEvento 
   nombreCliente  String
-  estacion       Estacion   @relation(fields:[estacionId], references: [id])
-  estacionId     Int        @unique
-  createdAt      DateTime   @default(now())
+  estacion       Estacion         @relation(fields:[estacionId], references: [id])
+  estacionId     Int              @unique
+  createdAt      DateTime         @default(now())
   updatedAt      DateTime
 }
 
@@ -43,6 +136,8 @@ model Estacion {
 
 model Empleado {
   id             Int        @id @default(autoincrement())
+  nombre         String
+  apellido       String
   usuario        Usuario    @relation(fields: [usuarioId], references: [id])
   usuarioId      Int        @unique
   estacion       Estacion?
@@ -61,8 +156,7 @@ enum RolEmpleado {
 model Usuario {
   id             Int        @id @default(autoincrement())
   empleado       Empleado?
-  nombre         String
-  apellido       String
+  // cliente
   email          String     @unique
   numeroTelefono String?    @unique
   password       String?

@@ -21,6 +21,8 @@ export class EmpleadoService {
       let estacion = createEmpleadoInput.estacion??{};
       let createEmpleadoPayload = await prisma.empleado.create({
         data: {
+          nombre: createEmpleadoInput.nombre,
+          apellido: createEmpleadoInput.apellido,
           horaEntrada: createEmpleadoInput.horaEntrada,
           horaSalida: createEmpleadoInput.horaSalida,
           rol: createEmpleadoInput.rol,
@@ -28,8 +30,6 @@ export class EmpleadoService {
           updatedAt: dayjs().toDate(),
           usuario: {
             create: {
-              nombre: usuarioInput.nombre,
-              apellido: usuarioInput.apellido,
               email: usuarioInput.email,
               numeroTelefono: usuarioInput.numeroTelefono,
               // encrypt

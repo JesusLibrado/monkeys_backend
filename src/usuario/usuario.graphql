@@ -3,8 +3,6 @@ scalar Date
 type Usuario {
     id: ID
     empleado: Empleado
-    nombre: String!
-    apellido: String!
     email: String
     numeroTelefono: String
     password: String
@@ -15,7 +13,6 @@ type Usuario {
 
 input CreateUsuarioInput {
     nombre: String!
-    apellido: String!
     email: String!
     numeroTelefono: String
     password: String
@@ -23,8 +20,6 @@ input CreateUsuarioInput {
 
 input UpdateUsuarioInput {
     id: Int!
-    nombre: String
-    apellido: String
     email: String
     numeroTelefono: String
     password: String

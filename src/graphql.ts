@@ -14,6 +14,8 @@ export enum RolEmpleado {
 }
 
 export class CreateEmpleadoInput {
+    nombre: string;
+    apellido: string;
     usuario?: Nullable<CreateUsuarioInput>;
     estacion?: Nullable<UpdateEstacionInput>;
     horaEntrada?: Nullable<string>;
@@ -23,6 +25,8 @@ export class CreateEmpleadoInput {
 
 export class UpdateEmpleadoInput {
     id: number;
+    nombre?: Nullable<string>;
+    apellido?: Nullable<string>;
     usuario?: Nullable<UpdateUsuarioInput>;
     estacion?: Nullable<UpdateEstacionInput>;
     horaEntrada?: Nullable<string>;
@@ -43,7 +47,6 @@ export class UpdateEstacionInput {
 
 export class CreateUsuarioInput {
     nombre: string;
-    apellido: string;
     email: string;
     numeroTelefono?: Nullable<string>;
     password?: Nullable<string>;
@@ -51,8 +54,6 @@ export class CreateUsuarioInput {
 
 export class UpdateUsuarioInput {
     id: number;
-    nombre?: Nullable<string>;
-    apellido?: Nullable<string>;
     email?: Nullable<string>;
     numeroTelefono?: Nullable<string>;
     password?: Nullable<string>;
@@ -61,6 +62,8 @@ export class UpdateUsuarioInput {
 
 export class Empleado {
     id?: Nullable<string>;
+    nombre: string;
+    apellido: string;
     usuario?: Nullable<Usuario>;
     estacion?: Nullable<Estacion>;
     horaEntrada?: Nullable<string>;
@@ -112,8 +115,6 @@ export class Estacion {
 export class Usuario {
     id?: Nullable<string>;
     empleado?: Nullable<Empleado>;
-    nombre: string;
-    apellido: string;
     email?: Nullable<string>;
     numeroTelefono?: Nullable<string>;
     password?: Nullable<string>;
