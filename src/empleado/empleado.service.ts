@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { CreateEmpleadoInput } from './dto/create-empleado.input';
 import { UpdateEmpleadoInput } from './dto/update-empleado.input';
 import { Empleado } from './entities/empleado.entity';
@@ -49,11 +49,17 @@ export class EmpleadoService {
   }
 
   async findAll() {
-    const empleados = await prisma.empleado.findMany({include: { usuario: true, estacion: true }});
+    try {
+      const empleados = await prisma.empleado.findMany({include: { usuario: true, estacion: true }});
     return empleados;
+    } catch (e) {
+      console.error(`Error find Empleados`);
+      throw new Error("Error find enetities");
+    }
   }
 
   async findOne(id: number) {
+   try {
     const empleado = await prisma.empleado.findUnique({
       where: {
         id: id
@@ -61,6 +67,10 @@ export class EmpleadoService {
       include: { usuario: true, estacion: true }
     });
     return plainToClass(Empleado, empleado);
+   } catch (e) {
+      console.error(`Error find Empleado`);
+      throw new Error("Error find entity");
+   }
   }
 
   update(id: number, updateEmpleadoInput: UpdateEmpleadoInput) {

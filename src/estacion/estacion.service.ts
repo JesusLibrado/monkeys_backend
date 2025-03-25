@@ -28,12 +28,29 @@ export class EstacionService {
     }
   }
 
-  findAll() {
-    return `This action returns all estacion`;
+  async findAll() {
+    try {
+      const estaciones = await prisma.estacion.findMany({include: {empleado: true }});
+    return estaciones;
+    } catch (e) {
+      console.error(`Error find Estaciones`);
+      throw new Error("Error find enetities");
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} estacion`;
+  async findOne(id: number) {
+    try {
+        const estacion = await prisma.estacion.findUnique({
+          where: {
+            id: id
+          },
+          include: {empleado: true }
+        });
+        return plainToClass(Estacion, estacion);
+       } catch (e) {
+          console.error(`Error find Estacion`);
+          throw new Error("Error find entity");
+       }
   }
 
   async update(id: number, updateEstacionInput: UpdateEstacionInput) {
