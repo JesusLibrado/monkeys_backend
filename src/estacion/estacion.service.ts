@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEstacionInput } from './dto/create-estacion.input';
-import { UpdateEstacionInput } from './dto/update-estacion.input';
-import { Estacion } from './entities/estacion.entity';
+import {
+  CreateEstacionInput,
+  UpdateEstacionInput,
+  Estacion
+} from 'src/graphql';
 
 import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
@@ -9,7 +11,7 @@ import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class EstacionService {
-  
+
   async create(createEstacionInput: CreateEstacionInput): Promise<Estacion> {
     try{
       const createEstacionPayload = await prisma.estacion.create({
@@ -44,33 +46,28 @@ export class EstacionService {
         disconnect: true
       }:undefined;
     } else {
+      // might update Empleado related to this Estacion
       empleadoInput = {
         connect: {id: updateEstacionInput.empleado?.id}
       }
     }
     
     try{
-      const createEstacionPayload = await prisma.estacion.update({
+      const updateEstacionPayload = await prisma.estacion.update({
         where: {
           id: id
         },
         data: {
-          disponible: updateEstacionInput.disponible,
+          disponible: updateEstacionInput.disponible??undefined,
           empleado: empleadoInput
         },
-        include: {
-          empleado: {
-            include: {
-              usuario: true
-            }
-          }
-        }
+        include: {empleado: true}
       });
 
-      return plainToClass(Estacion, createEstacionPayload);
+      return plainToClass(Estacion, updateEstacionPayload);
     } catch(e) {
-      console.error(`Error creating Estacion ${e}`);
-      throw new Error("Error creating entity");
+      console.error(`Error updating Estacion ${e}`);
+      throw new Error("Error updating entity");
     }
   }
 

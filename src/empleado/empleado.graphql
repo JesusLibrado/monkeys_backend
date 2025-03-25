@@ -32,7 +32,7 @@ type Mutation {
 input CreateEmpleadoInput {
   nombre: String!
   apellido: String!
-  usuario: CreateUsuarioInput
+  usuario: CreateUsuarioInput!
   estacion: UpdateEstacionInput
   horaEntrada: String
   horaSalida: String

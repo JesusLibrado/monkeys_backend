@@ -1,7 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { EstacionService } from './estacion.service';
-import { CreateEstacionInput } from './dto/create-estacion.input';
-import { UpdateEstacionInput } from './dto/update-estacion.input';
+import { 
+  CreateEstacionInput, 
+  UpdateEstacionInput 
+} from 'src/graphql';
 
 @Resolver('Estacion')
 export class EstacionResolver {

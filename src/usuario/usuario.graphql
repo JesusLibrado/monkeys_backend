@@ -12,7 +12,6 @@ type Usuario {
 }
 
 input CreateUsuarioInput {
-    nombre: String!
     email: String!
     numeroTelefono: String
     password: String

@@ -1,8 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { EmpleadoService } from './empleado.service';
-import { CreateEmpleadoInput } from './dto/create-empleado.input';
-import { UpdateEmpleadoInput } from './dto/update-empleado.input';
-import { Empleado } from './entities/empleado.entity';
+import { 
+  CreateEmpleadoInput,
+  UpdateEmpleadoInput
+} from 'src/graphql';
 
 @Resolver('Empleado')
 export class EmpleadoResolver {

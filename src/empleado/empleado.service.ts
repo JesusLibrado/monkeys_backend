@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEmpleadoInput } from './dto/create-empleado.input';
-import { UpdateEmpleadoInput } from './dto/update-empleado.input';
-import { Empleado } from './entities/empleado.entity';
-import { CreateUsuarioInput } from 'src/usuario/dto/create-usuario.input';
+import { 
+  CreateEmpleadoInput, 
+  CreateUsuarioInput, 
+  UpdateEmpleadoInput, 
+  Empleado
+} from 'src/graphql';
 
 import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
@@ -56,8 +58,53 @@ export class EmpleadoService {
     return `This action returns a #${id} empleado`;
   }
 
-  update(id: number, updateEmpleadoInput: UpdateEmpleadoInput) {
-    return `This action updates a #${id} empleado`;
+  async update(id: number, updateEmpleadoInput: UpdateEmpleadoInput) {
+    let estacionInput, usuarioInput;
+
+    if(!updateEmpleadoInput.estacion) {
+      estacionInput = updateEmpleadoInput.estacion===null?{
+        disconnect: true
+      }:undefined;
+    } else {
+      // might update Estacion number related to this Empleado
+      estacionInput = {
+        connect: {id: updateEmpleadoInput.estacion?.id}
+      }
+    }
+
+    if(!updateEmpleadoInput.usuario) {
+      usuarioInput = updateEmpleadoInput.usuario===null?{
+        disconnect: true
+      }:undefined;
+    } else {
+      // might update Usuario from Empleado input
+      // Usuario.id can't be changed (conceptually). Ignore Id input
+      usuarioInput = {
+        update: {...updateEmpleadoInput.usuario, id: undefined}
+      }
+    }
+
+    try {
+      const updateEmpleadoPayload = await prisma.empleado.update({
+        where: {
+          id: id
+        },
+        data: {
+          nombre: updateEmpleadoInput.nombre??undefined,
+          apellido: updateEmpleadoInput.apellido??undefined,
+          horaEntrada: updateEmpleadoInput.horaEntrada??undefined,
+          horaSalida: updateEmpleadoInput.horaSalida??undefined,
+          rol: updateEmpleadoInput.rol??undefined,
+          estacion: estacionInput,
+          usuario: usuarioInput
+        },
+        include: {usuario: true, estacion: true}
+      });
+      return plainToClass(Empleado, updateEmpleadoPayload);
+    } catch(e) {
+      console.error(`Error updating Empleado ${e}`);
+      throw new Error("Error updating entity");
+    }
   }
 
   async remove(empleadoId: number): Promise<Empleado> {
