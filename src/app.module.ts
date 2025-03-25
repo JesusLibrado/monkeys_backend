@@ -8,6 +8,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
 import { EmpleadoModule } from './empleado/empleado.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { EstacionModule } from './estacion/estacion.module';
+import { EventoModule } from './evento/evento.module';
 
 
 const configModule: Promise<DynamicModule> = ConfigModule.forRoot({
@@ -31,7 +32,8 @@ const graphQLModule: DynamicModule = GraphQLModule.forRoot<ApolloDriverConfig>({
     graphQLModule,
     EmpleadoModule,
     UsuarioModule,
-    EstacionModule
+    EstacionModule,
+    EventoModule
   ],
   controllers: [],
   providers: [],

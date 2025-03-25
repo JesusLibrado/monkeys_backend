@@ -13,6 +13,13 @@ export enum RolEmpleado {
     RECEPCIONISTA = "RECEPCIONISTA"
 }
 
+export enum EstatusEvento {
+    EN_PROGRESO = "EN_PROGRESO",
+    TERMINADO = "TERMINADO",
+    PAGADO = "PAGADO",
+    CANCELADO = "CANCELADO"
+}
+
 export class CreateEmpleadoInput {
     nombre: string;
     apellido: string;
@@ -43,6 +50,18 @@ export class UpdateEstacionInput {
     id: number;
     empleado?: Nullable<UpdateEmpleadoInput>;
     disponible?: Nullable<boolean>;
+}
+
+export class CreateEventoInput {
+    nombreCliente?: Nullable<string>;
+    estacion?: Nullable<UpdateEstacionInput>;
+}
+
+export class UpdateEventoInput {
+    id: number;
+    nombreCliente?: Nullable<string>;
+    estacion?: Nullable<UpdateEstacionInput>;
+    estatus?: Nullable<EstatusEvento>;
 }
 
 export class CreateUsuarioInput {
@@ -81,6 +100,10 @@ export abstract class IQuery {
 
     abstract estacion(id: number): Nullable<Estacion> | Promise<Nullable<Estacion>>;
 
+    abstract eventos(): Nullable<Evento>[] | Promise<Nullable<Evento>[]>;
+
+    abstract evento(id: number): Nullable<Evento> | Promise<Nullable<Evento>>;
+
     abstract usuarios(): Nullable<Usuario>[] | Promise<Nullable<Usuario>[]>;
 
     abstract usuario(id: number): Nullable<Usuario> | Promise<Nullable<Usuario>>;
@@ -99,6 +122,12 @@ export abstract class IMutation {
 
     abstract removeEstacion(id: number): Nullable<Estacion> | Promise<Nullable<Estacion>>;
 
+    abstract createEvento(createEventoInput: CreateEventoInput): Evento | Promise<Evento>;
+
+    abstract updateEvento(updateEventoInput: UpdateEventoInput): Evento | Promise<Evento>;
+
+    abstract removeEvento(id: number): Nullable<Evento> | Promise<Nullable<Evento>>;
+
     abstract updateUsuario(usuario?: Nullable<UpdateUsuarioInput>): Usuario | Promise<Usuario>;
 }
 
@@ -107,6 +136,16 @@ export class Estacion {
     numero?: Nullable<number>;
     empleado?: Nullable<Empleado>;
     disponible?: Nullable<boolean>;
+    eventos: Evento[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export class Evento {
+    id: string;
+    nombreCliente?: Nullable<string>;
+    estacion: Estacion;
+    estatus?: Nullable<EstatusEvento>;
     createdAt: Date;
     updatedAt: Date;
 }

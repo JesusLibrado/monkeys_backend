@@ -126,7 +126,7 @@ enum EstatusEvento {
 model Estacion {
   id             Int        @id @default(autoincrement())
   numero         Int        @unique
-  evento         Evento[]
+  eventos        Evento[]
   disponible     Boolean    @default(true)
   empleado       Empleado?  @relation(fields: [empleadoId], references: [id])
   empleadoId     Int?       @unique
