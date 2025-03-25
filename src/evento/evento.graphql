@@ -1,0 +1,40 @@
+scalar Date
+
+type Evento {
+  id: ID!
+  nombreCliente: String
+  estacion: Estacion!
+  estatus: EstatusEvento
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+enum EstatusEvento {
+  EN_PROGRESO
+  TERMINADO
+  PAGADO
+  CANCELADO
+}
+
+input CreateEventoInput {
+  nombreCliente: String
+  estacion: UpdateEstacionInput
+}
+
+input UpdateEventoInput {
+  id: Int!
+  nombreCliente: String
+  estacion: UpdateEstacionInput
+  estatus: EstatusEvento
+}
+
+type Query {
+  eventos: [Evento]!
+  evento(id: Int!): Evento
+}
+
+type Mutation {
+  createEvento(createEventoInput: CreateEventoInput!): Evento!
+  updateEvento(updateEventoInput: UpdateEventoInput!): Evento!
+  removeEvento(id: Int!): Evento
+}
