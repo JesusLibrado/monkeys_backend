@@ -5,6 +5,7 @@ type Estacion {
   numero: Int
   empleado: Empleado
   disponible: Boolean
+  eventos: [Evento!]!
   createdAt: Date!
   updatedAt: Date!
 }

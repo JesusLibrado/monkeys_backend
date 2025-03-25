@@ -17,10 +17,21 @@ export class EmpleadoService {
   constructor() {}
 
   async create(createEmpleadoInput: CreateEmpleadoInput): Promise<Empleado>{
+    let estacionInput;
+
+    if(!createEmpleadoInput.estacion) {
+      estacionInput = createEmpleadoInput.estacion===null?{
+        disconnect: true
+      }:undefined;
+    } else {
+      // might update Estacion related to this Empleado
+      estacionInput = {
+        connect: {id: createEmpleadoInput.estacion?.id}
+      }
+    }
+
     try{
       const usuarioInput: CreateUsuarioInput = createEmpleadoInput.usuario;
-      // add estacion connect
-      let estacion = createEmpleadoInput.estacion??{};
       let createEmpleadoPayload = await prisma.empleado.create({
         data: {
           nombre: createEmpleadoInput.nombre,
@@ -28,7 +39,7 @@ export class EmpleadoService {
           horaEntrada: createEmpleadoInput.horaEntrada,
           horaSalida: createEmpleadoInput.horaSalida,
           rol: createEmpleadoInput.rol,
-          estacion: estacion,
+          estacion: estacionInput,
           updatedAt: dayjs().toDate(),
           usuario: {
             create: {
@@ -58,7 +69,7 @@ export class EmpleadoService {
     return `This action returns a #${id} empleado`;
   }
 
-  async update(id: number, updateEmpleadoInput: UpdateEmpleadoInput) {
+  async update(id: number, updateEmpleadoInput: UpdateEmpleadoInput): Promise<Empleado> {
     let estacionInput, usuarioInput;
 
     if(!updateEmpleadoInput.estacion) {
