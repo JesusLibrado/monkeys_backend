@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEstacionInput } from './dto/create-estacion.input';
-import { UpdateEstacionInput } from './dto/update-estacion.input';
-import { Estacion } from './entities/estacion.entity';
+import {
+  CreateEstacionInput,
+  UpdateEstacionInput,
+  Estacion
+} from 'src/graphql';
 
 import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
 import { plainToClass } from 'class-transformer';
-import { connect } from 'http2';
+import { TryStatement } from 'ts-morph';
 
 @Injectable()
 export class EstacionService {
+
   async create(createEstacionInput: CreateEstacionInput): Promise<Estacion> {
     try{
       const createEstacionPayload = await prisma.estacion.create({
@@ -22,7 +25,8 @@ export class EstacionService {
       });
 
       return plainToClass(Estacion, createEstacionPayload);
-    } catch(e) {
+    } 
+    catch(e) {
       console.error(`Error creating Estacion ${e}`);
       throw new Error("Error creating entity");
     }
@@ -30,27 +34,29 @@ export class EstacionService {
 
   async findAll() {
     try {
-      const estaciones = await prisma.estacion.findMany({include: {empleado: true }});
+    const estaciones = await prisma.estacion.findMany({include: {empleado: true}});
     return estaciones;
-    } catch (e) {
-      console.error(`Error find Estaciones`);
-      throw new Error("Error find enetities");
+   } 
+   catch (e) {
+    console.error(`Error reading Estaciones ${e}`);
+    throw new Error("Error reading entities");
     }
   }
 
   async findOne(id: number) {
     try {
-        const estacion = await prisma.estacion.findUnique({
-          where: {
-            id: id
-          },
-          include: {empleado: true }
-        });
-        return plainToClass(Estacion, estacion);
-       } catch (e) {
-          console.error(`Error find Estacion`);
-          throw new Error("Error find entity");
-       }
+      const estaciones = await prisma.estacion.findUnique({
+        where: {
+          id,
+        },
+        include: {empleado: true} 
+      });
+      return plainToClass(Estacion, estaciones);
+    } 
+    catch (e) {
+      console.error(`Error reading Estacion ${e}`);
+      throw new Error("Error reading entity");
+    }
   }
 
   async update(id: number, updateEstacionInput: UpdateEstacionInput) {
@@ -61,33 +67,28 @@ export class EstacionService {
         disconnect: true
       }:undefined;
     } else {
+      // might update Empleado related to this Estacion
       empleadoInput = {
         connect: {id: updateEstacionInput.empleado?.id}
       }
     }
     
     try{
-      const createEstacionPayload = await prisma.estacion.update({
+      const updateEstacionPayload = await prisma.estacion.update({
         where: {
           id: id
         },
         data: {
-          disponible: updateEstacionInput.disponible,
+          disponible: updateEstacionInput.disponible??undefined,
           empleado: empleadoInput
         },
-        include: {
-          empleado: {
-            include: {
-              usuario: true
-            }
-          }
-        }
+        include: {empleado: true}
       });
 
-      return plainToClass(Estacion, createEstacionPayload);
+      return plainToClass(Estacion, updateEstacionPayload);
     } catch(e) {
-      console.error(`Error creating Estacion ${e}`);
-      throw new Error("Error creating entity");
+      console.error(`Error updating Estacion ${e}`);
+      throw new Error("Error updating entity");
     }
   }
 

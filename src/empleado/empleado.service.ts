@@ -1,8 +1,10 @@
-import { ConsoleLogger, Injectable } from '@nestjs/common';
-import { CreateEmpleadoInput } from './dto/create-empleado.input';
-import { UpdateEmpleadoInput } from './dto/update-empleado.input';
-import { Empleado } from './entities/empleado.entity';
-import { CreateUsuarioInput } from 'src/usuario/dto/create-usuario.input';
+import { Injectable } from '@nestjs/common';
+import { 
+  CreateEmpleadoInput, 
+  CreateUsuarioInput, 
+  UpdateEmpleadoInput, 
+  Empleado
+} from 'src/graphql';
 
 import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
@@ -15,21 +17,32 @@ export class EmpleadoService {
   constructor() {}
 
   async create(createEmpleadoInput: CreateEmpleadoInput): Promise<Empleado>{
+    let estacionInput;
+
+    if(!createEmpleadoInput.estacion) {
+      estacionInput = createEmpleadoInput.estacion===null?{
+        disconnect: true
+      }:undefined;
+    } else {
+      // might update Estacion related to this Empleado
+      estacionInput = {
+        connect: {id: createEmpleadoInput.estacion?.id}
+      }
+    }
+
     try{
       const usuarioInput: CreateUsuarioInput = createEmpleadoInput.usuario;
-      // add estacion connect
-      let estacion = createEmpleadoInput.estacion??{};
       let createEmpleadoPayload = await prisma.empleado.create({
         data: {
+          nombre: createEmpleadoInput.nombre,
+          apellido: createEmpleadoInput.apellido,
           horaEntrada: createEmpleadoInput.horaEntrada,
           horaSalida: createEmpleadoInput.horaSalida,
           rol: createEmpleadoInput.rol,
-          estacion: estacion,
+          estacion: estacionInput,
           updatedAt: dayjs().toDate(),
           usuario: {
             create: {
-              nombre: usuarioInput.nombre,
-              apellido: usuarioInput.apellido,
               email: usuarioInput.email,
               numeroTelefono: usuarioInput.numeroTelefono,
               // encrypt
@@ -51,30 +64,77 @@ export class EmpleadoService {
   async findAll() {
     try {
       const empleados = await prisma.empleado.findMany({include: { usuario: true, estacion: true }});
-    return empleados;
-    } catch (e) {
-      console.error(`Error find Empleados`);
-      throw new Error("Error find enetities");
+      return empleados;
+    } 
+    catch (e) {
+      console.error(`Error reading Empleados ${e}`);
+      throw new Error("Error reading entities");
     }
   }
 
   async findOne(id: number) {
-   try {
-    const empleado = await prisma.empleado.findUnique({
-      where: {
-        id: id
-      },
-      include: { usuario: true, estacion: true }
-    });
-    return plainToClass(Empleado, empleado);
-   } catch (e) {
-      console.error(`Error find Empleado`);
-      throw new Error("Error find entity");
-   }
+    try {
+      const empleado = await prisma.empleado.findUnique({
+        where: {
+          id,
+        }, 
+        include: { usuario: true, estacion: true }
+      });
+      return plainToClass(Empleado, empleado);  
+    } 
+    catch (e) {
+      console.error(`Error reading Empleado ${e}`);
+      throw new Error("Error reading entity");
+    }
   }
 
-  update(id: number, updateEmpleadoInput: UpdateEmpleadoInput) {
-    return `This action updates a #${id} empleado`;
+  async update(id: number, updateEmpleadoInput: UpdateEmpleadoInput): Promise<Empleado> {
+    let estacionInput, usuarioInput;
+
+    if(!updateEmpleadoInput.estacion) {
+      estacionInput = updateEmpleadoInput.estacion===null?{
+        disconnect: true
+      }:undefined;
+    } else {
+      // might update Estacion number related to this Empleado
+      estacionInput = {
+        connect: {id: updateEmpleadoInput.estacion?.id}
+      }
+    }
+
+    if(!updateEmpleadoInput.usuario) {
+      usuarioInput = updateEmpleadoInput.usuario===null?{
+        disconnect: true
+      }:undefined;
+    } else {
+      // might update Usuario from Empleado input
+      // Usuario.id can't be changed (conceptually). Ignore Id input
+      usuarioInput = {
+        update: {...updateEmpleadoInput.usuario, id: undefined}
+      }
+    }
+
+    try {
+      const updateEmpleadoPayload = await prisma.empleado.update({
+        where: {
+          id: id
+        },
+        data: {
+          nombre: updateEmpleadoInput.nombre??undefined,
+          apellido: updateEmpleadoInput.apellido??undefined,
+          horaEntrada: updateEmpleadoInput.horaEntrada??undefined,
+          horaSalida: updateEmpleadoInput.horaSalida??undefined,
+          rol: updateEmpleadoInput.rol??undefined,
+          estacion: estacionInput,
+          usuario: usuarioInput
+        },
+        include: {usuario: true, estacion: true}
+      });
+      return plainToClass(Empleado, updateEmpleadoPayload);
+    } catch(e) {
+      console.error(`Error updating Empleado ${e}`);
+      throw new Error("Error updating entity");
+    }
   }
 
   async remove(empleadoId: number): Promise<Empleado> {

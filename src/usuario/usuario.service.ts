@@ -5,6 +5,8 @@ import { UpdateUsuarioInput } from './dto/update-usuario.input';
 import { prisma } from 'prisma/client';
 import { Prisma } from '@prisma/client';
 import * as dayjs from 'dayjs';
+import { plainToClass } from 'class-transformer';
+import { Usuario } from 'src/graphql';
 
 @Injectable()
 export class UsuarioService {
@@ -31,12 +33,31 @@ export class UsuarioService {
     
   }
 
-  findAll() {
-    return `This action returns all usuario`;
+  async findAll() {
+    try {
+      const usuarios = await prisma.usuario.findMany({include: {empleado: true}});
+      return usuarios;
+    } 
+    catch (e) {
+      console.error(`Error reading Usuarios ${e}`);
+      throw new Error("Error reading entities");
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: number) {
+    try {
+      const usuarios = await prisma.usuario.findUnique({
+        where: {
+          id,
+        },
+        include: { empleado:true }
+      });
+      return plainToClass(Usuario, usuarios);
+    } 
+    catch (e) {
+      console.error(`Error reading Usuario ${e}`);
+      throw new Error("Error reading entity");
+    }
   }
 
   update(id: number, updateUsuarioInput: UpdateUsuarioInput) {
