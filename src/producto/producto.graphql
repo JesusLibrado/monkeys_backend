@@ -1,0 +1,48 @@
+scalar Date
+
+type Producto {
+  id: ID!
+  nombre: String!
+  marca: String
+  cantidadDisponible: Int!
+  cantidadVendida: Int
+  comisionEmpleado: Float!
+  precioProveedor: Float!
+  precioPublico: Float!
+  ganancia: Float!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input CreateProductoInput {
+  nombre: String!
+  marca: String
+  cantidadDisponible: Int!
+  comisionEmpleado: Float!
+  precioProveedor: Float!
+  precioPublico: Float!
+  ganancia: Float!
+}
+
+input UpdateProductoInput {
+  id: Int!
+  nombre: String
+  marca: String
+  cantidadVendida: Int
+  cantidadDisponible: Int
+  comisionEmpleado: Float
+  precioProveedor: Float
+  precioPublico: Float
+  ganancia: Float
+}
+
+type Query {
+  productos: [Producto]!
+  producto(id: Int!): Producto
+}
+
+type Mutation {
+  createProducto(createProductoInput: CreateProductoInput!): Producto!
+  updateProducto(updateProductoInput: UpdateProductoInput!): Producto!
+  removeProducto(id: Int!): Producto
+}

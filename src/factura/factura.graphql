@@ -1,0 +1,43 @@
+scalar Date
+
+type Factura {
+  id: ID!
+  evento: Evento!
+  folio: Int!
+  conceptos: [ConceptoFactura]!
+  total: Float!
+  descuento: Float
+  estatus: EstatusFactura!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+enum EstatusFactura {
+  CREADA
+  PAGADA
+  CANCELADA
+}
+
+input CreateFacturaInput {
+  evento: UpdateEventoInput!
+  conceptos: [ConceptoFactura!]!
+  descuento: Float
+}
+
+input UpdateFacturaInput {
+  id: Int!
+  conceptos: [ConceptoFactura]
+  descuento: Float
+  estatus: EstatusFactura
+}
+
+type Query {
+  facturas: [Factura]!
+  factura(id: Int!): Factura
+}
+
+type Mutation {
+  createFactura(createFacturaInput: CreateFacturaInput!): Factura!
+  updateFactura(updateFacturaInput: UpdateFacturaInput!): Factura!
+  removeFactura(id: Int!): Factura
+}

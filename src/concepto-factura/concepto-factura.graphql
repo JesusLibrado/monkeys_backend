@@ -1,0 +1,37 @@
+scalar Date
+
+type ConceptoFactura {
+  id: ID!
+  factura: Factura!
+  cantidad: Int!
+  producto: Producto
+  servicio: Servicio
+  total: Float!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input CreateConceptoFacturaInput {
+  factura: Factura!
+  cantidad: Int!
+  producto: Producto
+  servicio: Servicio
+}
+
+input UpdateConceptoFacturaInput {
+  id: Int!
+  cantidad: Int
+  producto: Producto
+  servicio: Servicio
+}
+
+type Query {
+  conceptoFacturas: [ConceptoFactura]!
+  conceptoFactura(id: Int!): ConceptoFactura
+}
+
+type Mutation {
+  createConceptoFactura(createConceptoFacturaInput: CreateConceptoFacturaInput!): ConceptoFactura!
+  updateConceptoFactura(updateConceptoFacturaInput: UpdateConceptoFacturaInput!): ConceptoFactura!
+  removeConceptoFactura(id: Int!): ConceptoFactura
+}

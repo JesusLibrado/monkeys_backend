@@ -1,0 +1,47 @@
+type Servicio {
+  id: ID!
+  nombre: String!
+  categoria: CategoriaServicio!
+  precio: Float!
+  comisionBarbero: Float!
+  ganancia: Float!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+
+enum CategoriaServicio {
+  BARBA
+  CORTE
+  FACIAL
+  GRECA
+  OTRO
+}
+
+input CreateServicioInput {
+  nombre: String!
+  categoria: CategoriaServicio!
+  precio: Float!
+  comisionBarbero: Float!
+  ganancia: Float!
+}
+
+input UpdateServicioInput {
+  id: Int!
+  nombre: String
+  categoria: CategoriaServicio
+  precio: Float
+  comisionBarbero: Float
+  ganancia: Float
+}
+
+type Query {
+  servicios: [Servicio]!
+  servicio(id: Int!): Servicio
+}
+
+type Mutation {
+  createServicio(createServicioInput: CreateServicioInput!): Servicio!
+  updateServicio(updateServicioInput: UpdateServicioInput!): Servicio!
+  removeServicio(id: Int!): Servicio
+}

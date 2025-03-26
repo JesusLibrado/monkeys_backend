@@ -20,6 +20,34 @@ export enum EstatusEvento {
     CANCELADO = "CANCELADO"
 }
 
+export enum EstatusFactura {
+    CREADA = "CREADA",
+    PAGADA = "PAGADA",
+    CANCELADA = "CANCELADA"
+}
+
+export enum CategoriaServicio {
+    BARBA = "BARBA",
+    CORTE = "CORTE",
+    FACIAL = "FACIAL",
+    GRECA = "GRECA",
+    OTRO = "OTRO"
+}
+
+export class CreateConceptoFacturaInput {
+    factura: Factura;
+    cantidad: number;
+    producto?: Nullable<Producto>;
+    servicio?: Nullable<Servicio>;
+}
+
+export class UpdateConceptoFacturaInput {
+    id: number;
+    cantidad?: Nullable<number>;
+    producto?: Nullable<Producto>;
+    servicio?: Nullable<Servicio>;
+}
+
 export class CreateEmpleadoInput {
     nombre: string;
     apellido: string;
@@ -64,6 +92,58 @@ export class UpdateEventoInput {
     estatus?: Nullable<EstatusEvento>;
 }
 
+export class CreateFacturaInput {
+    evento: UpdateEventoInput;
+    conceptos: ConceptoFactura[];
+    descuento?: Nullable<number>;
+}
+
+export class UpdateFacturaInput {
+    id: number;
+    conceptos?: Nullable<Nullable<ConceptoFactura>[]>;
+    descuento?: Nullable<number>;
+    estatus?: Nullable<EstatusFactura>;
+}
+
+export class CreateProductoInput {
+    nombre: string;
+    marca?: Nullable<string>;
+    cantidadDisponible: number;
+    comisionEmpleado: number;
+    precioProveedor: number;
+    precioPublico: number;
+    ganancia: number;
+}
+
+export class UpdateProductoInput {
+    id: number;
+    nombre?: Nullable<string>;
+    marca?: Nullable<string>;
+    cantidadVendida?: Nullable<number>;
+    cantidadDisponible?: Nullable<number>;
+    comisionEmpleado?: Nullable<number>;
+    precioProveedor?: Nullable<number>;
+    precioPublico?: Nullable<number>;
+    ganancia?: Nullable<number>;
+}
+
+export class CreateServicioInput {
+    nombre: string;
+    categoria: CategoriaServicio;
+    precio: number;
+    comisionBarbero: number;
+    ganancia: number;
+}
+
+export class UpdateServicioInput {
+    id: number;
+    nombre?: Nullable<string>;
+    categoria?: Nullable<CategoriaServicio>;
+    precio?: Nullable<number>;
+    comisionBarbero?: Nullable<number>;
+    ganancia?: Nullable<number>;
+}
+
 export class CreateUsuarioInput {
     email: string;
     numeroTelefono?: Nullable<string>;
@@ -78,20 +158,22 @@ export class UpdateUsuarioInput {
     acvtivo?: Nullable<boolean>;
 }
 
-export class Empleado {
-    id?: Nullable<string>;
-    nombre: string;
-    apellido: string;
-    usuario?: Nullable<Usuario>;
-    estacion?: Nullable<Estacion>;
-    horaEntrada?: Nullable<string>;
-    horaSalida?: Nullable<string>;
-    rol?: Nullable<RolEmpleado>;
-    createdAt?: Nullable<Date>;
-    updatedAt?: Nullable<Date>;
+export class ConceptoFactura {
+    id: string;
+    factura: Factura;
+    cantidad: number;
+    producto?: Nullable<Producto>;
+    servicio?: Nullable<Servicio>;
+    total: number;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export abstract class IQuery {
+    abstract conceptoFacturas(): Nullable<ConceptoFactura>[] | Promise<Nullable<ConceptoFactura>[]>;
+
+    abstract conceptoFactura(id: number): Nullable<ConceptoFactura> | Promise<Nullable<ConceptoFactura>>;
+
     abstract empleados(): Nullable<Empleado>[] | Promise<Nullable<Empleado>[]>;
 
     abstract empleado(id: number): Nullable<Empleado> | Promise<Nullable<Empleado>>;
@@ -104,12 +186,30 @@ export abstract class IQuery {
 
     abstract evento(id: number): Nullable<Evento> | Promise<Nullable<Evento>>;
 
+    abstract facturas(): Nullable<Factura>[] | Promise<Nullable<Factura>[]>;
+
+    abstract factura(id: number): Nullable<Factura> | Promise<Nullable<Factura>>;
+
+    abstract productos(): Nullable<Producto>[] | Promise<Nullable<Producto>[]>;
+
+    abstract producto(id: number): Nullable<Producto> | Promise<Nullable<Producto>>;
+
+    abstract servicios(): Nullable<Servicio>[] | Promise<Nullable<Servicio>[]>;
+
+    abstract servicio(id: number): Nullable<Servicio> | Promise<Nullable<Servicio>>;
+
     abstract usuarios(): Nullable<Usuario>[] | Promise<Nullable<Usuario>[]>;
 
     abstract usuario(id: number): Nullable<Usuario> | Promise<Nullable<Usuario>>;
 }
 
 export abstract class IMutation {
+    abstract createConceptoFactura(createConceptoFacturaInput: CreateConceptoFacturaInput): ConceptoFactura | Promise<ConceptoFactura>;
+
+    abstract updateConceptoFactura(updateConceptoFacturaInput: UpdateConceptoFacturaInput): ConceptoFactura | Promise<ConceptoFactura>;
+
+    abstract removeConceptoFactura(id: number): Nullable<ConceptoFactura> | Promise<Nullable<ConceptoFactura>>;
+
     abstract createEmpleado(createEmpleadoInput: CreateEmpleadoInput): Empleado | Promise<Empleado>;
 
     abstract updateEmpleado(updateEmpleadoInput: UpdateEmpleadoInput): Empleado | Promise<Empleado>;
@@ -128,7 +228,38 @@ export abstract class IMutation {
 
     abstract removeEvento(id: number): Nullable<Evento> | Promise<Nullable<Evento>>;
 
+    abstract createFactura(createFacturaInput: CreateFacturaInput): Factura | Promise<Factura>;
+
+    abstract updateFactura(updateFacturaInput: UpdateFacturaInput): Factura | Promise<Factura>;
+
+    abstract removeFactura(id: number): Nullable<Factura> | Promise<Nullable<Factura>>;
+
+    abstract createProducto(createProductoInput: CreateProductoInput): Producto | Promise<Producto>;
+
+    abstract updateProducto(updateProductoInput: UpdateProductoInput): Producto | Promise<Producto>;
+
+    abstract removeProducto(id: number): Nullable<Producto> | Promise<Nullable<Producto>>;
+
+    abstract createServicio(createServicioInput: CreateServicioInput): Servicio | Promise<Servicio>;
+
+    abstract updateServicio(updateServicioInput: UpdateServicioInput): Servicio | Promise<Servicio>;
+
+    abstract removeServicio(id: number): Nullable<Servicio> | Promise<Nullable<Servicio>>;
+
     abstract updateUsuario(usuario?: Nullable<UpdateUsuarioInput>): Usuario | Promise<Usuario>;
+}
+
+export class Empleado {
+    id?: Nullable<string>;
+    nombre: string;
+    apellido: string;
+    usuario?: Nullable<Usuario>;
+    estacion?: Nullable<Estacion>;
+    horaEntrada?: Nullable<string>;
+    horaSalida?: Nullable<string>;
+    rol?: Nullable<RolEmpleado>;
+    createdAt?: Nullable<Date>;
+    updatedAt?: Nullable<Date>;
 }
 
 export class Estacion {
@@ -146,6 +277,43 @@ export class Evento {
     nombreCliente?: Nullable<string>;
     estacion: Estacion;
     estatus?: Nullable<EstatusEvento>;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export class Factura {
+    id: string;
+    evento: Evento;
+    folio: number;
+    conceptos: Nullable<ConceptoFactura>[];
+    total: number;
+    descuento?: Nullable<number>;
+    estatus: EstatusFactura;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export class Producto {
+    id: string;
+    nombre: string;
+    marca?: Nullable<string>;
+    cantidadDisponible: number;
+    cantidadVendida?: Nullable<number>;
+    comisionEmpleado: number;
+    precioProveedor: number;
+    precioPublico: number;
+    ganancia: number;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export class Servicio {
+    id: string;
+    nombre: string;
+    categoria: CategoriaServicio;
+    precio: number;
+    comisionBarbero: number;
+    ganancia: number;
     createdAt: Date;
     updatedAt: Date;
 }
