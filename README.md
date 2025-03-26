@@ -38,43 +38,19 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ``` -->
 
-## Using GraphQL API
+## Database commands
 
-http://localhost:3000/graphql
+#### To update database model
 
-```graphql
-mutation CreateEmpleado($createEmpleadoInput: CreateEmpleadoInput!) {
-  createEmpleado(createEmpleadoInput: $createEmpleadoInput) {
-    id
-    nombre
-    apellido
-    email
-    numeroTelefono
-    horaEntrada
-    horaSalida
-    rol
-    estacion {
-      id
-    }
-  }
-}
+```bash
+$ ./db_update.sh
 ```
 
-```json
-{
-  "createEmpleadoInput": {
-    "nombre": "juan",
-    "apellido": "perez",
-    "email": "empleado1@email.com",
-    "password": "password",
-    "rol": "BARBERO"
-  }
-}
-```
 
-## Mysql Queries
+## GraphQL commands
 
-```sql
-SELECT * FROM usuarios
-SELECT * FROM empleados;
+#### To generate classes based on GraphQL schema
+
+```bash
+$ yarn generate
 ```

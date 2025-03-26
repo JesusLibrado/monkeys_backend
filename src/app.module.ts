@@ -9,6 +9,10 @@ import { EmpleadoModule } from './empleado/empleado.module';
 import { UsuarioModule } from './usuario/usuario.module';
 import { EstacionModule } from './estacion/estacion.module';
 import { EventoModule } from './evento/evento.module';
+import { ProductoModule } from './producto/producto.module';
+import { ServicioModule } from './servicio/servicio.module';
+import { ConceptoFacturaModule } from './concepto-factura/concepto-factura.module';
+import { FacturaModule } from './factura/factura.module';
 
 
 const configModule: Promise<DynamicModule> = ConfigModule.forRoot({
@@ -33,7 +37,11 @@ const graphQLModule: DynamicModule = GraphQLModule.forRoot<ApolloDriverConfig>({
     EmpleadoModule,
     UsuarioModule,
     EstacionModule,
-    EventoModule
+    EventoModule,
+    ProductoModule,
+    ServicioModule,
+    ConceptoFacturaModule,
+    FacturaModule,
   ],
   controllers: [],
   providers: [],

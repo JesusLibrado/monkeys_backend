@@ -1,1 +1,1 @@
-npm run start:local
+yarn run start:local

@@ -95,6 +95,7 @@ model Producto {
   nombre                String
   marca                 String
   cantidadDisponible    Int
+  cantidadVendida       Int
   comisionEmpleado      Decimal
   precioProveedor       Decimal
   precioPublico         Decimal
