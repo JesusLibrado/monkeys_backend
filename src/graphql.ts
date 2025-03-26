@@ -46,17 +46,29 @@ export enum CategoriaServicio {
 }
 
 export class CreateConceptoFacturaInput {
-    factura: Factura;
+    factura: UpdateFacturaInput;
     cantidad: number;
-    producto?: Nullable<Producto>;
-    servicio?: Nullable<Servicio>;
+    producto?: Nullable<UpdateProductoInput>;
+    servicio?: Nullable<UpdateServicioInput>;
+}
+
+export class CreateConceptoFacturaInputWithServicio {
+    factura: UpdateFacturaInput;
+    cantidad: number;
+    servicio?: Nullable<CreateServicioInput>;
 }
 
 export class UpdateConceptoFacturaInput {
     id: number;
     cantidad?: Nullable<number>;
-    producto?: Nullable<Producto>;
-    servicio?: Nullable<Servicio>;
+    producto?: Nullable<UpdateProductoInput>;
+    servicio?: Nullable<UpdateServicioInput>;
+}
+
+export class UpdateConceptoFacturaInputWithServicio {
+    id: number;
+    cantidad?: Nullable<number>;
+    servicio?: Nullable<CreateServicioInput>;
 }
 
 export class CreateEmpleadoInput {
@@ -106,12 +118,25 @@ export class UpdateEventoInput {
 }
 
 export class CreateFacturaInput {
-    conceptos?: Nullable<Nullable<ConceptoFactura>[]>;
+    conceptos?: Nullable<CreateConceptoFacturaInput[]>;
+    evento: UpdateEventoInput;
+}
+
+export class CreateFacturaInputWithServicio {
+    conceptos?: Nullable<CreateConceptoFacturaInputWithServicio[]>;
+    evento: UpdateEventoInput;
 }
 
 export class UpdateFacturaInput {
     id: number;
-    conceptos?: Nullable<Nullable<ConceptoFactura>[]>;
+    conceptos?: Nullable<Nullable<CreateConceptoFacturaInput>[]>;
+    descuento?: Nullable<number>;
+    estatus?: Nullable<EstatusFactura>;
+}
+
+export class UpdateFacturaInputWithServicio {
+    id: number;
+    conceptos?: Nullable<Nullable<CreateConceptoFacturaInputWithServicio>[]>;
     descuento?: Nullable<number>;
     estatus?: Nullable<EstatusFactura>;
 }

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateConceptoFacturaInput } from './dto/create-concepto-factura.input';
-import { UpdateConceptoFacturaInput } from './dto/update-concepto-factura.input';
+import { 
+  CreateConceptoFacturaInput,
+  UpdateConceptoFacturaInput
+} from 'src/graphql';
 
 @Injectable()
 export class ConceptoFacturaService {

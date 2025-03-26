@@ -19,12 +19,25 @@ enum EstatusFactura {
 }
 
 input CreateFacturaInput {
-  conceptos: [ConceptoFactura]
+  conceptos: [CreateConceptoFacturaInput!]
+  evento: UpdateEventoInput!
+}
+
+input CreateFacturaInputWithServicio {
+  conceptos: [CreateConceptoFacturaInputWithServicio!]
+  evento: UpdateEventoInput!
 }
 
 input UpdateFacturaInput {
   id: Int!
-  conceptos: [ConceptoFactura]
+  conceptos: [CreateConceptoFacturaInput]
+  descuento: Float
+  estatus: EstatusFactura
+}
+
+input UpdateFacturaInputWithServicio {
+  id: Int!
+  conceptos: [CreateConceptoFacturaInputWithServicio]
   descuento: Float
   estatus: EstatusFactura
 }

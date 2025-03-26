@@ -12,17 +12,29 @@ type ConceptoFactura {
 }
 
 input CreateConceptoFacturaInput {
-  factura: Factura!
+  factura: UpdateFacturaInput!
   cantidad: Int!
-  producto: Producto
-  servicio: Servicio
+  producto: UpdateProductoInput
+  servicio: UpdateServicioInput
+}
+
+input CreateConceptoFacturaInputWithServicio {
+  factura: UpdateFacturaInput!
+  cantidad: Int!
+  servicio: CreateServicioInput
 }
 
 input UpdateConceptoFacturaInput {
   id: Int!
   cantidad: Int
-  producto: Producto
-  servicio: Servicio
+  producto: UpdateProductoInput
+  servicio: UpdateServicioInput
+}
+
+input UpdateConceptoFacturaInputWithServicio {
+  id: Int!
+  cantidad: Int
+  servicio: CreateServicioInput
 }
 
 type Query {

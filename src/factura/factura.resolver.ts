@@ -1,7 +1,9 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { FacturaService } from './factura.service';
-import { CreateFacturaInput } from './dto/create-factura.input';
-import { UpdateFacturaInput } from './dto/update-factura.input';
+import { 
+  CreateFacturaInput,
+  UpdateFacturaInput
+ } from 'src/graphql';
 
 @Resolver('Factura')
 export class FacturaResolver {

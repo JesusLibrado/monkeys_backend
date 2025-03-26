@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePagoInput } from './dto/create-pago.input';
-import { UpdatePagoInput } from './dto/update-pago.input';
+import { 
+  CreatePagoInput,
+  UpdatePagoInput
+} from 'src/graphql';
 
 @Injectable()
 export class PagoService {
