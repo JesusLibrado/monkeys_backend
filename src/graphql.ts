@@ -26,6 +26,17 @@ export enum EstatusFactura {
     CANCELADA = "CANCELADA"
 }
 
+export enum MetodoDePago {
+    EFECTIVO = "EFECTIVO",
+    TARJETA_CREDITO = "TARJETA_CREDITO",
+    TARJETA_DEBITO = "TARJETA_DEBITO"
+}
+
+export enum EstatusPago {
+    REALIZADO = "REALIZADO",
+    PENDIENTE = "PENDIENTE"
+}
+
 export enum CategoriaServicio {
     BARBA = "BARBA",
     CORTE = "CORTE",
@@ -81,8 +92,9 @@ export class UpdateEstacionInput {
 }
 
 export class CreateEventoInput {
-    nombreCliente?: Nullable<string>;
-    estacion?: Nullable<UpdateEstacionInput>;
+    nombreCliente: string;
+    estacion: UpdateEstacionInput;
+    factura?: Nullable<UpdateFacturaInput>;
 }
 
 export class UpdateEventoInput {
@@ -90,12 +102,11 @@ export class UpdateEventoInput {
     nombreCliente?: Nullable<string>;
     estacion?: Nullable<UpdateEstacionInput>;
     estatus?: Nullable<EstatusEvento>;
+    factura?: Nullable<UpdateFacturaInput>;
 }
 
 export class CreateFacturaInput {
-    evento: UpdateEventoInput;
-    conceptos: ConceptoFactura[];
-    descuento?: Nullable<number>;
+    conceptos?: Nullable<Nullable<ConceptoFactura>[]>;
 }
 
 export class UpdateFacturaInput {
@@ -103,6 +114,23 @@ export class UpdateFacturaInput {
     conceptos?: Nullable<Nullable<ConceptoFactura>[]>;
     descuento?: Nullable<number>;
     estatus?: Nullable<EstatusFactura>;
+}
+
+export class CreatePagoInput {
+    factura: UpdateFacturaInput;
+    comision?: Nullable<number>;
+    montoRecibido?: Nullable<number>;
+    montoDevuelto?: Nullable<number>;
+    metodoPago: MetodoDePago;
+}
+
+export class UpdatePagoInput {
+    id: number;
+    factura?: Nullable<UpdateFacturaInput>;
+    comision?: Nullable<number>;
+    montoRecibido?: Nullable<number>;
+    montoDevuelto?: Nullable<number>;
+    metodoPago?: Nullable<MetodoDePago>;
 }
 
 export class CreateProductoInput {
@@ -190,6 +218,10 @@ export abstract class IQuery {
 
     abstract factura(id: number): Nullable<Factura> | Promise<Nullable<Factura>>;
 
+    abstract pagos(): Nullable<Pago>[] | Promise<Nullable<Pago>[]>;
+
+    abstract pago(id: number): Nullable<Pago> | Promise<Nullable<Pago>>;
+
     abstract productos(): Nullable<Producto>[] | Promise<Nullable<Producto>[]>;
 
     abstract producto(id: number): Nullable<Producto> | Promise<Nullable<Producto>>;
@@ -234,6 +266,12 @@ export abstract class IMutation {
 
     abstract removeFactura(id: number): Nullable<Factura> | Promise<Nullable<Factura>>;
 
+    abstract createPago(createPagoInput: CreatePagoInput): Pago | Promise<Pago>;
+
+    abstract updatePago(updatePagoInput: UpdatePagoInput): Pago | Promise<Pago>;
+
+    abstract removePago(id: number): Nullable<Pago> | Promise<Nullable<Pago>>;
+
     abstract createProducto(createProductoInput: CreateProductoInput): Producto | Promise<Producto>;
 
     abstract updateProducto(updateProductoInput: UpdateProductoInput): Producto | Promise<Producto>;
@@ -274,6 +312,7 @@ export class Estacion {
 
 export class Evento {
     id: string;
+    factura: Factura;
     nombreCliente?: Nullable<string>;
     estacion: Estacion;
     estatus?: Nullable<EstatusEvento>;
@@ -285,10 +324,22 @@ export class Factura {
     id: string;
     evento: Evento;
     folio: number;
-    conceptos: Nullable<ConceptoFactura>[];
+    conceptos: ConceptoFactura[];
     total: number;
     descuento?: Nullable<number>;
     estatus: EstatusFactura;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export class Pago {
+    id: string;
+    factura: Factura;
+    comision?: Nullable<number>;
+    montoRecibido?: Nullable<number>;
+    montoDevuelto?: Nullable<number>;
+    metodoPago: MetodoDePago;
+    estatus: EstatusPago;
     createdAt: Date;
     updatedAt: Date;
 }

@@ -4,7 +4,7 @@ type Factura {
   id: ID!
   evento: Evento!
   folio: Int!
-  conceptos: [ConceptoFactura]!
+  conceptos: [ConceptoFactura!]!
   total: Float!
   descuento: Float
   estatus: EstatusFactura!
@@ -19,9 +19,7 @@ enum EstatusFactura {
 }
 
 input CreateFacturaInput {
-  evento: UpdateEventoInput!
-  conceptos: [ConceptoFactura!]!
-  descuento: Float
+  conceptos: [ConceptoFactura]
 }
 
 input UpdateFacturaInput {

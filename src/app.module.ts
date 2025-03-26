@@ -13,6 +13,7 @@ import { ProductoModule } from './producto/producto.module';
 import { ServicioModule } from './servicio/servicio.module';
 import { ConceptoFacturaModule } from './concepto-factura/concepto-factura.module';
 import { FacturaModule } from './factura/factura.module';
+import { PagoModule } from './pago/pago.module';
 
 
 const configModule: Promise<DynamicModule> = ConfigModule.forRoot({
@@ -42,6 +43,7 @@ const graphQLModule: DynamicModule = GraphQLModule.forRoot<ApolloDriverConfig>({
     ServicioModule,
     ConceptoFacturaModule,
     FacturaModule,
+    PagoModule,
   ],
   controllers: [],
   providers: [],

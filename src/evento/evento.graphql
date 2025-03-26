@@ -2,6 +2,7 @@ scalar Date
 
 type Evento {
   id: ID!
+  factura: Factura!
   nombreCliente: String
   estacion: Estacion!
   estatus: EstatusEvento
@@ -17,8 +18,9 @@ enum EstatusEvento {
 }
 
 input CreateEventoInput {
-  nombreCliente: String
-  estacion: UpdateEstacionInput
+  nombreCliente: String!
+  estacion: UpdateEstacionInput!
+  factura: UpdateFacturaInput
 }
 
 input UpdateEventoInput {
@@ -26,6 +28,7 @@ input UpdateEventoInput {
   nombreCliente: String
   estacion: UpdateEstacionInput
   estatus: EstatusEvento
+  factura: UpdateFacturaInput
 }
 
 type Query {

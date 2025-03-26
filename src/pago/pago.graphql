@@ -1,0 +1,52 @@
+scalar Date
+
+type Pago {
+  id: ID!
+  factura: Factura!
+  comision: Float
+  montoRecibido: Float
+  montoDevuelto: Float
+  metodoPago: MetodoDePago!
+  estatus: EstatusPago!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+enum MetodoDePago {
+  EFECTIVO
+  TARJETA_CREDITO
+  TARJETA_DEBITO
+}
+
+enum EstatusPago {
+  REALIZADO
+  PENDIENTE
+}
+
+input CreatePagoInput {
+  factura: UpdateFacturaInput!
+  comision: Float
+  montoRecibido: Float
+  montoDevuelto: Float
+  metodoPago: MetodoDePago!
+}
+
+input UpdatePagoInput {
+  id: Int!
+  factura: UpdateFacturaInput
+  comision: Float
+  montoRecibido: Float
+  montoDevuelto: Float
+  metodoPago: MetodoDePago
+}
+
+type Query {
+  pagos: [Pago]!
+  pago(id: Int!): Pago
+}
+
+type Mutation {
+  createPago(createPagoInput: CreatePagoInput!): Pago!
+  updatePago(updatePagoInput: UpdatePagoInput!): Pago!
+  removePago(id: Int!): Pago
+}
