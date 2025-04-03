@@ -20,7 +20,7 @@ export class ServicioResolver {
   }
 
   @Query('servicio')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.servicioService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class ServicioResolver {
   }
 
   @Mutation('removeServicio')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.servicioService.remove(id);
   }
 }

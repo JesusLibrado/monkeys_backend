@@ -14,16 +14,16 @@ datasource db {
 }
 
 model Pago {
-  id                   Int          @id @default(autoincrement())
+  id                   String       @id @default(cuid(2))
   factura              Factura      @relation(fields:[facturaId], references: [id])
-  facturaId            Int          @unique
-  comision             Decimal?
-  montoRecibido        Decimal?
-  montoDevuelto        Decimal?
+  facturaId            String       @unique
+  comision             Float?
+  montoRecibido        Float?
+  montoDevuelto        Float?
   metodoPago           MetodoDePago
   estatus              EstatusPago
   createdAt            DateTime     @default(now())
-  updatedAt            DateTime  
+  updatedAt            DateTime     @updatedAt  
 }
 
 enum MetodoDePago {
@@ -38,16 +38,16 @@ enum EstatusPago {
 }
 
 model Factura {
-  id                   Int                @id @default(autoincrement())
+  id                   String             @id @default(cuid(2))
   evento               Evento?
-  folio                Int                @unique
+  folio                Int                @unique() @default(autoincrement())
   conceptos            ConceptoFactura[]
-  total                Decimal
-  descuento            Decimal?
-  estatus              EstatusFactura
+  total                Float
+  descuento            Float?
+  estatus              EstatusFactura     
   pago                 Pago?
   createdAt            DateTime            @default(now())
-  updatedAt            DateTime
+  updatedAt            DateTime            @updatedAt  
 }
 
 enum EstatusFactura {
@@ -57,29 +57,29 @@ enum EstatusFactura {
 }
 
 model ConceptoFactura {
-  id                    Int        @id @default(autoincrement())
+  id                    String     @id @default(cuid(2))
   factura               Factura    @relation(fields:[facturaId], references: [id])
-  facturaId             Int        @unique
+  facturaId             String     @unique
   cantidad              Int
   producto              Producto?  @relation(fields:[productoId], references: [id])
-  productoId            Int        @unique
+  productoId            String     @unique
   servicio              Servicio?  @relation(fields:[servicioId], references: [id])
-  servicioId            Int        @unique
-  total                 Decimal
+  servicioId            String     @unique
+  total                 Float
   createdAt             DateTime   @default(now())
-  updatedAt             DateTime
+  updatedAt             DateTime   @updatedAt  
 }
 
 model Servicio {
-  id                    Int                   @id @default(autoincrement())
+  id                    String                @id @default(cuid(2))
   nombre                String
   categoria             CategoriaServicio
-  precio                Decimal
-  comisionBarbero       Decimal
-  ganancia              Decimal
+  precio                Float
+  comisionBarbero       Float
+  ganancia              Float
   facturas              ConceptoFactura[]
   createdAt             DateTime              @default(now())
-  updatedAt             DateTime
+  updatedAt             DateTime              @updatedAt  
 }
 
 enum CategoriaServicio {
@@ -91,30 +91,30 @@ enum CategoriaServicio {
 }
 
 model Producto {
-  id                    Int                 @id @default(autoincrement())
+  id                    String              @id @default(cuid(2))
   nombre                String
-  marca                 String
+  marca                 String?
   cantidadDisponible    Int
   cantidadVendida       Int
-  comisionEmpleado      Decimal
-  precioProveedor       Decimal
-  precioPublico         Decimal
-  ganancia              Decimal
+  comisionEmpleado      Float
+  precioProveedor       Float
+  precioPublico         Float
+  ganancia              Float
   facturas              ConceptoFactura[]
   createdAt             DateTime            @default(now())
-  updatedAt             DateTime
+  updatedAt             DateTime            @updatedAt  
 }
 
 model Evento {
-  id             Int              @id @default(autoincrement())
+  id             String           @id @default(cuid(2))
   factura        Factura          @relation(fields:[facturaId], references: [id])
-  facturaId      Int              @unique
+  facturaId      String           @unique
   estatus        EstatusEvento 
   nombreCliente  String
   estacion       Estacion         @relation(fields:[estacionId], references: [id])
-  estacionId     Int              @unique
+  estacionId     String           @unique
   createdAt      DateTime         @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime         @updatedAt 
 }
 
 enum EstatusEvento {
@@ -125,28 +125,28 @@ enum EstatusEvento {
 }
 
 model Estacion {
-  id             Int        @id @default(autoincrement())
+  id             String     @id @default(cuid(2))
   numero         Int        @unique
   eventos        Evento[]
   disponible     Boolean    @default(true)
   empleado       Empleado?  @relation(fields: [empleadoId], references: [id])
-  empleadoId     Int?       @unique
+  empleadoId     String?    @unique
   createdAt      DateTime   @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime   @updatedAt  
 }
 
 model Empleado {
-  id             Int        @id @default(autoincrement())
+  id             String     @id @default(cuid(2))
   nombre         String
   apellido       String
   usuario        Usuario    @relation(fields: [usuarioId], references: [id])
-  usuarioId      Int        @unique
+  usuarioId      String     @unique
   estacion       Estacion?
   horaEntrada    DateTime?
   horaSalida     DateTime?
   rol            RolEmpleado
   createdAt      DateTime   @default(now())
-  updatedAt      DateTime
+  updatedAt      DateTime   @updatedAt  
 }
 
 enum RolEmpleado {
@@ -155,7 +155,7 @@ enum RolEmpleado {
 }
 
 model Usuario {
-  id             Int        @id @default(autoincrement())
+  id             String     @id @default(cuid(2))
   empleado       Empleado?
   // cliente
   email          String     @unique
@@ -163,5 +163,5 @@ model Usuario {
   password       String?
   activo         Boolean    @default(true)
   createdAt      DateTime   @default(now())
-  updatedAt      DateTime   
+  updatedAt      DateTime   @updatedAt  
 }

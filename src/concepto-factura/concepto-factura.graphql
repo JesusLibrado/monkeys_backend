@@ -12,38 +12,25 @@ type ConceptoFactura {
 }
 
 input CreateConceptoFacturaInput {
-  factura: UpdateFacturaInput!
   cantidad: Int!
   producto: UpdateProductoInput
   servicio: UpdateServicioInput
-}
-
-input CreateConceptoFacturaInputWithServicio {
-  factura: UpdateFacturaInput!
-  cantidad: Int!
-  servicio: CreateServicioInput
 }
 
 input UpdateConceptoFacturaInput {
-  id: Int!
+  id: String!
   cantidad: Int
   producto: UpdateProductoInput
   servicio: UpdateServicioInput
-}
-
-input UpdateConceptoFacturaInputWithServicio {
-  id: Int!
-  cantidad: Int
-  servicio: CreateServicioInput
 }
 
 type Query {
   conceptoFacturas: [ConceptoFactura]!
-  conceptoFactura(id: Int!): ConceptoFactura
+  conceptoFactura( id: String!): ConceptoFactura
 }
 
 type Mutation {
   createConceptoFactura(createConceptoFacturaInput: CreateConceptoFacturaInput!): ConceptoFactura!
   updateConceptoFactura(updateConceptoFacturaInput: UpdateConceptoFacturaInput!): ConceptoFactura!
-  removeConceptoFactura(id: Int!): ConceptoFactura
+  removeConceptoFactura( id: String!): ConceptoFactura
 }

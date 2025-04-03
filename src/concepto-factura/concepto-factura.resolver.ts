@@ -20,7 +20,7 @@ export class ConceptoFacturaResolver {
   }
 
   @Query('conceptoFactura')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.conceptoFacturaService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class ConceptoFacturaResolver {
   }
 
   @Mutation('removeConceptoFactura')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.conceptoFacturaService.remove(id);
   }
 }

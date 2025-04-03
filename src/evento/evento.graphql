@@ -20,11 +20,11 @@ enum EstatusEvento {
 input CreateEventoInput {
   nombreCliente: String!
   estacion: UpdateEstacionInput!
-  factura: UpdateFacturaInput
+  factura: CreateFacturaInput
 }
 
 input UpdateEventoInput {
-  id: Int!
+   id: String!
   nombreCliente: String
   estacion: UpdateEstacionInput
   estatus: EstatusEvento
@@ -33,11 +33,11 @@ input UpdateEventoInput {
 
 type Query {
   eventos: [Evento]!
-  evento(id: Int!): Evento
+  evento( id: String!): Evento
 }
 
 type Mutation {
   createEvento(createEventoInput: CreateEventoInput!): Evento!
   updateEvento(updateEventoInput: UpdateEventoInput!): Evento!
-  removeEvento(id: Int!): Evento
+  removeEvento( id: String!): Evento
 }

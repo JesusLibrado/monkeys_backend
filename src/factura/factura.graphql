@@ -2,7 +2,7 @@ scalar Date
 
 type Factura {
   id: ID!
-  evento: Evento!
+  evento: Evento
   folio: Int!
   conceptos: [ConceptoFactura!]!
   total: Float!
@@ -20,35 +20,24 @@ enum EstatusFactura {
 
 input CreateFacturaInput {
   conceptos: [CreateConceptoFacturaInput!]
-  evento: UpdateEventoInput!
-}
-
-input CreateFacturaInputWithServicio {
-  conceptos: [CreateConceptoFacturaInputWithServicio!]
-  evento: UpdateEventoInput!
+  evento: UpdateEventoInput
 }
 
 input UpdateFacturaInput {
-  id: Int!
+  id: String!
   conceptos: [CreateConceptoFacturaInput]
   descuento: Float
-  estatus: EstatusFactura
-}
-
-input UpdateFacturaInputWithServicio {
-  id: Int!
-  conceptos: [CreateConceptoFacturaInputWithServicio]
-  descuento: Float
+  evento: UpdateEventoInput
   estatus: EstatusFactura
 }
 
 type Query {
   facturas: [Factura]!
-  factura(id: Int!): Factura
+  factura( id: String!): Factura
 }
 
 type Mutation {
   createFactura(createFacturaInput: CreateFacturaInput!): Factura!
   updateFactura(updateFacturaInput: UpdateFacturaInput!): Factura!
-  removeFactura(id: Int!): Factura
+  removeFactura( id: String!): Factura
 }

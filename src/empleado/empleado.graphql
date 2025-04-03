@@ -20,13 +20,13 @@ enum RolEmpleado {
 
 type Query {
   empleados: [Empleado]!
-  empleado(id: Int!): Empleado
+  empleado( id: String!): Empleado
 }
 
 type Mutation {
   createEmpleado(createEmpleadoInput: CreateEmpleadoInput!): Empleado!
   updateEmpleado(updateEmpleadoInput: UpdateEmpleadoInput!): Empleado!
-  removeEmpleado(id: Int!): Empleado
+  removeEmpleado( id: String!): Empleado
 }
 
 input CreateEmpleadoInput {
@@ -40,7 +40,7 @@ input CreateEmpleadoInput {
 }
 
 input UpdateEmpleadoInput {
-  id: Int!
+  id: String!
   nombre: String
   apellido: String
   usuario: UpdateUsuarioInput

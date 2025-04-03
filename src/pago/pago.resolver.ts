@@ -20,7 +20,7 @@ export class PagoResolver {
   }
 
   @Query('pago')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.pagoService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class PagoResolver {
   }
 
   @Mutation('removePago')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.pagoService.remove(id);
   }
 }

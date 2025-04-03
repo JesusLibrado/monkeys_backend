@@ -20,7 +20,7 @@ export class FacturaResolver {
   }
 
   @Query('factura')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.facturaService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class FacturaResolver {
   }
 
   @Mutation('removeFactura')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.facturaService.remove(id);
   }
 }

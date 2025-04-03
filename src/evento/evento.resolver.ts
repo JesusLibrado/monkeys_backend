@@ -20,7 +20,7 @@ export class EventoResolver {
   }
 
   @Query('evento')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.eventoService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class EventoResolver {
   }
 
   @Mutation('removeEvento')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.eventoService.remove(id);
   }
 }

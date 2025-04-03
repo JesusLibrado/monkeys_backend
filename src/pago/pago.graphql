@@ -32,7 +32,7 @@ input CreatePagoInput {
 }
 
 input UpdatePagoInput {
-  id: Int!
+  id: String!
   factura: UpdateFacturaInput
   comision: Float
   montoRecibido: Float
@@ -42,11 +42,11 @@ input UpdatePagoInput {
 
 type Query {
   pagos: [Pago]!
-  pago(id: Int!): Pago
+  pago( id: String!): Pago
 }
 
 type Mutation {
   createPago(createPagoInput: CreatePagoInput!): Pago!
   updatePago(updatePagoInput: UpdatePagoInput!): Pago!
-  removePago(id: Int!): Pago
+  removePago( id: String!): Pago
 }

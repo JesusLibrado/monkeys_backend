@@ -20,7 +20,7 @@ export class EmpleadoResolver {
   }
 
   @Query('empleado')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.empleadoService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class EmpleadoResolver {
   }
 
   @Mutation('removeEmpleado')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.empleadoService.remove(id);
   }
 }

@@ -20,7 +20,7 @@ export class ProductoResolver {
   }
 
   @Query('producto')
-  findOne(@Args('id') id: number) {
+  findOne(@Args('id') id: string) {
     return this.productoService.findOne(id);
   }
 
@@ -30,7 +30,7 @@ export class ProductoResolver {
   }
 
   @Mutation('removeProducto')
-  remove(@Args('id') id: number) {
+  remove(@Args('id') id: string) {
     return this.productoService.remove(id);
   }
 }

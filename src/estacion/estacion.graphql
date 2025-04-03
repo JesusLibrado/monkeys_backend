@@ -16,18 +16,18 @@ input CreateEstacionInput {
 }
 
 input UpdateEstacionInput {
-  id: Int!
+  id: String!
   empleado: UpdateEmpleadoInput
   disponible: Boolean
 }
 
 type Query {
   estaciones: [Estacion]!
-  estacion(id: Int!): Estacion
+  estacion( id: String!): Estacion
 }
 
 type Mutation {
   createEstacion(createEstacionInput: CreateEstacionInput!): Estacion!
   updateEstacion(updateEstacionInput: UpdateEstacionInput!): Estacion!
-  removeEstacion(id: Int!): Estacion
+  removeEstacion( id: String!): Estacion
 }
