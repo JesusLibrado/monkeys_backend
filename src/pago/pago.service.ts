@@ -14,15 +14,15 @@ export class PagoService {
     return `This action returns all pago`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} pago`;
   }
 
-  update(id: number, updatePagoInput: UpdatePagoInput) {
+  update(id: string, updatePagoInput: UpdatePagoInput) {
     return `This action updates a #${id} pago`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} pago`;
   }
 }

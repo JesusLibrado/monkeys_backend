@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EmpleadoResolver } from './empleado.resolver';
-import { EmpleadoService } from './empleado.service';
+import { EmpleadoResolver } from '../empleado.resolver';
+import { EmpleadoService } from '../empleado.service';
 
 describe('EmpleadoResolver', () => {
   let resolver: EmpleadoResolver;

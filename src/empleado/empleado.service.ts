@@ -40,14 +40,13 @@ export class EmpleadoService {
           horaSalida: createEmpleadoInput.horaSalida,
           rol: createEmpleadoInput.rol,
           estacion: estacionInput,
-          updatedAt: dayjs().toDate(),
           usuario: {
             create: {
               email: usuarioInput.email,
               numeroTelefono: usuarioInput.numeroTelefono,
               // encrypt
               password: usuarioInput.password,
-              updatedAt: dayjs().toDate()
+               
             }
           },
         },
@@ -65,11 +64,11 @@ export class EmpleadoService {
     return `This action returns all empleado`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} empleado`;
   }
 
-  async update(id: number, updateEmpleadoInput: UpdateEmpleadoInput): Promise<Empleado> {
+  async update(id: string, updateEmpleadoInput: UpdateEmpleadoInput): Promise<Empleado> {
     let estacionInput, usuarioInput;
 
     if(!updateEmpleadoInput.estacion) {
@@ -118,7 +117,7 @@ export class EmpleadoService {
     }
   }
 
-  async remove(empleadoId: number): Promise<Empleado> {
+  async remove(empleadoId: string): Promise<Empleado> {
     try {
       return await prisma.$transaction(async (tx)=> {
         const deletedEmpleado = await tx.empleado.delete({
