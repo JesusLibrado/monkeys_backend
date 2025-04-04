@@ -13,12 +13,12 @@ import { plainToClass } from 'class-transformer';
 export class EstacionService {
 
   async create(createEstacionInput: CreateEstacionInput): Promise<Estacion> {
+    
     try{
       const createEstacionPayload = await prisma.estacion.create({
         data: {
           numero: createEstacionInput.numero,
           empleadoId: createEstacionInput.empleado?.id,
-          updatedAt: dayjs().toDate()
         },
         include: {empleado: true}
       });
@@ -34,11 +34,11 @@ export class EstacionService {
     return `This action returns all estacion`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} estacion`;
   }
 
-  async update(id: number, updateEstacionInput: UpdateEstacionInput) {
+  async update(id: string, updateEstacionInput: UpdateEstacionInput) {
     let empleadoInput;
 
     if(!updateEstacionInput.empleado) {
@@ -71,7 +71,7 @@ export class EstacionService {
     }
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} estacion`;
   }
 }

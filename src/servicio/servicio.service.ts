@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { prisma } from 'prisma/client';
 import { 
   CreateServicioInput,
   UpdateServicioInput
@@ -14,15 +15,20 @@ export class ServicioService {
     return `This action returns all servicio`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} servicio`;
+  async findOne(id: string) {
+    return await prisma.servicio.findUnique({
+      where: {
+        id: id
+      },
+      include: {facturas: false}
+    });
   }
 
-  update(id: number, updateServicioInput: UpdateServicioInput) {
+  update(id: string, updateServicioInput: UpdateServicioInput) {
     return `This action updates a #${id} servicio`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} servicio`;
   }
 }

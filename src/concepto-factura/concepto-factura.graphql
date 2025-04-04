@@ -13,8 +13,10 @@ type ConceptoFactura {
 
 input CreateConceptoFacturaInput {
   cantidad: Int!
+  ## should I just receive productId or serviceId ??
   producto: UpdateProductoInput
   servicio: UpdateServicioInput
+  ## add createServicio: CreateServicioInput with GRECA default
 }
 
 input UpdateConceptoFacturaInput {

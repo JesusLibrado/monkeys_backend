@@ -1,28 +1,77 @@
 import { Injectable } from '@nestjs/common';
 import {
   CreateProductoInput,
+  Producto,
   UpdateProductoInput
 } from 'src/graphql';
 
+import { prisma } from 'prisma/client';
+import * as dayjs from 'dayjs';
+import { plainToClass } from 'class-transformer';
+
+const DEFAULT_FACTURAS_LENGTH = 3;
+
 @Injectable()
 export class ProductoService {
-  create(createProductoInput: CreateProductoInput) {
-    return 'This action adds a new producto';
+  async create(createProductoInput: CreateProductoInput) {
+    try{
+      let createProductoPayload = await prisma.producto.create({
+        data: {
+          ...createProductoInput,
+          cantidadVendida: 0,
+        },
+        include: { facturas: { take: DEFAULT_FACTURAS_LENGTH } }
+      });
+
+      return plainToClass(Producto, createProductoPayload);
+    }
+    catch(e) {
+      console.error(`Error creating Producto ${e}`);
+      throw new Error("Error creating entity");
+    }
   }
 
   findAll() {
     return `This action returns all producto`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} producto`;
+  async findOne(id: string) {
+    return await prisma.producto.findUnique({
+      where: {
+        id: id
+      },
+      include: {facturas: false}
+    });
   }
 
-  update(id: number, updateProductoInput: UpdateProductoInput) {
-    return `This action updates a #${id} producto`;
+  async update(id: string, updateProductoInput: UpdateProductoInput) {
+    try{
+      let createProductoPayload = await prisma.producto.update({
+        where: {
+          id: id
+        },
+        data: {
+          nombre: updateProductoInput.nombre??undefined,
+          marca: updateProductoInput.marca??undefined,
+          cantidadVendida: updateProductoInput.cantidadVendida??undefined,
+          cantidadDisponible: updateProductoInput.cantidadDisponible??undefined,
+          comisionEmpleado: updateProductoInput.comisionEmpleado??undefined,
+          precioProveedor: updateProductoInput.precioProveedor??undefined,
+          precioPublico: updateProductoInput.precioPublico??undefined,
+           
+        },
+        include: { facturas: { take: DEFAULT_FACTURAS_LENGTH } }
+      });
+
+      return plainToClass(Producto, createProductoPayload);
+    }
+    catch(e) {
+      console.error(`Error creating Producto ${e}`);
+      throw new Error("Error creating entity");
+    }
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} producto`;
   }
 }

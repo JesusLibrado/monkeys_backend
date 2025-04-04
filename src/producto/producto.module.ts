@@ -4,5 +4,6 @@ import { ProductoResolver } from './producto.resolver';
 
 @Module({
   providers: [ProductoResolver, ProductoService],
+  exports: [ProductoService]
 })
 export class ProductoModule {}

@@ -20,7 +20,7 @@ enum EstatusFactura {
 
 input CreateFacturaInput {
   conceptos: [CreateConceptoFacturaInput!]
-  evento: UpdateEventoInput
+  evento: CreateEventoInput
 }
 
 input UpdateFacturaInput {

@@ -93,7 +93,6 @@ export class UpdateEstacionInput {
 export class CreateEventoInput {
     nombreCliente: string;
     estacion: UpdateEstacionInput;
-    factura?: Nullable<CreateFacturaInput>;
 }
 
 export class UpdateEventoInput {
@@ -106,7 +105,7 @@ export class UpdateEventoInput {
 
 export class CreateFacturaInput {
     conceptos?: Nullable<CreateConceptoFacturaInput[]>;
-    evento?: Nullable<UpdateEventoInput>;
+    evento?: Nullable<CreateEventoInput>;
 }
 
 export class UpdateFacturaInput {

@@ -42,7 +42,7 @@ model Factura {
   evento               Evento?
   folio                Int                @unique() @default(autoincrement())
   conceptos            ConceptoFactura[]
-  total                Float
+  total                Float              @default(0)
   descuento            Float?
   estatus              EstatusFactura     
   pago                 Pago?
@@ -62,9 +62,9 @@ model ConceptoFactura {
   facturaId             String     @unique
   cantidad              Int
   producto              Producto?  @relation(fields:[productoId], references: [id])
-  productoId            String     @unique
+  productoId            String?    @unique
   servicio              Servicio?  @relation(fields:[servicioId], references: [id])
-  servicioId            String     @unique
+  servicioId            String?    @unique
   total                 Float
   createdAt             DateTime   @default(now())
   updatedAt             DateTime   @updatedAt  

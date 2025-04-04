@@ -1,28 +1,32 @@
 import { Injectable } from '@nestjs/common';
 import { 
   CreateEventoInput,
-  UpdateEventoInput
+  UpdateEventoInput,
+  EstatusEvento,
+  CreateConceptoFacturaInput,
+  EstatusFactura,
+  CreateFacturaInput,
+  Evento
 } from 'src/graphql';
 
 @Injectable()
 export class EventoService {
-  create(createEventoInput: CreateEventoInput) {
-    return 'This action adds a new evento';
-  }
+
+  create(createEventoInput: CreateEventoInput){}
 
   findAll() {
     return `This action returns all evento`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} evento`;
   }
 
-  update(id: number, updateEventoInput: UpdateEventoInput) {
+  update(id: string, updateEventoInput: UpdateEventoInput) {
     return `This action updates a #${id} evento`;
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} evento`;
   }
 }

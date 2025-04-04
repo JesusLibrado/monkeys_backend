@@ -22,7 +22,7 @@ export class UsuarioService {
       newUsuario = await prisma.usuario.create({
         data: {
           ...usuarioInput,
-          updatedAt: dayjs().toDate()
+           
         }
       });
       console.log(`Usuario created: ${newUsuario}`);
@@ -37,11 +37,11 @@ export class UsuarioService {
     return `This action returns all usuario`;
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return `This action returns a #${id} usuario`;
   }
 
-  update(id: number, updateUsuarioInput: UpdateUsuarioInput) {
+  update(id: string, updateUsuarioInput: UpdateUsuarioInput) {
     return `This action updates a #${id} usuario`;
   }
 
