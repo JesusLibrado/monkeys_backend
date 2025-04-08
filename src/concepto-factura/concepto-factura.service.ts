@@ -47,8 +47,8 @@ export class ConceptoFacturaService {
       });
       return plainToClass(ConceptoFactura, conceptoFactura);
     } catch (e) {
-      console.error();
-      throw new Error();
+      console.error(`Error reading conceptoFactura  ${e}`);
+      throw new Error("Error reading entity");
     }
   }
 
