@@ -19,7 +19,7 @@ enum EstatusEvento {
 
 input CreateEventoInput {
   nombreCliente: String!
-  estacion: UpdateEstacionInput!
+  estacionId: String!
 }
 
 input UpdateEventoInput {

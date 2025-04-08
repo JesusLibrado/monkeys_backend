@@ -17,8 +17,8 @@ model Pago {
   id                   String       @id @default(cuid(2))
   factura              Factura      @relation(fields:[facturaId], references: [id])
   facturaId            String       @unique
-  comision             Float?
-  montoRecibido        Float?
+  comision             Float?       // para pagos con tarjeta
+  montoRecibido        Float
   montoDevuelto        Float?
   metodoPago           MetodoDePago
   estatus              EstatusPago
@@ -59,12 +59,12 @@ enum EstatusFactura {
 model ConceptoFactura {
   id                    String     @id @default(cuid(2))
   factura               Factura    @relation(fields:[facturaId], references: [id])
-  facturaId             String     @unique
+  facturaId             String     
   cantidad              Int
   producto              Producto?  @relation(fields:[productoId], references: [id])
-  productoId            String?    @unique
+  productoId            String?    
   servicio              Servicio?  @relation(fields:[servicioId], references: [id])
-  servicioId            String?    @unique
+  servicioId            String?    
   total                 Float
   createdAt             DateTime   @default(now())
   updatedAt             DateTime   @updatedAt  

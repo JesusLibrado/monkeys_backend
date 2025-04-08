@@ -12,12 +12,12 @@ type Estacion {
 
 input CreateEstacionInput {
   numero: Int!
-  empleado: UpdateEmpleadoInput
+  empleadoId: String
 }
 
 input UpdateEstacionInput {
   id: String!
-  empleado: UpdateEmpleadoInput
+  empleadoId: String
   disponible: Boolean
 }
 

@@ -47,8 +47,9 @@ export enum CategoriaServicio {
 
 export class CreateConceptoFacturaInput {
     cantidad: number;
-    producto?: Nullable<UpdateProductoInput>;
-    servicio?: Nullable<UpdateServicioInput>;
+    productoId?: Nullable<string>;
+    servicioId?: Nullable<string>;
+    servicio?: Nullable<CreateServicioInput>;
 }
 
 export class UpdateConceptoFacturaInput {
@@ -73,7 +74,7 @@ export class UpdateEmpleadoInput {
     nombre?: Nullable<string>;
     apellido?: Nullable<string>;
     usuario?: Nullable<UpdateUsuarioInput>;
-    estacion?: Nullable<UpdateEstacionInput>;
+    estacionId?: Nullable<string>;
     horaEntrada?: Nullable<string>;
     horaSalida?: Nullable<string>;
     rol?: Nullable<RolEmpleado>;
@@ -81,18 +82,18 @@ export class UpdateEmpleadoInput {
 
 export class CreateEstacionInput {
     numero: number;
-    empleado?: Nullable<UpdateEmpleadoInput>;
+    empleadoId?: Nullable<string>;
 }
 
 export class UpdateEstacionInput {
     id: string;
-    empleado?: Nullable<UpdateEmpleadoInput>;
+    empleadoId?: Nullable<string>;
     disponible?: Nullable<boolean>;
 }
 
 export class CreateEventoInput {
     nombreCliente: string;
-    estacion: UpdateEstacionInput;
+    estacionId: string;
 }
 
 export class UpdateEventoInput {
@@ -117,9 +118,9 @@ export class UpdateFacturaInput {
 }
 
 export class CreatePagoInput {
-    factura: UpdateFacturaInput;
+    facturaId: string;
     comision?: Nullable<number>;
-    montoRecibido?: Nullable<number>;
+    montoRecibido: number;
     montoDevuelto?: Nullable<number>;
     metodoPago: MetodoDePago;
 }

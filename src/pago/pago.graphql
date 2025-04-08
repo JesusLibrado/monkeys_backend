@@ -24,9 +24,9 @@ enum EstatusPago {
 }
 
 input CreatePagoInput {
-  factura: UpdateFacturaInput!
+  facturaId: String!
   comision: Float
-  montoRecibido: Float
+  montoRecibido: Float!
   montoDevuelto: Float
   metodoPago: MetodoDePago!
 }

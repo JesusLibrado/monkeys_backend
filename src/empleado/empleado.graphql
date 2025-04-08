@@ -44,7 +44,7 @@ input UpdateEmpleadoInput {
   nombre: String
   apellido: String
   usuario: UpdateUsuarioInput
-  estacion: UpdateEstacionInput
+  estacionId: String
   horaEntrada: String
   horaSalida: String
   rol: RolEmpleado
