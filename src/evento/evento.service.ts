@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { prisma } from 'prisma/client';
 import { 
   CreateEventoInput,
   UpdateEventoInput,
@@ -14,12 +15,16 @@ export class EventoService {
 
   create(createEventoInput: CreateEventoInput){}
 
-  findAll() {
-    return `This action returns all evento`;
+  async findAll() {
+    return await prisma.evento.findMany();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} evento`;
+  async findOne(id: string) {
+    return await prisma.evento.findUnique({
+      where: {
+        id: id
+      }
+    });
   }
 
   update(id: string, updateEventoInput: UpdateEventoInput) {

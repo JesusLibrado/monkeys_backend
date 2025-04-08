@@ -71,14 +71,14 @@ export class EmpleadoService {
   async update(id: string, updateEmpleadoInput: UpdateEmpleadoInput): Promise<Empleado> {
     let estacionInput, usuarioInput;
 
-    if(!updateEmpleadoInput.estacion) {
-      estacionInput = updateEmpleadoInput.estacion===null?{
+    if(!updateEmpleadoInput.estacionId) {
+      estacionInput = updateEmpleadoInput.estacionId===null||updateEmpleadoInput.estacionId===""?{
         disconnect: true
       }:undefined;
     } else {
       // might update Estacion number related to this Empleado
       estacionInput = {
-        connect: {id: updateEmpleadoInput.estacion?.id}
+        connect: {id: updateEmpleadoInput.estacionId}
       }
     }
 

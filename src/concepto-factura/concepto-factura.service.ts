@@ -43,16 +43,17 @@ export class ConceptoFacturaService {
     )
   }
 
-  async createForNewFactura(conceptosFactura: CreateConceptoFacturaInput[]) {
+  async createNewForFactura(conceptosFactura: CreateConceptoFacturaInput[]) {
     return await Promise.all(
       conceptosFactura.map(
         async (conceptoFactura: CreateConceptoFacturaInput)=> {
       
-          let {cantidad, producto, servicio} = conceptoFactura;
-          let newServicio, precio;
+          let {cantidad, productoId, servicioId, servicio} = conceptoFactura;
+          let precio;
 
-          if(producto) {
-            producto = await this.productoService.findOne(producto.id);
+          if(productoId!="") {
+            // add try catch block
+            const producto = await this.productoService.findOne(productoId??"");
             precio = producto?.precioPublico;
             return {
               cantidad: cantidad,
@@ -60,14 +61,15 @@ export class ConceptoFacturaService {
               total: precio * cantidad
             }
           }
-          if(servicio) {
-            newServicio = await this.servicioService.findOne(servicio.id);
-            precio = newServicio.precio;
+          if(servicioId!="") {
+            // add try catch block
+            const newServicio = await this.servicioService.findOne(servicioId??"");
+            precio = newServicio?.precio;
             // handle case when servicio is GRECA or OTRO
             // might have to create a new servicio
             return {
               cantidad: cantidad,
-              servicioId: servicio?newServicio.id:undefined,
+              servicioId: newServicio?.id,
               total: precio * cantidad
             }
           }

@@ -18,7 +18,7 @@ export class EstacionService {
       const createEstacionPayload = await prisma.estacion.create({
         data: {
           numero: createEstacionInput.numero,
-          empleadoId: createEstacionInput.empleado?.id,
+          empleadoId: createEstacionInput.empleadoId??null,
         },
         include: {empleado: true}
       });
@@ -41,14 +41,14 @@ export class EstacionService {
   async update(id: string, updateEstacionInput: UpdateEstacionInput) {
     let empleadoInput;
 
-    if(!updateEstacionInput.empleado) {
-      empleadoInput = updateEstacionInput.empleado===null?{
+    if(!updateEstacionInput.empleadoId) {
+      empleadoInput = updateEstacionInput.empleadoId===null||updateEstacionInput.empleadoId===""?{
         disconnect: true
       }:undefined;
     } else {
       // might update Empleado related to this Estacion
       empleadoInput = {
-        connect: {id: updateEstacionInput.empleado?.id}
+        connect: {id: updateEstacionInput.empleadoId}
       }
     }
     
