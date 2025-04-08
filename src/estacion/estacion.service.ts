@@ -30,12 +30,31 @@ export class EstacionService {
     }
   }
 
-  findAll() {
-    return `This action returns all estacion`;
+  async findAll() {
+    try {
+      const estaciones = await prisma.estacion.findMany({include: {empleado: true}});
+      return estaciones; 
+    } catch (e) {
+      console.error(`Error reading EStaciones ${e}`);
+      throw new Error("Error reading entites");
+    }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} estacion`;
+  async findOne(id: string) {
+    try {
+      const estacion = await prisma.estacion.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          empleado: true
+        }
+      });
+      return plainToClass(Estacion, estacion);
+    } catch (e) {
+      console.error(`Error reading Estación ${e}`);
+      throw new Error("Error reading entity");
+    }
   }
 
   async update(id: string, updateEstacionInput: UpdateEstacionInput) {

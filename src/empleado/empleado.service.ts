@@ -60,12 +60,32 @@ export class EmpleadoService {
     }
   }
 
-  findAll() {
-    return `This action returns all empleado`;
+  async findAll() {
+    try {
+      const empleados = await prisma.empleado.findMany({include: {usuario: true, estacion: true}});
+      return empleados;
+    } catch (e) {
+      console.error(`Error reading Empleados ${e}`);
+      throw new Error("Error reading entities");
+    }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} empleado`;
+  async findOne(id: string) {
+    try {
+      const empleado = await prisma.empleado.findUnique({
+        where: {
+          id
+        },
+        include: {
+          usuario: true,
+          estacion: true
+        }
+      });
+      return plainToClass(Empleado, empleado)
+    } catch (e) {
+      console.error(`Error reading Empleado ${e}`);
+      throw new Error("Error reading entity");
+    }
   }
 
   async update(id: string, updateEmpleadoInput: UpdateEmpleadoInput): Promise<Empleado> {

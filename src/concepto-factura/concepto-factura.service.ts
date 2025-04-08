@@ -8,6 +8,8 @@ import {
 import { objectIsEmtpy } from 'src/common/util';
 import { ProductoService } from 'src/producto/producto.service';
 import { ServicioService } from 'src/servicio/servicio.service';
+import { prisma } from 'prisma/client';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class ConceptoFacturaService {
@@ -21,12 +23,33 @@ export class ConceptoFacturaService {
     return 'This action adds a new conceptoFactura';
   }
 
-  findAll() {
-    return `This action returns all conceptoFactura`;
+  async findAll() {
+    try {
+      const conceptoFacturas = await prisma.conceptoFactura.findMany({include: {factura: true, producto: true, servicio: true}}); 
+      return conceptoFacturas;
+    } catch (e) {
+      console.error(`Error reading conceptoFacturas ${e}`);
+      throw new Error("Error reading entities");
+    }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} conceptoFactura`;
+  async findOne(id: string) {
+    try {
+      const conceptoFactura = await prisma.conceptoFactura.findUnique({
+        where: {
+          id
+        },
+        include: {
+          factura: true,
+          producto: true,
+          servicio: true
+        }
+      });
+      return plainToClass(ConceptoFactura, conceptoFactura);
+    } catch (e) {
+      console.error();
+      throw new Error();
+    }
   }
 
   update(id: string, updateConceptoFacturaInput: UpdateConceptoFacturaInput) {

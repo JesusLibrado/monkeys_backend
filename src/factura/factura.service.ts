@@ -11,6 +11,7 @@ import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
 import { plainToClass } from 'class-transformer';
 import { ConceptoFacturaService } from 'src/concepto-factura/concepto-factura.service';
+import e from 'express';
 
 @Injectable()
 export class FacturaService {
@@ -65,12 +66,31 @@ export class FacturaService {
     }
   }
 
-  findAll() {
-    return `This action returns all factura`;
+  async findAll() {
+    try {
+      const facturas = await prisma.factura.findMany({include: {evento: true}});
+      return facturas;
+    } catch (error) {
+      console.error(`Error reading Facturas ${e}`);
+      throw new Error("Error reading entities");
+    }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} factura`;
+  async findOne(id: string) {
+    try {
+      const factura = await prisma.factura.findUnique({
+        where: {
+          id,
+        }, 
+        include: {
+          evento: true
+        }
+      });
+      return plainToClass(Factura, factura);
+    } catch (e) {
+      console.error(`Error reading Factura ${e}`);
+      throw new Error("Error reading entity");
+    }
   }
 
   update(id: string, updateFacturaInput: UpdateFacturaInput) {

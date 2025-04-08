@@ -31,17 +31,29 @@ export class ProductoService {
     }
   }
 
-  findAll() {
-    return `This action returns all producto`;
+  async findAll() {
+    try {
+      const productos = await prisma.producto.findMany({include: {facturas: false}});
+      return productos;
+    } catch (e) {
+      console.error(`Error reading Productos ${e}`);
+      throw new Error("Error reading entities");
+    }
   }
 
   async findOne(id: string) {
-    return await prisma.producto.findUnique({
-      where: {
-        id: id
-      },
-      include: {facturas: false}
-    });
+    try {
+      const producto = await prisma.producto.findUnique({
+        where: {
+          id: id
+        },
+        include: {facturas: false}
+      });
+      return plainToClass(Producto, producto); 
+    } catch (e) {
+      console.error(`Error reading Producto ${e}`);
+      throw new Error("Error reading entity");
+    }
   }
 
   async update(id: string, updateProductoInput: UpdateProductoInput) {

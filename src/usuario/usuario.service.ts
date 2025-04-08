@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from '@nestjs/common';
 import { 
   CreateUsuarioInput,
-  UpdateUsuarioInput
+  UpdateUsuarioInput,
+  Usuario
 } from 'src/graphql';
 
 import { prisma } from 'prisma/client';
 import { Prisma } from '@prisma/client';
 import * as dayjs from 'dayjs';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class UsuarioService {
@@ -33,12 +35,31 @@ export class UsuarioService {
     
   }
 
-  findAll() {
-    return `This action returns all usuario`;
+  async findAll() {
+    try {
+      const usuarios = await prisma.usuario.findMany({include: {empleado: true}});
+      return usuarios; 
+    } catch (e) {
+      console.error(`Error reading Usuarios ${e}`);
+      throw new Error("Error reading entities");
+    }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: string) {
+    try {
+      const usuario = await prisma.usuario.findUnique({
+        where: {
+          id,
+        }, 
+        include: {
+          empleado: true
+        }
+      });
+      return plainToClass(Usuario, usuario);
+    } catch (e) {
+      console.error(`Error reading Usuario ${e}`);
+      throw new Error("Error reading entity");
+    }
   }
 
   update(id: string, updateUsuarioInput: UpdateUsuarioInput) {
