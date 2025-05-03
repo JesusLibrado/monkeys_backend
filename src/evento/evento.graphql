@@ -23,7 +23,7 @@ input CreateEventoInput {
 }
 
 input UpdateEventoInput {
-   id: String!
+  id: String!
   nombreCliente: String
   estacion: UpdateEstacionInput
   estatus: EstatusEvento
@@ -33,6 +33,7 @@ input UpdateEventoInput {
 type Query {
   eventos: [Evento]!
   evento( id: String!): Evento
+  eventoByEstacion( estacionId: String! ): Evento
 }
 
 type Mutation {

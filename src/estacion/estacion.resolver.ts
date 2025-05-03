@@ -14,7 +14,7 @@ export class EstacionResolver {
     return this.estacionService.create(createEstacionInput);
   }
 
-  @Query('estacion')
+  @Query('estaciones')
   findAll() {
     return this.estacionService.findAll();
   }

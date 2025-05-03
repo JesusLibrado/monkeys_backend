@@ -33,7 +33,7 @@ input CreateEmpleadoInput {
   nombre: String!
   apellido: String!
   usuario: CreateUsuarioInput!
-  estacion: UpdateEstacionInput
+  estacionId: String
   horaEntrada: String
   horaSalida: String
   rol: RolEmpleado!

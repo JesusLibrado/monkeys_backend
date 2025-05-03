@@ -24,6 +24,11 @@ export class EventoResolver {
     return this.eventoService.findOne(id);
   }
 
+  @Query('eventoByEstacion')
+  findByEstacion(@Args('estacionId') estacionId: string) {
+    return this.eventoService.findByEstacion(estacionId);
+  }
+
   @Mutation('updateEvento')
   update(@Args('updateEventoInput') updateEventoInput: UpdateEventoInput) {
     return this.eventoService.update(updateEventoInput.id, updateEventoInput);

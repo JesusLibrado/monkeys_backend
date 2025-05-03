@@ -17,7 +17,7 @@ import { PagoModule } from './pago/pago.module';
 
 
 const configModule: Promise<DynamicModule> = ConfigModule.forRoot({
-  envFilePath: `.env.${process.env.NODE_ENV}`
+  envFilePath: !process.env.NODE_ENV ? '.env' : `.env.${process.env.NODE_ENV}`
 });
 
 const graphQLModule: DynamicModule = GraphQLModule.forRoot<ApolloDriverConfig>({

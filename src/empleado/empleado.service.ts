@@ -10,6 +10,10 @@ import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
 import { plainToClass } from 'class-transformer';
 
+// ****************** NOTES
+
+// can relate an Empleado to an occuppied Estacion ??
+
 
 @Injectable()
 export class EmpleadoService {
@@ -19,14 +23,14 @@ export class EmpleadoService {
   async create(createEmpleadoInput: CreateEmpleadoInput): Promise<Empleado>{
     let estacionInput;
 
-    if(!createEmpleadoInput.estacion) {
-      estacionInput = createEmpleadoInput.estacion===null?{
+    if(!createEmpleadoInput.estacionId) {
+      estacionInput = createEmpleadoInput.estacionId===null?{
         disconnect: true
       }:undefined;
     } else {
       // might update Estacion related to this Empleado
       estacionInput = {
-        connect: {id: createEmpleadoInput.estacion?.id}
+        connect: {id: createEmpleadoInput.estacionId}
       }
     }
 
@@ -60,8 +64,10 @@ export class EmpleadoService {
     }
   }
 
-  findAll() {
-    return `This action returns all empleado`;
+  async findAll() {
+    return await prisma.empleado.findMany({
+      include: {estacion: true}
+    });
   }
 
   findOne(id: string) {

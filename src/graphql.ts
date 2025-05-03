@@ -63,7 +63,7 @@ export class CreateEmpleadoInput {
     nombre: string;
     apellido: string;
     usuario: CreateUsuarioInput;
-    estacion?: Nullable<UpdateEstacionInput>;
+    estacionId?: Nullable<string>;
     horaEntrada?: Nullable<string>;
     horaSalida?: Nullable<string>;
     rol: RolEmpleado;
@@ -214,6 +214,8 @@ export abstract class IQuery {
     abstract eventos(): Nullable<Evento>[] | Promise<Nullable<Evento>[]>;
 
     abstract evento(id: string): Nullable<Evento> | Promise<Nullable<Evento>>;
+
+    abstract eventoByEstacion(estacionId: string): Nullable<Evento> | Promise<Nullable<Evento>>;
 
     abstract facturas(): Nullable<Factura>[] | Promise<Nullable<Factura>[]>;
 

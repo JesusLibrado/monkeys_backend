@@ -23,8 +23,22 @@ export class EventoService {
     return await prisma.evento.findUnique({
       where: {
         id: id
+      },
+      include: {
+        factura: true
       }
     });
+  }
+
+  async findByEstacion(estacionId: string) {
+    return await prisma.evento.findUnique({
+      where: {
+        estacionId: estacionId
+      },
+      include: {
+        factura: true
+      }
+    })
   }
 
   update(id: string, updateEventoInput: UpdateEventoInput) {

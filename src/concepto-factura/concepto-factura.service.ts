@@ -30,7 +30,11 @@ export class ConceptoFacturaService {
   }
 
   update(id: string, updateConceptoFacturaInput: UpdateConceptoFacturaInput) {
-    return `This action updates a #${id} conceptoFactura`;
+    try {
+
+    } catch(e) {
+      
+    }
   }
 
   remove(id: string) {
