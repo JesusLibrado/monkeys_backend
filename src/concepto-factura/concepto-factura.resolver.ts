@@ -14,9 +14,9 @@ export class ConceptoFacturaResolver {
     return this.conceptoFacturaService.create(createConceptoFacturaInput);
   }
 
-  @Query('conceptoFactura')
-  findAll() {
-    return this.conceptoFacturaService.findAll();
+  @Query('conceptosFactura')
+  findAll(@Args('facturaId') facturaId: string) {
+    return this.conceptoFacturaService.findAllByFactura(facturaId);
   }
 
   @Query('conceptoFactura')

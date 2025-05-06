@@ -199,7 +199,7 @@ export class ConceptoFactura {
 }
 
 export abstract class IQuery {
-    abstract conceptoFacturas(): Nullable<ConceptoFactura>[] | Promise<Nullable<ConceptoFactura>[]>;
+    abstract conceptosFactura(facturaId: string): Nullable<ConceptoFactura>[] | Promise<Nullable<ConceptoFactura>[]>;
 
     abstract conceptoFactura(id: string): Nullable<ConceptoFactura> | Promise<Nullable<ConceptoFactura>>;
 

@@ -26,7 +26,7 @@ input UpdateConceptoFacturaInput {
 }
 
 type Query {
-  conceptoFacturas: [ConceptoFactura]!
+  conceptosFactura(facturaId: String!): [ConceptoFactura]!
   conceptoFactura( id: String!): ConceptoFactura
 }
 

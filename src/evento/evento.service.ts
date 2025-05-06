@@ -31,9 +31,16 @@ export class EventoService {
   }
 
   async findByEstacion(estacionId: string) {
-    return await prisma.evento.findUnique({
+    return await prisma.evento.findFirst({
       where: {
-        estacionId: estacionId
+        estacionId: estacionId,
+        AND: [
+          {
+            estatus: { 
+              equals: EstatusEvento.EN_PROGRESO
+            }
+          }
+        ]
       },
       include: {
         factura: true

@@ -4,10 +4,14 @@ import {
   CreateConceptoFacturaInput,
   UpdateConceptoFacturaInput
 } from 'src/graphql';
-
-import { objectIsEmtpy } from 'src/common/util';
 import { ProductoService } from 'src/producto/producto.service';
 import { ServicioService } from 'src/servicio/servicio.service';
+
+import { prisma } from 'prisma/client';
+import * as dayjs from 'dayjs';
+import { plainToClass } from 'class-transformer';
+import { objectIsEmtpy } from 'src/common/util';
+
 
 @Injectable()
 export class ConceptoFacturaService {
@@ -21,8 +25,13 @@ export class ConceptoFacturaService {
     return 'This action adds a new conceptoFactura';
   }
 
-  findAll() {
-    return `This action returns all conceptoFactura`;
+  async findAllByFactura(facturaId: string) {
+    return await prisma.conceptoFactura.findMany({
+      where: {
+        facturaId: facturaId
+      },
+      include: {producto: true, servicio: true}
+    });
   }
 
   findOne(id: string) {
@@ -41,7 +50,7 @@ export class ConceptoFacturaService {
     return `This action removes a #${id} conceptoFactura`;
   }
 
-  getTotal(conceptosFactura: []): number {
+  getTotal(conceptosFactura: any[]): number {
     return conceptosFactura.reduce(
       (sum, currentCF: ConceptoFactura) => sum + currentCF.total, 0
     )
