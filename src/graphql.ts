@@ -229,6 +229,8 @@ export abstract class IQuery {
 
     abstract producto(id: string): Nullable<Producto> | Promise<Nullable<Producto>>;
 
+    abstract availableProductos(): Nullable<Producto>[] | Promise<Nullable<Producto>[]>;
+
     abstract servicios(): Nullable<Servicio>[] | Promise<Nullable<Servicio>[]>;
 
     abstract servicio(id: string): Nullable<Servicio> | Promise<Nullable<Servicio>>;

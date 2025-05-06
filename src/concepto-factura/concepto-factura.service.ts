@@ -25,7 +25,7 @@ export class ConceptoFacturaService {
     return 'This action adds a new conceptoFactura';
   }
 
-  async findAllByFactura(facturaId: string) {
+  async findAllFromFactura(facturaId: string) {
     return await prisma.conceptoFactura.findMany({
       where: {
         facturaId: facturaId

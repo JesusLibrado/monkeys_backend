@@ -1,18 +1,35 @@
 import { Injectable } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import { prisma } from 'prisma/client';
 import { 
   CreateServicioInput,
+  Servicio,
   UpdateServicioInput
 } from 'src/graphql';
 
+
 @Injectable()
 export class ServicioService {
-  create(createServicioInput: CreateServicioInput) {
-    return 'This action adds a new servicio';
+
+  async create(createServicioInput: CreateServicioInput) {
+    try{
+      let createServicioPayload = await prisma.servicio.create({
+        data: {
+          ...createServicioInput
+        },
+        // include: { facturas: { take: DEFAULT_FACTURAS_LENGTH } }
+      });
+
+      return plainToClass(Servicio, createServicioPayload);
+    }
+    catch(e) {
+      console.error(`Error creating Servicio ${e}`);
+      throw new Error("Error creating entity");
+    }
   }
 
-  findAll() {
-    return `This action returns all servicio`;
+  async findAll() {
+    return await prisma.servicio.findMany();
   }
 
   async findOne(id: string) {

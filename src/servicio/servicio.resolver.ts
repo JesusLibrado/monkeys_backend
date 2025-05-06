@@ -14,7 +14,7 @@ export class ServicioResolver {
     return this.servicioService.create(createServicioInput);
   }
 
-  @Query('servicio')
+  @Query('servicios')
   findAll() {
     return this.servicioService.findAll();
   }

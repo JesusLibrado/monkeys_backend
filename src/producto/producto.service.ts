@@ -8,6 +8,7 @@ import {
 import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
 import { plainToClass } from 'class-transformer';
+import { Prisma } from '@prisma/client';
 
 const DEFAULT_FACTURAS_LENGTH = 3;
 
@@ -20,7 +21,7 @@ export class ProductoService {
           ...createProductoInput,
           cantidadVendida: 0,
         },
-        include: { facturas: { take: DEFAULT_FACTURAS_LENGTH } }
+        // include: { facturas: { take: DEFAULT_FACTURAS_LENGTH } }
       });
 
       return plainToClass(Producto, createProductoPayload);
@@ -31,8 +32,10 @@ export class ProductoService {
     }
   }
 
-  findAll() {
-    return `This action returns all producto`;
+  async findAll(whereClause?: Prisma.ProductoFindManyArgs) {
+    return await prisma.producto.findMany({
+      ...whereClause
+    });
   }
 
   async findOne(id: string) {

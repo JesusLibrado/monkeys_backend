@@ -14,9 +14,20 @@ export class ProductoResolver {
     return this.productoService.create(createProductoInput);
   }
 
-  @Query('producto')
+  @Query('productos')
   findAll() {
     return this.productoService.findAll();
+  }
+
+  @Query('availableProductos')
+  availableProductos() {
+    return this.productoService.findAll({
+      where: {
+        cantidadDisponible: {
+          gt: 0
+        }
+      }
+    });
   }
 
   @Query('producto')

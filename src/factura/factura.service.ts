@@ -58,23 +58,21 @@ export class FacturaService {
           data: {...prismaCreateInput},
           include: { 
             conceptos: true, 
-            evento: { 
-              include: { 
-                estacion: true 
-              } 
-            } 
+            evento: true
           }
         });
 
-        // update Estacion... set !disponible
-        await prisma.estacion.update({
-          where: {
-            id: createFacturaPayload.evento?.estacion.id
-          },
-          data: {
-            disponible: false
-          }
-        });
+        if(evento){
+          // update Estacion... set !disponible
+          await prisma.estacion.update({
+            where: {
+              id: evento.estacionId
+            },
+            data: {
+              disponible: false
+            }
+          });
+        }
 
         return createFacturaPayload;
       });

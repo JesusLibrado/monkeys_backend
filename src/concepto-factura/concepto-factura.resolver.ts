@@ -16,7 +16,7 @@ export class ConceptoFacturaResolver {
 
   @Query('conceptosFactura')
   findAll(@Args('facturaId') facturaId: string) {
-    return this.conceptoFacturaService.findAllByFactura(facturaId);
+    return this.conceptoFacturaService.findAllFromFactura(facturaId);
   }
 
   @Query('conceptoFactura')

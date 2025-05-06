@@ -40,6 +40,7 @@ input UpdateProductoInput {
 type Query {
   productos: [Producto]!
   producto( id: String!): Producto
+  availableProductos: [Producto]!
 }
 
 type Mutation {
