@@ -12,6 +12,7 @@ type ConceptoFactura {
 }
 
 input CreateConceptoFacturaInput {
+  facturaId: String!
   cantidad: Int!
   productoId: String
   servicioId: String

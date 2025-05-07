@@ -46,6 +46,7 @@ export enum CategoriaServicio {
 }
 
 export class CreateConceptoFacturaInput {
+    facturaId: string;
     cantidad: number;
     productoId?: Nullable<string>;
     servicioId?: Nullable<string>;
