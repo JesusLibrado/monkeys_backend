@@ -109,7 +109,7 @@ export class ConceptoFacturaService {
       }
     } 
 
-    if(servicioId!==""&&servicioId) {
+    if(servicioId!=""&&servicioId) {
       // add try catch block
       const servicio = await this.servicioService.findOne(servicioId??"");
       precio = servicio?.precio;

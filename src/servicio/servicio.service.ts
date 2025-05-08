@@ -48,4 +48,14 @@ export class ServicioService {
   remove(id: string) {
     return `This action removes a #${id} servicio`;
   }
+
+  connectInput(servicioId: string) {
+    return {
+      servicio: {
+        connect: {
+          id: servicioId
+        }
+      }
+    }
+  }
 }
