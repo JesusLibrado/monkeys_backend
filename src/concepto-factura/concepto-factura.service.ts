@@ -70,8 +70,12 @@ export class ConceptoFacturaService {
     }
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} conceptoFactura`;
+  async remove(id: string) {
+    return await prisma.conceptoFactura.delete({
+      where: {
+        id: id
+      }
+    });
   }
 
   getTotal(conceptosFactura: any[]): number {
