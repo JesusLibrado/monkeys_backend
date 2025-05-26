@@ -19,6 +19,11 @@ export class EstacionResolver {
     return this.estacionService.findAll();
   }
 
+  @Query('estacionesDisponibles')
+  getAvailableEstaciones() {
+    return this.estacionService.getAvailableEstaciones();
+  }
+
   @Query('estacion')
   findOne(@Args('id') id: string) {
     return this.estacionService.findOne(id);

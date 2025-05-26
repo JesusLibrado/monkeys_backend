@@ -212,6 +212,8 @@ export abstract class IQuery {
 
     abstract estacion(id: string): Nullable<Estacion> | Promise<Nullable<Estacion>>;
 
+    abstract estacionesDisponibles(): Nullable<Estacion>[] | Promise<Nullable<Estacion>[]>;
+
     abstract eventos(): Nullable<Evento>[] | Promise<Nullable<Evento>[]>;
 
     abstract evento(id: string): Nullable<Evento> | Promise<Nullable<Evento>>;

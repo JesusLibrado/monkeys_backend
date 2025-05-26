@@ -34,6 +34,24 @@ export class EstacionService {
     }
   }
 
+  async getAvailableEstaciones() {
+    return await prisma.estacion.findMany({
+      where: {
+        AND: [
+          {
+            disponible: true
+          },
+          {
+            empleadoId: {
+              not: null
+            }
+          }
+        ]
+      },
+      include: {empleado: true}
+    });
+  }
+
   async findAll() {
     return await prisma.estacion.findMany({
       orderBy: [

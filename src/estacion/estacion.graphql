@@ -24,6 +24,7 @@ input UpdateEstacionInput {
 type Query {
   estaciones: [Estacion]!
   estacion( id: String!): Estacion
+  estacionesDisponibles: [Estacion]!
 }
 
 type Mutation {
