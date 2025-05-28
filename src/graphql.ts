@@ -274,6 +274,8 @@ export abstract class IMutation {
 
     abstract removeFactura(id: string): Nullable<Factura> | Promise<Nullable<Factura>>;
 
+    abstract cancelFactura(id: string): Nullable<Factura> | Promise<Nullable<Factura>>;
+
     abstract createPago(createPagoInput: CreatePagoInput): Pago | Promise<Pago>;
 
     abstract updatePago(updatePagoInput: UpdatePagoInput): Pago | Promise<Pago>;

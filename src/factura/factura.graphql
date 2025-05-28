@@ -40,6 +40,6 @@ type Mutation {
   createFactura(createFacturaInput: CreateFacturaInput!): Factura!
   updateFactura(updateFacturaInput: UpdateFacturaInput!): Factura!
   removeFactura( id: String!): Factura
-
+  cancelFactura(id: String!): Factura
   
 }

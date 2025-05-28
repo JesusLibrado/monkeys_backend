@@ -13,7 +13,7 @@ import * as dayjs from 'dayjs';
 import { plainToClass } from 'class-transformer';
 import { ConceptoFacturaService } from 'src/concepto-factura/concepto-factura.service';
 import { Nullable } from 'src/common/types';
-import { Prisma } from '@prisma/client';
+import { EstatusPago, Prisma } from '@prisma/client';
 
 @Injectable()
 export class FacturaService {
@@ -54,7 +54,7 @@ export class FacturaService {
     
     try {
       let createFacturaPayload = await prisma.$transaction(async (tx)=>{
-        const createFacturaPayload = await prisma.factura.create({
+        const createFactura = await prisma.factura.create({
           data: {...prismaCreateInput},
           include: { 
             conceptos: true, 
@@ -74,7 +74,7 @@ export class FacturaService {
           });
         }
 
-        return createFacturaPayload;
+        return createFactura;
       });
 
       return plainToClass(Factura, createFacturaPayload)
@@ -86,7 +86,9 @@ export class FacturaService {
   }
 
   async findAll() {
-    return await prisma.factura.findMany();
+    return await prisma.factura.findMany({
+      include: {evento: true, conceptos: true, pago: true}
+    });
   }
 
   async findOne(id: string) {
@@ -105,7 +107,77 @@ export class FacturaService {
     return `This action removes a #${id} factura`;
   }
 
-  async updateTotalFactura(facturaId: string) {
+  async cancel(id: string) {
+    // Factura estatus CANCELADA
+    // Evento estatus CANCELADO
+    // Pago estatus CANCELADO
+    // Estacion disponible
+    try{
+      let cancelFacturaPayload = await prisma.$transaction(async (tx)=>{
+        const factura = await prisma.factura.update({
+          where: {
+            id: id
+          },
+          data: {
+            estatus: EstatusFactura.CANCELADA
+          },
+          include: {
+            pago: true,
+            conceptos: true,
+            evento: { 
+              include: {
+                estacion: true
+              }
+            }
+          }
+        });
+
+        const pagoConnected = factura.pago!==null && factura.pago!==undefined;
+        const eventoConnected = factura.evento!==null && factura.evento!==undefined;
+  
+        if(pagoConnected) {
+          const pagoId = factura.pago?.id;
+          await prisma.pago.update({
+            where: {
+              id: pagoId
+            },
+            data: {
+              estatus: EstatusPago.CANCELADO
+            }
+          })
+        }
+
+        if(eventoConnected) {
+          const eventoId = factura.evento?.id;
+          const estacionId = factura.evento?.estacion.id;
+          await prisma.evento.update({
+            where: {
+              id: eventoId
+            },
+            data: {
+              estatus: EstatusEvento.CANCELADO
+            }
+          });
+          await prisma.estacion.update({
+            where: {
+              id: estacionId
+            },
+            data: {
+              disponible: true
+            }
+          });
+        }
+
+        return factura;
+  
+      });
+
+      return plainToClass(Factura, cancelFacturaPayload);
+
+    } catch(e) {
+      console.error(`Error cancelling Factura ${e}`);
+      throw new Error("Error cancelling entity");
+    }
 
   }
 }

@@ -14,7 +14,7 @@ export class FacturaResolver {
     return this.facturaService.create(createFacturaInput);
   }
 
-  @Query('factura')
+  @Query('facturas')
   findAll() {
     return this.facturaService.findAll();
   }
@@ -32,5 +32,10 @@ export class FacturaResolver {
   @Mutation('removeFactura')
   remove(@Args('id') id: string) {
     return this.facturaService.remove(id);
+  }
+
+  @Mutation('cancelFactura')
+  cancel(@Args('id') id: string) {
+    return this.facturaService.cancel(id);
   }
 }
