@@ -23,7 +23,7 @@ enum EstatusPago {
   PENDIENTE
 }
 
-input CreatePagoInput {
+input RealizarPagoInput {
   facturaId: String!
   comision: Float
   montoRecibido: Float!
@@ -46,7 +46,7 @@ type Query {
 }
 
 type Mutation {
-  createPago(createPagoInput: CreatePagoInput!): Pago!
+  realizarPago(realizarPagoInput: RealizarPagoInput!): Pago!
   updatePago(updatePagoInput: UpdatePagoInput!): Pago!
   removePago( id: String!): Pago
 }

@@ -118,7 +118,7 @@ export class UpdateFacturaInput {
     estatus?: Nullable<EstatusFactura>;
 }
 
-export class CreatePagoInput {
+export class RealizarPagoInput {
     facturaId: string;
     comision?: Nullable<number>;
     montoRecibido: number;
@@ -276,7 +276,7 @@ export abstract class IMutation {
 
     abstract cancelFactura(id: string): Nullable<Factura> | Promise<Nullable<Factura>>;
 
-    abstract createPago(createPagoInput: CreatePagoInput): Pago | Promise<Pago>;
+    abstract realizarPago(realizarPagoInput: RealizarPagoInput): Pago | Promise<Pago>;
 
     abstract updatePago(updatePagoInput: UpdatePagoInput): Pago | Promise<Pago>;
 

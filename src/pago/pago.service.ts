@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { 
-  CreatePagoInput,
+  RealizarPagoInput,
   UpdatePagoInput
 } from 'src/graphql';
 
 @Injectable()
 export class PagoService {
-  create(createPagoInput: CreatePagoInput) {
+  realizarPago(realizarPagoInput: RealizarPagoInput) {
     return 'This action adds a new pago';
   }
 

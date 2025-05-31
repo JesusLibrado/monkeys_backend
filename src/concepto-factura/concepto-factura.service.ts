@@ -63,11 +63,7 @@ export class ConceptoFacturaService {
   }
 
   update(id: string, updateConceptoFacturaInput: UpdateConceptoFacturaInput) {
-    try {
-
-    } catch(e) {
-      
-    }
+    return null;
   }
 
   async remove(id: string) {

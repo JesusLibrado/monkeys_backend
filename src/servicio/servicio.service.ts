@@ -17,7 +17,6 @@ export class ServicioService {
         data: {
           ...createServicioInput
         },
-        // include: { facturas: { take: DEFAULT_FACTURAS_LENGTH } }
       });
 
       return plainToClass(Servicio, createServicioPayload);

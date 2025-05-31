@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { 
+  ConceptoFactura,
   CreateEventoInput,
   CreateFacturaInput,
   EstatusEvento,
@@ -11,14 +12,14 @@ import {
 import { prisma } from 'prisma/client';
 import * as dayjs from 'dayjs';
 import { plainToClass } from 'class-transformer';
-import { ConceptoFacturaService } from 'src/concepto-factura/concepto-factura.service';
 import { Nullable } from 'src/common/types';
 import { EstatusPago, Prisma } from '@prisma/client';
+import { ProductoService } from 'src/producto/producto.service';
 
 @Injectable()
 export class FacturaService {
 
-  constructor(private conceptoFacturaService: ConceptoFacturaService) {}
+  constructor(private productoService: ProductoService) {}
 
   async create(createFacturaInput: CreateFacturaInput): Promise<Factura> {
     
@@ -179,5 +180,73 @@ export class FacturaService {
       throw new Error("Error cancelling entity");
     }
 
+  }
+
+  async saveFactura (facturaId: string) {
+
+    try {
+      const conceptosFactura = await prisma.conceptoFactura.findMany({
+        where: {
+          facturaId: facturaId
+        }, 
+        include: {producto: true, servicio: true}
+      });
+
+      // descuento is ignored in this calculation
+      const totalFactura = this.getTotal(conceptosFactura);
+
+      const saveFacturaPayload = await prisma.factura.update({
+        where: {
+          id: facturaId
+        },
+        data: {
+          total: totalFactura,
+          pago: {
+            // verify what happens when Pago is already connected to this Factura
+            // shouldn't be creating another one since Pago-1:1-Factura
+            create: {
+              estatus: EstatusPago.PENDIENTE
+            }
+          }
+        },
+        include: {
+          pago: true
+        }
+      });
+
+      return plainToClass(Factura, saveFacturaPayload);
+
+    } catch(e) {
+      console.error(`Error saving Factura ${e}`);
+      throw new Error("Error updating entity");
+    }
+  }
+
+  getTotal(conceptosFactura: any[]) {
+
+    if(conceptosFactura.length < 1) {
+      return 0;
+    }
+
+    const productos = conceptosFactura.filter((cp)=>!(cp.producto===null));
+    const servicios = conceptosFactura.filter((cp)=>!(cp.servicio===null));
+
+    let accumulatedTotal = this.calculateTotal(servicios);
+    
+    if(productos.length > 0) {
+      let availableProductos = productos.filter(
+        async (producto)=>
+          (await this.productoService.isAvailable(producto.id)
+        )
+      );
+      accumulatedTotal += this.calculateTotal(availableProductos);
+    }
+
+    return accumulatedTotal;
+
+  }
+
+  calculateTotal(conceptosFactura: ConceptoFactura[]): number {
+    return (conceptosFactura).reduce((acc, current)=>{return current.total+acc}, 0);
   }
 }

@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PagoService } from './pago.service';
 import { 
-  CreatePagoInput,
+  RealizarPagoInput,
   UpdatePagoInput
 } from 'src/graphql';
 
@@ -9,9 +9,9 @@ import {
 export class PagoResolver {
   constructor(private readonly pagoService: PagoService) {}
 
-  @Mutation('createPago')
-  create(@Args('createPagoInput') createPagoInput: CreatePagoInput) {
-    return this.pagoService.create(createPagoInput);
+  @Mutation('realizarPago')
+  create(@Args('realizarPagoInput') realizarPagoInput: RealizarPagoInput) {
+    return this.pagoService.realizarPago(realizarPagoInput);
   }
 
   @Query('pago')

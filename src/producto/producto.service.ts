@@ -20,8 +20,7 @@ export class ProductoService {
         data: {
           ...createProductoInput,
           cantidadVendida: 0,
-        },
-        // include: { facturas: { take: DEFAULT_FACTURAS_LENGTH } }
+        }
       });
 
       return plainToClass(Producto, createProductoPayload);
@@ -76,5 +75,25 @@ export class ProductoService {
 
   remove(id: string) {
     return `This action removes a #${id} producto`;
+  }
+
+  async isAvailable(productoId: string) {
+    try {
+      const productoDisponible = await prisma.producto.findFirst({
+        where: {
+          id: productoId,
+          AND: {
+            cantidadDisponible: {
+              gt: 0
+            }
+          }
+        }
+      });
+  
+      return !(productoDisponible===null);
+    } catch(e) {
+      console.error(`Error checking if Producto is available: ${e}`);
+      return false;
+    }
   }
 }
