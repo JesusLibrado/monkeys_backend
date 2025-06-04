@@ -33,13 +33,14 @@ input UpdateFacturaInput {
 
 type Query {
   facturas: [Factura]!
-  factura( id: String!): Factura
+  factura(id: String!): Factura
+  facturaByFolio(folio: Int): Factura
 }
 
 type Mutation {
   createFactura(createFacturaInput: CreateFacturaInput!): Factura!
   updateFactura(updateFacturaInput: UpdateFacturaInput!): Factura!
-  removeFactura( id: String!): Factura
+  removeFactura(id: String!): Factura
   cancelFactura(id: String!): Factura
-  
+  saveFactura(id: String!): Factura
 }

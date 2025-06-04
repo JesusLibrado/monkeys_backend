@@ -224,6 +224,8 @@ export abstract class IQuery {
 
     abstract factura(id: string): Nullable<Factura> | Promise<Nullable<Factura>>;
 
+    abstract facturaByFolio(folio?: Nullable<number>): Nullable<Factura> | Promise<Nullable<Factura>>;
+
     abstract pagos(): Nullable<Pago>[] | Promise<Nullable<Pago>[]>;
 
     abstract pago(id: string): Nullable<Pago> | Promise<Nullable<Pago>>;
@@ -275,6 +277,8 @@ export abstract class IMutation {
     abstract removeFactura(id: string): Nullable<Factura> | Promise<Nullable<Factura>>;
 
     abstract cancelFactura(id: string): Nullable<Factura> | Promise<Nullable<Factura>>;
+
+    abstract saveFactura(id: string): Nullable<Factura> | Promise<Nullable<Factura>>;
 
     abstract realizarPago(realizarPagoInput: RealizarPagoInput): Pago | Promise<Pago>;
 

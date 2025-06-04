@@ -37,7 +37,7 @@ export class EventoService {
         AND: [
           {
             estatus: { 
-              equals: EstatusEvento.EN_PROGRESO
+              in: [EstatusEvento.EN_PROGRESO, EstatusEvento.TERMINADO]
             }
           }
         ]

@@ -24,6 +24,11 @@ export class FacturaResolver {
     return this.facturaService.findOne(id);
   }
 
+  @Query('facturaByFolio')
+  findByFolio(@Args('folio') folio: number) {
+    return this.facturaService.findByFolio(folio);
+  }
+
   @Mutation('updateFactura')
   update(@Args('updateFacturaInput') updateFacturaInput: UpdateFacturaInput) {
     return this.facturaService.update(updateFacturaInput.id, updateFacturaInput);
@@ -38,4 +43,10 @@ export class FacturaResolver {
   cancel(@Args('id') id: string) {
     return this.facturaService.cancel(id);
   }
+
+  @Mutation('saveFactura')
+  save(@Args('id') id: string) {
+    return this.facturaService.saveFactura(id);
+  }
+
 }

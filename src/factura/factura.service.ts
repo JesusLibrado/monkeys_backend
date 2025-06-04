@@ -96,6 +96,34 @@ export class FacturaService {
     return await prisma.factura.findUnique({
       where: {
         id: id
+      },
+      include: {
+        conceptos: true,
+        evento: {
+          include: {
+            estacion: {
+              include: { empleado: true }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  async findByFolio(folio: number) {
+    return await prisma.factura.findUnique({
+      where: {
+        folio: folio
+      },
+      include: {
+        conceptos: true,
+        evento: {
+          include: {
+            estacion: {
+              include: { empleado: true }
+            }
+          }
+        }
       }
     });
   }
@@ -192,27 +220,37 @@ export class FacturaService {
         include: {producto: true, servicio: true}
       });
 
-      // descuento is ignored in this calculation
+      // Descuento is IGNORED in this calculation
       const totalFactura = this.getTotal(conceptosFactura);
 
-      const saveFacturaPayload = await prisma.factura.update({
-        where: {
-          id: facturaId
-        },
-        data: {
-          total: totalFactura,
-          pago: {
-            // verify what happens when Pago is already connected to this Factura
-            // shouldn't be creating another one since Pago-1:1-Factura
-            create: {
-              estatus: EstatusPago.PENDIENTE
-            }
+      const saveFacturaPayload = await prisma.$transaction(async (tx)=> {
+        const factura = await prisma.factura.update({
+          where: {
+            id: facturaId
+          },
+          data: {
+            total: totalFactura
+          },
+          include: {
+            evento: true
           }
-        },
-        include: {
-          pago: true
+        });
+
+        if(factura.evento) {
+          let evento = factura.evento;
+          await prisma.evento.update({
+            where: {
+              id: evento.id
+            },
+            data: {
+              estatus: EstatusEvento.TERMINADO
+            }
+          });
         }
-      });
+
+        return factura;
+
+      })
 
       return plainToClass(Factura, saveFacturaPayload);
 
