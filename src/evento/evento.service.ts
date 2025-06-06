@@ -48,6 +48,23 @@ export class EventoService {
     })
   }
 
+  async setEstatus(id: string, newEstatus: EstatusEvento) {
+    try {
+      return await prisma.evento.update({
+        where: {
+          id: id
+        },
+        data: {
+          estatus: newEstatus
+        },
+        include: {estacion: true}
+      });
+    } catch(e) {
+      console.log("Error updating Evento estatus: ", e);
+      throw e;
+    }
+  }
+
   update(id: string, updateEventoInput: UpdateEventoInput) {
     return `This action updates a #${id} evento`;
   }

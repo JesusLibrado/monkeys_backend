@@ -28,13 +28,15 @@ export enum EstatusFactura {
 
 export enum MetodoDePago {
     EFECTIVO = "EFECTIVO",
+    TRANSFERENCIA = "TRANSFERENCIA",
     TARJETA_CREDITO = "TARJETA_CREDITO",
     TARJETA_DEBITO = "TARJETA_DEBITO"
 }
 
 export enum EstatusPago {
     REALIZADO = "REALIZADO",
-    PENDIENTE = "PENDIENTE"
+    PENDIENTE = "PENDIENTE",
+    CANCELADO = "CANCELADO"
 }
 
 export enum CategoriaServicio {

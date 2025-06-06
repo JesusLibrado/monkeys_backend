@@ -15,11 +15,17 @@ import { plainToClass } from 'class-transformer';
 import { Nullable } from 'src/common/types';
 import { EstatusPago, Prisma } from '@prisma/client';
 import { ProductoService } from 'src/producto/producto.service';
+import { EventoService } from 'src/evento/evento.service';
+import { ConceptoFacturaService } from 'src/concepto-factura/concepto-factura.service';
 
 @Injectable()
 export class FacturaService {
 
-  constructor(private productoService: ProductoService) {}
+  constructor(
+    private productoService: ProductoService,
+    private eventoService: EventoService,
+    private conceptoFacturaService: ConceptoFacturaService
+  ) {}
 
   async create(createFacturaInput: CreateFacturaInput): Promise<Factura> {
     
@@ -114,18 +120,24 @@ export class FacturaService {
     return await prisma.factura.findUnique({
       where: {
         folio: folio
-      },
-      include: {
-        conceptos: true,
-        evento: {
-          include: {
-            estacion: {
-              include: { empleado: true }
-            }
-          }
-        }
       }
     });
+  }
+
+  async setEstatus(id: string, newEstatus: EstatusFactura) {
+    try {
+      await prisma.factura.update({
+        where: {
+          id: id
+        },
+        data: {
+          estatus: newEstatus
+        }
+      });
+    } catch(e) {
+      console.log("Error updating Factura estatus: ", e);
+      throw e;
+    }
   }
 
   update(id: string, updateFacturaInput: UpdateFacturaInput) {
@@ -210,15 +222,10 @@ export class FacturaService {
 
   }
 
-  async saveFactura (facturaId: string) {
+  async save (facturaId: string) {
 
     try {
-      const conceptosFactura = await prisma.conceptoFactura.findMany({
-        where: {
-          facturaId: facturaId
-        }, 
-        include: {producto: true, servicio: true}
-      });
+      const conceptosFactura = await this.conceptoFacturaService.findAllFromFactura(facturaId);
 
       // Descuento is IGNORED in this calculation
       const totalFactura = this.getTotal(conceptosFactura);
@@ -236,16 +243,10 @@ export class FacturaService {
           }
         });
 
-        if(factura.evento) {
-          let evento = factura.evento;
-          await prisma.evento.update({
-            where: {
-              id: evento.id
-            },
-            data: {
-              estatus: EstatusEvento.TERMINADO
-            }
-          });
+        let evento = factura.evento;
+
+        if(evento) {
+          this.eventoService.setEstatus(evento.id, EstatusEvento.TERMINADO);
         }
 
         return factura;
@@ -274,7 +275,7 @@ export class FacturaService {
     if(productos.length > 0) {
       let availableProductos = productos.filter(
         async (producto)=>
-          (await this.productoService.isAvailable(producto.id)
+          (await this.productoService.isAvailable(producto.id, producto.cantidad)
         )
       );
       accumulatedTotal += this.calculateTotal(availableProductos);
@@ -286,5 +287,27 @@ export class FacturaService {
 
   calculateTotal(conceptosFactura: ConceptoFactura[]): number {
     return (conceptosFactura).reduce((acc, current)=>{return current.total+acc}, 0);
+  }
+
+  async terminate(id: string, includeObject: any) {
+    try {
+      const conceptosFactura = await this.conceptoFacturaService.findAllFromFactura(id);
+      const productosConceptos = conceptosFactura.filter((cp)=>!(cp.producto===null));
+      if(productosConceptos.length > 0) {
+        productosConceptos.map((cf)=>this.productoService.substractFromInventory(cf.producto?.id??"", cf.cantidad));
+      }
+      return await prisma.factura.update({
+        where: {
+          id: id
+        },
+        data: {
+          estatus: EstatusFactura.PAGADA
+        },
+        ...includeObject
+      });
+    } catch(e) {
+      console.log("Error ending Factura: ", e);
+      throw e;
+    }
   }
 }

@@ -77,14 +77,14 @@ export class ProductoService {
     return `This action removes a #${id} producto`;
   }
 
-  async isAvailable(productoId: string) {
+  async isAvailable(productoId: string, quantity: number) {
     try {
       const productoDisponible = await prisma.producto.findFirst({
         where: {
           id: productoId,
           AND: {
             cantidadDisponible: {
-              gt: 0
+              gte: quantity
             }
           }
         }
@@ -95,5 +95,24 @@ export class ProductoService {
       console.error(`Error checking if Producto is available: ${e}`);
       return false;
     }
+  }
+
+  async substractFromInventory(id: string, quantity: number) {
+    try {
+      return await prisma.producto.update({
+        where: {
+          id: id
+        },
+        data: {
+          cantidadDisponible: {
+            decrement: quantity
+          }
+        }
+      });
+    } catch(e) {
+      console.error(`Error substracting ${quantity} Productos: ${e}`);
+      throw e;
+    }
+    
   }
 }

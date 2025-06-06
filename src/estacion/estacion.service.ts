@@ -105,6 +105,22 @@ export class EstacionService {
     }
   }
 
+  async makeAvailable(id: string) {
+    try {
+      await prisma.estacion.update({
+        where: {
+          id: id
+        },
+        data: {
+          disponible: true
+        }
+      });
+    } catch(e) {
+      console.log("Error updating Estacion availability: ", e);
+      throw e;
+    }
+  }
+
   remove(id: string) {
     return `This action removes a #${id} estacion`;
   }

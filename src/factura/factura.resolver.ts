@@ -46,7 +46,7 @@ export class FacturaResolver {
 
   @Mutation('saveFactura')
   save(@Args('id') id: string) {
-    return this.facturaService.saveFactura(id);
+    return this.facturaService.save(id);
   }
 
 }

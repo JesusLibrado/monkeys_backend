@@ -14,19 +14,20 @@ datasource db {
 }
 
 model Pago {
-  id                   String       @id @default(cuid(2))
-  factura              Factura      @relation(fields:[facturaId], references: [id])
-  facturaId            String       @unique
-  comisionPagoTarjeta  Float?       // para pagos con tarjeta
-  montoRecibido        Float?
-  montoDevuelto        Float?
-  metodoPago           MetodoDePago?
-  estatus              EstatusPago
-  createdAt            DateTime     @default(now())
-  updatedAt            DateTime     @updatedAt  
+  id                  String       @id @default(cuid(2))
+  factura             Factura      @relation(fields: [facturaId], references: [id])
+  facturaId           String       @unique
+  montoRecibido       Float
+  montoDevuelto       Float? // is this REALLY NEEDED?
+  metodoPago          MetodoDePago
+  estatus             EstatusPago
+  comisionPagoTarjeta Float? // is this REALLY NEEDED?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
 }
 
 enum MetodoDePago {
+  TRANSFERENCIA
   EFECTIVO
   TARJETA_CREDITO
   TARJETA_DEBITO
@@ -39,16 +40,16 @@ enum EstatusPago {
 }
 
 model Factura {
-  id                   String             @id @default(cuid(2))
-  evento               Evento?
-  folio                Int                @unique() @default(autoincrement())
-  conceptos            ConceptoFactura[]
-  total                Float              @default(0)
-  descuento            Float?
-  estatus              EstatusFactura     
-  pago                 Pago?
-  createdAt            DateTime            @default(now())
-  updatedAt            DateTime            @updatedAt  
+  id        String            @id @default(cuid(2))
+  evento    Evento?
+  folio     Int               @unique() @default(autoincrement())
+  conceptos ConceptoFactura[]
+  total     Float             @default(0)
+  descuento Float?
+  estatus   EstatusFactura
+  pago      Pago?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 enum EstatusFactura {
@@ -58,29 +59,29 @@ enum EstatusFactura {
 }
 
 model ConceptoFactura {
-  id                    String     @id @default(cuid(2))
-  factura               Factura    @relation(fields:[facturaId], references: [id])
-  facturaId             String     
-  cantidad              Int
-  producto              Producto?  @relation(fields:[productoId], references: [id])
-  productoId            String?    
-  servicio              Servicio?  @relation(fields:[servicioId], references: [id])
-  servicioId            String?    
-  total                 Float
-  createdAt             DateTime   @default(now())
-  updatedAt             DateTime   @updatedAt  
+  id         String    @id @default(cuid(2))
+  factura    Factura   @relation(fields: [facturaId], references: [id])
+  facturaId  String
+  cantidad   Int
+  producto   Producto? @relation(fields: [productoId], references: [id])
+  productoId String?
+  servicio   Servicio? @relation(fields: [servicioId], references: [id])
+  servicioId String?
+  total      Float
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Servicio {
-  id                    String                @id @default(cuid(2))
-  nombre                String
-  categoria             CategoriaServicio
-  precio                Float
-  comisionBarbero       Float
-  ganancia              Float
-  facturas              ConceptoFactura[]
-  createdAt             DateTime              @default(now())
-  updatedAt             DateTime              @updatedAt  
+  id              String            @id @default(cuid(2))
+  nombre          String
+  categoria       CategoriaServicio
+  precio          Float
+  comisionBarbero Float
+  ganancia        Float
+  facturas        ConceptoFactura[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 }
 
 enum CategoriaServicio {
@@ -92,30 +93,30 @@ enum CategoriaServicio {
 }
 
 model Producto {
-  id                    String              @id @default(cuid(2))
-  nombre                String
-  marca                 String?
-  cantidadDisponible    Int
-  cantidadVendida       Int
-  comisionEmpleado      Float
-  precioProveedor       Float
-  precioPublico         Float
-  ganancia              Float
-  facturas              ConceptoFactura[]
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt  
+  id                 String            @id @default(cuid(2))
+  nombre             String
+  marca              String?
+  cantidadDisponible Int
+  cantidadVendida    Int
+  comisionEmpleado   Float
+  precioProveedor    Float
+  precioPublico      Float
+  ganancia           Float
+  facturas           ConceptoFactura[]
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
 }
 
 model Evento {
-  id             String           @id @default(cuid(2))
-  factura        Factura          @relation(fields:[facturaId], references: [id])
-  facturaId      String           @unique
-  estatus        EstatusEvento 
-  nombreCliente  String
-  estacion       Estacion         @relation(fields:[estacionId], references: [id])
-  estacionId     String           
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt 
+  id            String        @id @default(cuid(2))
+  factura       Factura       @relation(fields: [facturaId], references: [id])
+  facturaId     String        @unique
+  estatus       EstatusEvento
+  nombreCliente String
+  estacion      Estacion      @relation(fields: [estacionId], references: [id])
+  estacionId    String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 enum EstatusEvento {
@@ -126,28 +127,28 @@ enum EstatusEvento {
 }
 
 model Estacion {
-  id             String     @id @default(cuid(2))
-  numero         Int        @unique
-  eventos        Evento[]
-  disponible     Boolean    @default(true)
-  empleado       Empleado?  @relation(fields: [empleadoId], references: [id])
-  empleadoId     String?    @unique
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt  
+  id         String    @id @default(cuid(2))
+  numero     Int       @unique
+  eventos    Evento[]
+  disponible Boolean   @default(true)
+  empleado   Empleado? @relation(fields: [empleadoId], references: [id])
+  empleadoId String?   @unique
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Empleado {
-  id             String     @id @default(cuid(2))
-  nombre         String
-  apellido       String
-  usuario        Usuario    @relation(fields: [usuarioId], references: [id])
-  usuarioId      String     @unique
-  estacion       Estacion?
-  horaEntrada    DateTime?
-  horaSalida     DateTime?
-  rol            RolEmpleado
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt  
+  id          String      @id @default(cuid(2))
+  nombre      String
+  apellido    String
+  usuario     Usuario     @relation(fields: [usuarioId], references: [id])
+  usuarioId   String      @unique
+  estacion    Estacion?
+  horaEntrada DateTime?
+  horaSalida  DateTime?
+  rol         RolEmpleado
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 enum RolEmpleado {
@@ -156,13 +157,13 @@ enum RolEmpleado {
 }
 
 model Usuario {
-  id             String     @id @default(cuid(2))
+  id             String    @id @default(cuid(2))
   empleado       Empleado?
   // cliente
-  email          String     @unique
-  numeroTelefono String?    @unique
+  email          String    @unique
+  numeroTelefono String?   @unique
   password       String?
-  activo         Boolean    @default(true)
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt  
+  activo         Boolean   @default(true)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 }

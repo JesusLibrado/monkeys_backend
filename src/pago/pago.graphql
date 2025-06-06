@@ -14,6 +14,7 @@ type Pago {
 
 enum MetodoDePago {
   EFECTIVO
+  TRANSFERENCIA
   TARJETA_CREDITO
   TARJETA_DEBITO
 }
@@ -21,6 +22,7 @@ enum MetodoDePago {
 enum EstatusPago {
   REALIZADO
   PENDIENTE
+  CANCELADO
 }
 
 input RealizarPagoInput {
@@ -42,11 +44,11 @@ input UpdatePagoInput {
 
 type Query {
   pagos: [Pago]!
-  pago( id: String!): Pago
+  pago(id: String!): Pago
 }
 
 type Mutation {
   realizarPago(realizarPagoInput: RealizarPagoInput!): Pago!
   updatePago(updatePagoInput: UpdatePagoInput!): Pago!
-  removePago( id: String!): Pago
+  removePago(id: String!): Pago
 }
