@@ -45,20 +45,6 @@ export class FacturaService {
       }
     }
 
-    // // get Conceptos from Factura (if any)
-    // let conceptosFactura;
-    // if(createFacturaInput.conceptos) {
-    //   conceptosFactura = await this.conceptoFacturaService.createNewForFactura(createFacturaInput.conceptos);
-    //   prismaCreateInput.data['conceptos'] =  {
-    //     create: conceptosFactura
-    //   }
-    // } else {
-    //   conceptosFactura = [];
-    // }
-
-    // // THIS SHOULD BE CALCULATED AND SAVED WHEN A PAYMENT IS DONE
-    // prismaCreateInput.data['total'] = this.conceptoFacturaService.getTotal(conceptosFactura);
-    
     try {
       let createFacturaPayload = await prisma.$transaction(async (tx)=>{
         const createFactura = await prisma.factura.create({

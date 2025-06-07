@@ -9,7 +9,6 @@ type Servicio {
   updatedAt: Date!
 }
 
-
 enum CategoriaServicio {
   BARBA
   CORTE
@@ -37,11 +36,11 @@ input UpdateServicioInput {
 
 type Query {
   servicios: [Servicio]!
-  servicio( id: String!): Servicio
+  servicio(id: String!): Servicio
 }
 
 type Mutation {
   createServicio(createServicioInput: CreateServicioInput!): Servicio!
   updateServicio(updateServicioInput: UpdateServicioInput!): Servicio!
-  removeServicio( id: String!): Servicio
+  removeServicio(id: String!): Servicio
 }

@@ -23,6 +23,8 @@ export class ConceptoFacturaService {
 
   async create(createConceptoFacturaInput: CreateConceptoFacturaInput) {
 
+    const {facturaId} = createConceptoFacturaInput;
+
     let createInput = await this.createNewForFactura(createConceptoFacturaInput);
 
     try {
@@ -30,7 +32,7 @@ export class ConceptoFacturaService {
         data: {
           factura: {
             connect: {
-              id: createConceptoFacturaInput.facturaId
+              id: facturaId
             }
           },
           ...createInput
@@ -99,7 +101,6 @@ export class ConceptoFacturaService {
     }
 
     if(productoId!=""&&productoId) {
-      // add try catch block
       const producto = await this.productoService.findOne(productoId??"");
       precio = producto?.precioPublico;
       newConceptoFactura['producto'] = {
@@ -110,7 +111,6 @@ export class ConceptoFacturaService {
     } 
 
     if(servicioId!=""&&servicioId) {
-      // add try catch block
       const servicio = await this.servicioService.findOne(servicioId??"");
       precio = servicio?.precio;
       newConceptoFactura['servicio'] = {
@@ -118,9 +118,16 @@ export class ConceptoFacturaService {
           id: servicio?.id
         }
       }
+    }
 
-      // handle case when servicio is GRECA or OTRO
-      // might have to create a new servicio
+    if(servicio) {
+      const newServicio = await this.servicioService.create(servicio);
+      precio = newServicio.precio;
+      newConceptoFactura['servicio'] = {
+        connect: {
+          id: newServicio.id
+        }
+      }
     }
 
     newConceptoFactura.total = precio * cantidad
