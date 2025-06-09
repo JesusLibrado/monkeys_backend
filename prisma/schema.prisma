@@ -21,7 +21,7 @@ model Pago {
   montoDevuelto       Float? // is this REALLY NEEDED?
   metodoPago          MetodoDePago
   estatus             EstatusPago
-  comisionPagoTarjeta Float? // is this REALLY NEEDED?
+  comisionPagoTarjeta Float        @default(0)
   createdAt           DateTime     @default(now())
   updatedAt           DateTime     @updatedAt
 }

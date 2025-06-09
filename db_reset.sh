@@ -1,0 +1,1 @@
+npx prisma migrate reset

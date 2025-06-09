@@ -24,7 +24,7 @@ export class PagoService {
   
   async realizarPago(realizarPagoInput: RealizarPagoInput) {
 
-    const {metodoPago, montoRecibido, montoDevuelto, facturaId} = realizarPagoInput;
+    const {metodoPago, montoRecibido, montoDevuelto, facturaId, comisionPagoTarjeta} = realizarPagoInput;
 
     try{
       // si hay Productos, restar el producto del inventario
@@ -41,6 +41,7 @@ export class PagoService {
             montoRecibido: montoRecibido,
             montoDevuelto: montoDevuelto??0,
             estatus: EstatusPago.REALIZADO,
+            comisionPagoTarjeta: comisionPagoTarjeta,
             factura: {
               connect: {
                 id: facturaId

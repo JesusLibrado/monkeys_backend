@@ -3,7 +3,7 @@ scalar Date
 type Pago {
   id: ID!
   factura: Factura!
-  comision: Float
+  comisionPagoTarjeta: Float
   montoRecibido: Float
   montoDevuelto: Float
   metodoPago: MetodoDePago!
@@ -27,7 +27,7 @@ enum EstatusPago {
 
 input RealizarPagoInput {
   facturaId: String!
-  comision: Float
+  comisionPagoTarjeta: Float
   montoRecibido: Float!
   montoDevuelto: Float
   metodoPago: MetodoDePago!
@@ -36,7 +36,7 @@ input RealizarPagoInput {
 input UpdatePagoInput {
   id: String!
   factura: UpdateFacturaInput
-  comision: Float
+  comisionPagoTarjeta: Float
   montoRecibido: Float
   montoDevuelto: Float
   metodoPago: MetodoDePago

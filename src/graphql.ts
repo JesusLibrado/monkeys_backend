@@ -122,7 +122,7 @@ export class UpdateFacturaInput {
 
 export class RealizarPagoInput {
     facturaId: string;
-    comision?: Nullable<number>;
+    comisionPagoTarjeta?: Nullable<number>;
     montoRecibido: number;
     montoDevuelto?: Nullable<number>;
     metodoPago: MetodoDePago;
@@ -131,7 +131,7 @@ export class RealizarPagoInput {
 export class UpdatePagoInput {
     id: string;
     factura?: Nullable<UpdateFacturaInput>;
-    comision?: Nullable<number>;
+    comisionPagoTarjeta?: Nullable<number>;
     montoRecibido?: Nullable<number>;
     montoDevuelto?: Nullable<number>;
     metodoPago?: Nullable<MetodoDePago>;
@@ -351,7 +351,7 @@ export class Factura {
 export class Pago {
     id: string;
     factura: Factura;
-    comision?: Nullable<number>;
+    comisionPagoTarjeta?: Nullable<number>;
     montoRecibido?: Nullable<number>;
     montoDevuelto?: Nullable<number>;
     metodoPago: MetodoDePago;
