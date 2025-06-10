@@ -31,6 +31,16 @@ export class ServicioService {
     return await prisma.servicio.findMany();
   }
 
+  async availableServicios() {
+    return await prisma.servicio.findMany({
+      where: {
+        categoria: {
+          in: ['BARBA', 'CORTE', 'FACIAL']
+        }
+      }
+    })
+  }
+
   async findOne(id: string) {
     return await prisma.servicio.findUnique({
       where: {

@@ -37,6 +37,7 @@ input UpdateServicioInput {
 type Query {
   servicios: [Servicio]!
   servicio(id: String!): Servicio
+  availableServicios: [Servicio]!
 }
 
 type Mutation {

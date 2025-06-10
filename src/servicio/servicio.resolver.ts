@@ -19,6 +19,11 @@ export class ServicioResolver {
     return this.servicioService.findAll();
   }
 
+  @Query('availableServicios')
+  findAvailableServicios() {
+    return this.servicioService.availableServicios();
+  }
+
   @Query('servicio')
   findOne(@Args('id') id: string) {
     return this.servicioService.findOne(id);

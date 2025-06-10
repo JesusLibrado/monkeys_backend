@@ -242,6 +242,8 @@ export abstract class IQuery {
 
     abstract servicio(id: string): Nullable<Servicio> | Promise<Nullable<Servicio>>;
 
+    abstract availableServicios(): Nullable<Servicio>[] | Promise<Nullable<Servicio>[]>;
+
     abstract usuarios(): Nullable<Usuario>[] | Promise<Nullable<Usuario>[]>;
 
     abstract usuario(id: string): Nullable<Usuario> | Promise<Nullable<Usuario>>;

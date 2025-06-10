@@ -41,7 +41,7 @@ export class PagoService {
             montoRecibido: montoRecibido,
             montoDevuelto: montoDevuelto??0,
             estatus: EstatusPago.REALIZADO,
-            comisionPagoTarjeta: comisionPagoTarjeta,
+            comisionPagoTarjeta: comisionPagoTarjeta??0,
             factura: {
               connect: {
                 id: facturaId
