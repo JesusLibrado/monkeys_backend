@@ -11,15 +11,20 @@ import { ServicioService } from 'src/servicio/servicio.service';
 import { ServicioModule } from 'src/servicio/servicio.module';
 
 @Module({
-  imports: [EventoModule, ProductoModule, ConceptoFacturaModule, ServicioModule],
-  providers: [
-    FacturaResolver, 
-    FacturaService, 
-    EventoService, 
-    ProductoService,
-    ConceptoFacturaService, 
-    ServicioService
+  imports: [
+    EventoModule,
+    ProductoModule,
+    ConceptoFacturaModule,
+    ServicioModule,
   ],
-  exports: [FacturaService]
+  providers: [
+    FacturaResolver,
+    FacturaService,
+    EventoService,
+    ProductoService,
+    ConceptoFacturaService,
+    ServicioService,
+  ],
+  exports: [FacturaService],
 })
 export class FacturaModule {}

@@ -1,29 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { prisma } from 'prisma/client';
-import { 
+import {
   CreateServicioInput,
   Servicio,
-  UpdateServicioInput
+  UpdateServicioInput,
 } from 'src/graphql';
-
 
 @Injectable()
 export class ServicioService {
-
   async create(createServicioInput: CreateServicioInput) {
-    try{
+    try {
       let createServicioPayload = await prisma.servicio.create({
         data: {
-          ...createServicioInput
+          ...createServicioInput,
         },
       });
 
       return plainToClass(Servicio, createServicioPayload);
-    }
-    catch(e) {
+    } catch (e) {
       console.error(`Error creating Servicio ${e}`);
-      throw new Error("Error creating entity");
+      throw new Error('Error creating entity');
     }
   }
 
@@ -35,18 +32,18 @@ export class ServicioService {
     return await prisma.servicio.findMany({
       where: {
         categoria: {
-          in: ['BARBA', 'CORTE', 'FACIAL', 'OTRO']
-        }
-      }
-    })
+          in: ['BARBA', 'CORTE', 'FACIAL', 'OTRO'],
+        },
+      },
+    });
   }
 
   async findOne(id: string) {
     return await prisma.servicio.findUnique({
       where: {
-        id: id
+        id: id,
       },
-      include: {facturas: false}
+      include: { facturas: false },
     });
   }
 
@@ -62,9 +59,9 @@ export class ServicioService {
     return {
       servicio: {
         connect: {
-          id: servicioId
-        }
-      }
-    }
+          id: servicioId,
+        },
+      },
+    };
   }
 }

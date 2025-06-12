@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateEstacionInput,
   UpdateEstacionInput,
-  Estacion
+  Estacion,
 } from 'src/graphql';
 
 import { prisma } from 'prisma/client';
@@ -15,22 +15,20 @@ import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class EstacionService {
-
   async create(createEstacionInput: CreateEstacionInput): Promise<Estacion> {
-    
-    try{
+    try {
       const createEstacionPayload = await prisma.estacion.create({
         data: {
           numero: createEstacionInput.numero,
-          empleadoId: createEstacionInput.empleadoId??null,
+          empleadoId: createEstacionInput.empleadoId ?? null,
         },
-        include: {empleado: true}
+        include: { empleado: true },
       });
 
       return plainToClass(Estacion, createEstacionPayload);
-    } catch(e) {
+    } catch (e) {
       console.error(`Error creating Estacion ${e}`);
-      throw new Error("Error creating entity");
+      throw new Error('Error creating entity');
     }
   }
 
@@ -39,16 +37,16 @@ export class EstacionService {
       where: {
         AND: [
           {
-            disponible: true
+            disponible: true,
           },
           {
             empleadoId: {
-              not: null
-            }
-          }
-        ]
+              not: null,
+            },
+          },
+        ],
       },
-      include: {empleado: true}
+      include: { empleado: true },
     });
   }
 
@@ -56,10 +54,10 @@ export class EstacionService {
     return await prisma.estacion.findMany({
       orderBy: [
         {
-          numero: 'asc'
-        }
+          numero: 'asc',
+        },
       ],
-      include: {empleado: true, eventos: true}
+      include: { empleado: true, eventos: true },
     });
   }
 
@@ -68,40 +66,44 @@ export class EstacionService {
       where: {
         id: id,
       },
-      include: {empleado: true, eventos: true}
+      include: { empleado: true, eventos: true },
     });
   }
 
   async update(id: string, updateEstacionInput: UpdateEstacionInput) {
     let empleadoInput;
 
-    if(!updateEstacionInput.empleadoId) {
-      empleadoInput = updateEstacionInput.empleadoId===null||updateEstacionInput.empleadoId===""?{
-        disconnect: true
-      }:undefined;
+    if (!updateEstacionInput.empleadoId) {
+      empleadoInput =
+        updateEstacionInput.empleadoId === null ||
+        updateEstacionInput.empleadoId === ''
+          ? {
+              disconnect: true,
+            }
+          : undefined;
     } else {
       // might update Empleado related to this Estacion
       empleadoInput = {
-        connect: {id: updateEstacionInput.empleadoId}
-      }
+        connect: { id: updateEstacionInput.empleadoId },
+      };
     }
-    
-    try{
+
+    try {
       const updateEstacionPayload = await prisma.estacion.update({
         where: {
-          id: id
+          id: id,
         },
         data: {
-          disponible: updateEstacionInput.disponible??undefined,
-          empleado: empleadoInput
+          disponible: updateEstacionInput.disponible ?? undefined,
+          empleado: empleadoInput,
         },
-        include: {empleado: true}
+        include: { empleado: true },
       });
 
       return plainToClass(Estacion, updateEstacionPayload);
-    } catch(e) {
+    } catch (e) {
       console.error(`Error updating Estacion ${e}`);
-      throw new Error("Error updating entity");
+      throw new Error('Error updating entity');
     }
   }
 
@@ -109,14 +111,14 @@ export class EstacionService {
     try {
       await prisma.estacion.update({
         where: {
-          id: id
+          id: id,
         },
         data: {
-          disponible: true
-        }
+          disponible: true,
+        },
       });
-    } catch(e) {
-      console.log("Error updating Estacion availability: ", e);
+    } catch (e) {
+      console.log('Error updating Estacion availability: ', e);
       throw e;
     }
   }

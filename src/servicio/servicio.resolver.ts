@@ -1,16 +1,15 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ServicioService } from './servicio.service';
-import { 
-  CreateServicioInput,
-  UpdateServicioInput
-} from 'src/graphql';
+import { CreateServicioInput, UpdateServicioInput } from 'src/graphql';
 
 @Resolver('Servicio')
 export class ServicioResolver {
   constructor(private readonly servicioService: ServicioService) {}
 
   @Mutation('createServicio')
-  create(@Args('createServicioInput') createServicioInput: CreateServicioInput) {
+  create(
+    @Args('createServicioInput') createServicioInput: CreateServicioInput,
+  ) {
     return this.servicioService.create(createServicioInput);
   }
 
@@ -30,8 +29,13 @@ export class ServicioResolver {
   }
 
   @Mutation('updateServicio')
-  update(@Args('updateServicioInput') updateServicioInput: UpdateServicioInput) {
-    return this.servicioService.update(updateServicioInput.id, updateServicioInput);
+  update(
+    @Args('updateServicioInput') updateServicioInput: UpdateServicioInput,
+  ) {
+    return this.servicioService.update(
+      updateServicioInput.id,
+      updateServicioInput,
+    );
   }
 
   @Mutation('removeServicio')

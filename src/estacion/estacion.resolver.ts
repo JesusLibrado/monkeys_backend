@@ -1,16 +1,15 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { EstacionService } from './estacion.service';
-import { 
-  CreateEstacionInput, 
-  UpdateEstacionInput 
-} from 'src/graphql';
+import { CreateEstacionInput, UpdateEstacionInput } from 'src/graphql';
 
 @Resolver('Estacion')
 export class EstacionResolver {
   constructor(private readonly estacionService: EstacionService) {}
 
   @Mutation('createEstacion')
-  create(@Args('createEstacionInput') createEstacionInput: CreateEstacionInput) {
+  create(
+    @Args('createEstacionInput') createEstacionInput: CreateEstacionInput,
+  ) {
     return this.estacionService.create(createEstacionInput);
   }
 
@@ -30,8 +29,13 @@ export class EstacionResolver {
   }
 
   @Mutation('updateEstacion')
-  update(@Args('updateEstacionInput') updateEstacionInput: UpdateEstacionInput) {
-    return this.estacionService.update(updateEstacionInput.id, updateEstacionInput);
+  update(
+    @Args('updateEstacionInput') updateEstacionInput: UpdateEstacionInput,
+  ) {
+    return this.estacionService.update(
+      updateEstacionInput.id,
+      updateEstacionInput,
+    );
   }
 
   @Mutation('removeEstacion')

@@ -1,9 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { EventoService } from './evento.service';
-import { 
-  CreateEventoInput,
-  UpdateEventoInput
-} from 'src/graphql';
+import { CreateEventoInput, UpdateEventoInput } from 'src/graphql';
 
 @Resolver('Evento')
 export class EventoResolver {

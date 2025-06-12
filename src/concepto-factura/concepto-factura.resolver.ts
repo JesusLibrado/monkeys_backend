@@ -1,16 +1,21 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ConceptoFacturaService } from './concepto-factura.service';
-import { 
+import {
   CreateConceptoFacturaInput,
-  UpdateConceptoFacturaInput
+  UpdateConceptoFacturaInput,
 } from 'src/graphql';
 
 @Resolver('ConceptoFactura')
 export class ConceptoFacturaResolver {
-  constructor(private readonly conceptoFacturaService: ConceptoFacturaService) {}
+  constructor(
+    private readonly conceptoFacturaService: ConceptoFacturaService,
+  ) {}
 
   @Mutation('createConceptoFactura')
-  create(@Args('createConceptoFacturaInput') createConceptoFacturaInput: CreateConceptoFacturaInput) {
+  create(
+    @Args('createConceptoFacturaInput')
+    createConceptoFacturaInput: CreateConceptoFacturaInput,
+  ) {
     return this.conceptoFacturaService.create(createConceptoFacturaInput);
   }
 
@@ -25,8 +30,14 @@ export class ConceptoFacturaResolver {
   }
 
   @Mutation('updateConceptoFactura')
-  update(@Args('updateConceptoFacturaInput') updateConceptoFacturaInput: UpdateConceptoFacturaInput) {
-    return this.conceptoFacturaService.update(updateConceptoFacturaInput.id, updateConceptoFacturaInput);
+  update(
+    @Args('updateConceptoFacturaInput')
+    updateConceptoFacturaInput: UpdateConceptoFacturaInput,
+  ) {
+    return this.conceptoFacturaService.update(
+      updateConceptoFacturaInput.id,
+      updateConceptoFacturaInput,
+    );
   }
 
   @Mutation('removeConceptoFactura')

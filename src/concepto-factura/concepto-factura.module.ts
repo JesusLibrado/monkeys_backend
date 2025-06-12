@@ -8,7 +8,12 @@ import { ServicioService } from 'src/servicio/servicio.service';
 
 @Module({
   imports: [ProductoModule, ServicioModule],
-  providers: [ConceptoFacturaResolver, ConceptoFacturaService, ProductoService, ServicioService],
-  exports: [ConceptoFacturaService]
+  providers: [
+    ConceptoFacturaResolver,
+    ConceptoFacturaService,
+    ProductoService,
+    ServicioService,
+  ],
+  exports: [ConceptoFacturaService],
 })
 export class ConceptoFacturaModule {}

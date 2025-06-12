@@ -1,16 +1,15 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ProductoService } from './producto.service';
-import {
-  CreateProductoInput,
-  UpdateProductoInput
-} from 'src/graphql';
+import { CreateProductoInput, UpdateProductoInput } from 'src/graphql';
 
 @Resolver('Producto')
 export class ProductoResolver {
   constructor(private readonly productoService: ProductoService) {}
 
   @Mutation('createProducto')
-  create(@Args('createProductoInput') createProductoInput: CreateProductoInput) {
+  create(
+    @Args('createProductoInput') createProductoInput: CreateProductoInput,
+  ) {
     return this.productoService.create(createProductoInput);
   }
 
@@ -24,9 +23,9 @@ export class ProductoResolver {
     return this.productoService.findAll({
       where: {
         cantidadDisponible: {
-          gt: 0
-        }
-      }
+          gt: 0,
+        },
+      },
     });
   }
 
@@ -36,8 +35,13 @@ export class ProductoResolver {
   }
 
   @Mutation('updateProducto')
-  update(@Args('updateProductoInput') updateProductoInput: UpdateProductoInput) {
-    return this.productoService.update(updateProductoInput.id, updateProductoInput);
+  update(
+    @Args('updateProductoInput') updateProductoInput: UpdateProductoInput,
+  ) {
+    return this.productoService.update(
+      updateProductoInput.id,
+      updateProductoInput,
+    );
   }
 
   @Mutation('removeProducto')

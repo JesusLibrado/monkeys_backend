@@ -5,57 +5,60 @@ import { prisma } from 'prisma/client';
 import { EstacionService } from 'src/estacion/estacion.service';
 import { EventoService } from 'src/evento/evento.service';
 import { FacturaService } from 'src/factura/factura.service';
-import { 
+import {
   EstatusEvento,
   Factura,
   Pago,
   RealizarPagoInput,
-  UpdatePagoInput
+  UpdatePagoInput,
 } from 'src/graphql';
 
 @Injectable()
 export class PagoService {
-
   constructor(
     private eventoService: EventoService,
     private estacionService: EstacionService,
-    private facturaService: FacturaService
+    private facturaService: FacturaService,
   ) {}
-  
+
   async realizarPago(realizarPagoInput: RealizarPagoInput) {
+    const {
+      metodoPago,
+      montoRecibido,
+      montoDevuelto,
+      facturaId,
+      comisionPagoTarjeta,
+    } = realizarPagoInput;
 
-    const {metodoPago, montoRecibido, montoDevuelto, facturaId, comisionPagoTarjeta} = realizarPagoInput;
-
-    try{
+    try {
       // si hay Productos, restar el producto del inventario
       // Estacion disponible
       // Evento PAGADO
       // Factura PAGADA
       // Registrar Pago
 
-      const realizarPagoPayload = await prisma.$transaction(async (tx)=>{
-
+      const realizarPagoPayload = await prisma.$transaction(async (tx) => {
         const newPago = await prisma.pago.create({
           data: {
             metodoPago: metodoPago,
             montoRecibido: montoRecibido,
-            montoDevuelto: montoDevuelto??0,
+            montoDevuelto: montoDevuelto ?? 0,
             estatus: EstatusPago.REALIZADO,
-            comisionPagoTarjeta: comisionPagoTarjeta??0,
+            comisionPagoTarjeta: comisionPagoTarjeta ?? 0,
             factura: {
               connect: {
-                id: facturaId
-              }
-            }
-          }
+                id: facturaId,
+              },
+            },
+          },
         });
 
         const facturaPayload = await this.facturaService.terminate(facturaId, {
           include: {
             evento: {
-              include: { estacion: true }
-            }
-          }
+              include: { estacion: true },
+            },
+          },
         });
 
         const factura = plainToClass(Factura, facturaPayload);
@@ -64,7 +67,7 @@ export class PagoService {
 
         let evento = factura?.evento;
 
-        if(evento) {
+        if (evento) {
           this.eventoService.setEstatus(evento.id, EstatusEvento.PAGADO);
           this.estacionService.makeAvailable(evento.estacion.id);
         }
@@ -73,9 +76,7 @@ export class PagoService {
       });
 
       return plainToClass(Pago, realizarPagoPayload);
-    } catch(e) {
-
-    }
+    } catch (e) {}
   }
 
   findAll() {

@@ -15,9 +15,8 @@ import { ConceptoFacturaModule } from './concepto-factura/concepto-factura.modul
 import { FacturaModule } from './factura/factura.module';
 import { PagoModule } from './pago/pago.module';
 
-
 const configModule: Promise<DynamicModule> = ConfigModule.forRoot({
-  envFilePath: !process.env.NODE_ENV ? '.env' : `.env.${process.env.NODE_ENV}`
+  envFilePath: !process.env.NODE_ENV ? '.env' : `.env.${process.env.NODE_ENV}`,
 });
 
 const graphQLModule: DynamicModule = GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -48,5 +47,4 @@ const graphQLModule: DynamicModule = GraphQLModule.forRoot<ApolloDriverConfig>({
   controllers: [],
   providers: [],
 })
-
 export class AppModule {}

@@ -1,8 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { 
-  CreateUsuarioInput,
-  UpdateUsuarioInput
-} from 'src/graphql';
+import { CreateUsuarioInput, UpdateUsuarioInput } from 'src/graphql';
 
 import { prisma } from 'prisma/client';
 import { Prisma } from '@prisma/client';
@@ -10,27 +7,24 @@ import * as dayjs from 'dayjs';
 
 @Injectable()
 export class UsuarioService {
-
   async create(createUsuarioInput: CreateUsuarioInput) {
     let usuarioInput = new CreateUsuarioInput();
     const usuarioKeys = Object.keys(usuarioInput);
-    for(let property of usuarioKeys) {
-      usuarioInput[property] = createUsuarioInput[property]
+    for (let property of usuarioKeys) {
+      usuarioInput[property] = createUsuarioInput[property];
     }
     let newUsuario;
-    try{
+    try {
       newUsuario = await prisma.usuario.create({
         data: {
           ...usuarioInput,
-           
-        }
+        },
       });
       console.log(`Usuario created: ${newUsuario}`);
       return newUsuario;
-    } catch(e) {
+    } catch (e) {
       console.error(`Error creating Usuario ${e}`);
     }
-    
   }
 
   findAll() {
@@ -46,7 +40,7 @@ export class UsuarioService {
   }
 
   async remove(usuarioDeleteArgs: Prisma.UsuarioDeleteArgs) {
-    try{
+    try {
       let usuarioDeleted = await prisma.usuario.delete(usuarioDeleteArgs);
       console.log(`Usuario deleted: ${usuarioDeleted}`);
       return usuarioDeleted;

@@ -1,9 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { FacturaService } from './factura.service';
-import { 
-  CreateFacturaInput,
-  UpdateFacturaInput
- } from 'src/graphql';
+import { CreateFacturaInput, UpdateFacturaInput } from 'src/graphql';
 
 @Resolver('Factura')
 export class FacturaResolver {
@@ -31,7 +28,10 @@ export class FacturaResolver {
 
   @Mutation('updateFactura')
   update(@Args('updateFacturaInput') updateFacturaInput: UpdateFacturaInput) {
-    return this.facturaService.update(updateFacturaInput.id, updateFacturaInput);
+    return this.facturaService.update(
+      updateFacturaInput.id,
+      updateFacturaInput,
+    );
   }
 
   @Mutation('removeFactura')
@@ -48,5 +48,4 @@ export class FacturaResolver {
   save(@Args('id') id: string) {
     return this.facturaService.save(id);
   }
-
 }

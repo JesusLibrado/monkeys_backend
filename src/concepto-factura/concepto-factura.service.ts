@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { 
+import {
   ConceptoFactura,
   CreateConceptoFacturaInput,
-  UpdateConceptoFacturaInput
+  UpdateConceptoFacturaInput,
 } from 'src/graphql';
 import { ProductoService } from 'src/producto/producto.service';
 import { ServicioService } from 'src/servicio/servicio.service';
@@ -12,51 +12,49 @@ import * as dayjs from 'dayjs';
 import { plainToClass } from 'class-transformer';
 import { Prisma } from '@prisma/client';
 
-
 @Injectable()
 export class ConceptoFacturaService {
-
   constructor(
     private productoService: ProductoService,
-    private servicioService: ServicioService
+    private servicioService: ServicioService,
   ) {}
 
   async create(createConceptoFacturaInput: CreateConceptoFacturaInput) {
+    const { facturaId } = createConceptoFacturaInput;
 
-    const {facturaId} = createConceptoFacturaInput;
-
-    let createInput = await this.createNewForFactura(createConceptoFacturaInput);
+    let createInput = await this.createNewForFactura(
+      createConceptoFacturaInput,
+    );
 
     try {
       let createConceptoFacturaPayload = await prisma.conceptoFactura.create({
         data: {
           factura: {
             connect: {
-              id: facturaId
-            }
+              id: facturaId,
+            },
           },
-          ...createInput
+          ...createInput,
         },
         include: {
           producto: true,
-          servicio: true
-        }
+          servicio: true,
+        },
       });
-  
+
       return plainToClass(ConceptoFactura, createConceptoFacturaPayload);
-    } catch(e) {
+    } catch (e) {
       console.error(`Error creating ConceptoFactura ${e}`);
-      throw new Error("Error creating entity");
+      throw new Error('Error creating entity');
     }
-    
   }
 
   async findAllFromFactura(facturaId: string) {
     return await prisma.conceptoFactura.findMany({
       where: {
-        facturaId: facturaId
+        facturaId: facturaId,
       },
-      include: {producto: true, servicio: true}
+      include: { producto: true, servicio: true },
     });
   }
 
@@ -71,67 +69,67 @@ export class ConceptoFacturaService {
   async remove(id: string) {
     return await prisma.conceptoFactura.delete({
       where: {
-        id: id
-      }
+        id: id,
+      },
     });
   }
 
   getTotal(conceptosFactura: any[]): number {
     return conceptosFactura.reduce(
-      (sum, currentCF: ConceptoFactura) => sum + currentCF.total, 0
-    )
-  }
-
-  async createMultipleNewForFactura(conceptosFactura: CreateConceptoFacturaInput[]) {
-    return await Promise.all(
-      conceptosFactura.map(this.createNewForFactura)
+      (sum, currentCF: ConceptoFactura) => sum + currentCF.total,
+      0,
     );
   }
 
-  async createNewForFactura(conceptoFactura: CreateConceptoFacturaInput): Promise<
-    Omit<Prisma.ConceptoFacturaCreateInput, 'factura'>
-  > {
-    
-    let {cantidad, productoId, servicioId, servicio} = conceptoFactura;
+  async createMultipleNewForFactura(
+    conceptosFactura: CreateConceptoFacturaInput[],
+  ) {
+    return await Promise.all(conceptosFactura.map(this.createNewForFactura));
+  }
+
+  async createNewForFactura(
+    conceptoFactura: CreateConceptoFacturaInput,
+  ): Promise<Omit<Prisma.ConceptoFacturaCreateInput, 'factura'>> {
+    let { cantidad, productoId, servicioId, servicio } = conceptoFactura;
     let precio;
 
     const newConceptoFactura = {
       cantidad: cantidad,
       total: 0,
-    }
+    };
 
-    if(productoId!=""&&productoId) {
-      const producto = await this.productoService.findOne(productoId??"");
+    if (productoId != '' && productoId) {
+      const producto = await this.productoService.findOne(productoId ?? '');
       precio = producto?.precioPublico;
       newConceptoFactura['producto'] = {
         connect: {
-          id: producto?.id
-        }
-      }
-    } 
+          id: producto?.id,
+        },
+      };
+    }
 
-    if(servicioId!=""&&servicioId) {
-      const servicio = await this.servicioService.findOne(servicioId??"");
+    if (servicioId != '' && servicioId) {
+      const servicio = await this.servicioService.findOne(servicioId ?? '');
       precio = servicio?.precio;
       newConceptoFactura['servicio'] = {
         connect: {
-          id: servicio?.id
-        }
-      }
+          id: servicio?.id,
+        },
+      };
     }
 
-    if(servicio) {
+    if (servicio) {
       const newServicio = await this.servicioService.create(servicio);
       precio = newServicio.precio;
       newConceptoFactura['servicio'] = {
         connect: {
-          id: newServicio.id
-        }
-      }
+          id: newServicio.id,
+        },
+      };
     }
 
-    newConceptoFactura.total = precio * cantidad
-    
+    newConceptoFactura.total = precio * cantidad;
+
     return newConceptoFactura;
   }
 }

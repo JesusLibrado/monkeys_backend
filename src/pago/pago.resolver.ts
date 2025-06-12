@@ -1,9 +1,6 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { PagoService } from './pago.service';
-import { 
-  RealizarPagoInput,
-  UpdatePagoInput
-} from 'src/graphql';
+import { RealizarPagoInput, UpdatePagoInput } from 'src/graphql';
 
 @Resolver('Pago')
 export class PagoResolver {

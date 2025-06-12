@@ -1,19 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { prisma } from 'prisma/client';
-import { 
+import {
   CreateEventoInput,
   UpdateEventoInput,
   EstatusEvento,
   CreateConceptoFacturaInput,
   EstatusFactura,
   CreateFacturaInput,
-  Evento
+  Evento,
 } from 'src/graphql';
 
 @Injectable()
 export class EventoService {
-
-  create(createEventoInput: CreateEventoInput){}
+  create(createEventoInput: CreateEventoInput) {}
 
   async findAll() {
     return await prisma.evento.findMany();
@@ -22,11 +21,11 @@ export class EventoService {
   async findOne(id: string) {
     return await prisma.evento.findUnique({
       where: {
-        id: id
+        id: id,
       },
       include: {
-        factura: true
-      }
+        factura: true,
+      },
     });
   }
 
@@ -36,31 +35,31 @@ export class EventoService {
         estacionId: estacionId,
         AND: [
           {
-            estatus: { 
-              in: [EstatusEvento.EN_PROGRESO, EstatusEvento.TERMINADO]
-            }
-          }
-        ]
+            estatus: {
+              in: [EstatusEvento.EN_PROGRESO, EstatusEvento.TERMINADO],
+            },
+          },
+        ],
       },
       include: {
-        factura: true
-      }
-    })
+        factura: true,
+      },
+    });
   }
 
   async setEstatus(id: string, newEstatus: EstatusEvento) {
     try {
       return await prisma.evento.update({
         where: {
-          id: id
+          id: id,
         },
         data: {
-          estatus: newEstatus
+          estatus: newEstatus,
         },
-        include: {estacion: true}
+        include: { estacion: true },
       });
-    } catch(e) {
-      console.log("Error updating Evento estatus: ", e);
+    } catch (e) {
+      console.log('Error updating Evento estatus: ', e);
       throw e;
     }
   }
