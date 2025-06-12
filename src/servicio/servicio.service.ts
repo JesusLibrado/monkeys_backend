@@ -35,7 +35,7 @@ export class ServicioService {
     return await prisma.servicio.findMany({
       where: {
         categoria: {
-          in: ['BARBA', 'CORTE', 'FACIAL']
+          in: ['BARBA', 'CORTE', 'FACIAL', 'OTRO']
         }
       }
     })

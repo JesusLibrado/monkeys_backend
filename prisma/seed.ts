@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import { empleadosData } from './data/empleados_seed';
 import { serviciosData } from './data/servicios_seed';
+import { productosData } from './data/productos_seed';
 
 const prisma = new PrismaClient();
 
@@ -30,7 +31,13 @@ async function seedServicios() {
 
 async function seedProductos() {
     console.log("Seeding productos...");
-    // await prisma.producto
+    try {
+        await prisma.producto.createMany({
+            data: productosData
+        });
+    } catch (e) {
+        console.log(`Error seeding Productos ${e}`);
+    }
 }
 
 seedEmpleados();

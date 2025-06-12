@@ -3,11 +3,12 @@ import { RolEmpleado } from '../../src/graphql';
 export const empleadosData = [
     {
         nombre: 'Uriel',
-        apellido: 'Velasco',
+        apellido: 'Velasco Galvan',
         rol: RolEmpleado.BARBERO,
         usuario: {
             create: {
-                email: 'uriel@email.com'
+                email: 'uriel@email.com', 
+                numeroTelefono: '2281434972'
             }
         },
         estacion: {
@@ -18,11 +19,12 @@ export const empleadosData = [
     },
     {
         nombre: 'Javier',
-        apellido: 'Hernandez',
+        apellido: 'Gonzalez Hernandez',
         rol: RolEmpleado.BARBERO,
         usuario: {
             create: {
-                email: 'javier@email.com'
+                email: 'javier@email.com',
+                numeroTelefono: '2281570630'
             }
         },
         estacion: {
@@ -33,11 +35,12 @@ export const empleadosData = [
     },
     {
         nombre: 'Oswaldo',
-        apellido: 'Garcia',
+        apellido: 'Ruiz Hernandez',
         rol: RolEmpleado.BARBERO,
         usuario: {
             create: {
-                email: 'oswaldo@email.com'
+                email: 'oswaldo@email.com',
+                numeroTelefono: '2281479279'
             }
         },
         estacion: {
@@ -48,11 +51,12 @@ export const empleadosData = [
     },
     {
         nombre: 'Jimena',
-        apellido: 'Gutierritoz',
+        apellido: 'Landa Hernandez',
         rol: RolEmpleado.BARBERO,
         usuario: {
             create: {
-                email: 'jimena@email.com'
+                email: 'jimena@email.com',
+                numeroTelefono: '2283763445'
             }
         },
         estacion: {
