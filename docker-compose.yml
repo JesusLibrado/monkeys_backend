@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  mysql-local:
+    image: mysql:latest
+    container_name: mysql-local
+    env_file: ".env.local"
+    restart: always
+    ports:
+      - ${PORT}:3306
+    environment:
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_PASSWORD=${DB_PWD}
+      - MYSQL_ROOT_PASSWORD=${DB_PWD}
+  # mysqldb:
+  #   image: mysql:latest
+  #   container_name: integration-tests-prisma
+  #   restart: always
+  #   ports:
+  #     - "226:226"
+  #   expose:
+  #     - "226"
+  #   environment:
+  #     MYSQL_DATABASE: tests
+  #     MYSQL_ROOT_PASSWORD: password

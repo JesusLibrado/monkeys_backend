@@ -1,38 +1,26 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule } from '@nestjs/config';
-import { join } from 'path';
 
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { EmpleadoModule } from './empleado/empleado.module';
-import { UsuarioModule } from './usuario/usuario.module';
-import { EstacionModule } from './estacion/estacion.module';
-import { EventoModule } from './evento/evento.module';
-import { ProductoModule } from './producto/producto.module';
-import { ServicioModule } from './servicio/servicio.module';
-import { ConceptoFacturaModule } from './concepto-factura/concepto-factura.module';
-import { FacturaModule } from './factura/factura.module';
-import { PagoModule } from './pago/pago.module';
+import { EmpleadoModule } from './models/empleado/empleado.module';
+import { UsuarioModule } from './models/usuario/usuario.module';
+import { EstacionModule } from './models/estacion/estacion.module';
+import { EventoModule } from './models/evento/evento.module';
+import { ProductoModule } from './models/producto/producto.module';
+import { ServicioModule } from './models/servicio/servicio.module';
+import { ConceptoFacturaModule } from './models/concepto-factura/concepto-factura.module';
+import { FacturaModule } from './models/factura/factura.module';
+import { PagoModule } from './models/usuario/pago/pago.module';
+import { GraphqlService } from './config/graphql';
 
-const configModule: Promise<DynamicModule> = ConfigModule.forRoot({
-  envFilePath: !process.env.NODE_ENV ? '.env' : `.env.${process.env.NODE_ENV}`,
-});
-
-const graphQLModule: DynamicModule = GraphQLModule.forRoot<ApolloDriverConfig>({
-  driver: ApolloDriver,
-  typePaths: ['./**/*.graphql'],
-  definitions: {
-    path: join(process.cwd(), 'src/graphql.ts'),
-    outputAs: 'class',
-  },
-  playground: false,
-  plugins: [ApolloServerPluginLandingPageLocalDefault()],
-});
+const graphQLModule: DynamicModule =
+  GraphQLModule.forRootAsync<ApolloDriverConfig>({
+    driver: ApolloDriver,
+    useClass: GraphqlService,
+  });
 
 @Module({
   imports: [
-    configModule,
     graphQLModule,
     EmpleadoModule,
     UsuarioModule,
